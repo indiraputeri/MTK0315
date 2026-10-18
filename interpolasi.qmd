@@ -1,0 +1,1182 @@
+---
+title: "Interpolasi"
+subtitle: "Metode Numerik (MTK0315)"
+author: "Dr. Indira Puteri Kinasih"
+lang: id
+documentclass: book
+classoption:
+  - openany
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    theme: cosmo
+    
+  pdf:
+    toc: true
+    toc-depth: 3
+    geometry:
+      - top=2.5cm
+      - bottom=2.5cm
+      - left=3cm
+      - right=2.5cm
+    number-sections: false
+    include-in-header:
+      text: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhf{}
+        \fancyfoot[C]{\thepage}
+        \renewcommand{\headrulewidth}{0pt}
+  
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Pendahuluan
+
+Pada materi sebelumnya telah dibahas mengenai **deret**, khususnya bagaimana suatu fungsi dapat direpresentasikan atau didekati menggunakan penjumlahan suku-suku tertentu.
+
+Pada pertemuan ini dibahas pendekatan fungsi dengan cara yang berbeda, yaitu **interpolasi**.
+
+Dalam banyak permasalahan numerik, suatu fungsi tidak selalu diketahui secara eksplisit. Yang tersedia mungkin hanya beberapa pasangan nilai
+
+$$
+(x_0,y_0), (x_1,y_1), \ldots, (x_n,y_n).
+$$
+
+Sebagai contoh, diketahui data hasil pengukuran:
+
+| $x$ | $y$ |
+| --: | --: |
+|   1 | 2.0 |
+|   2 | 3.5 |
+|   3 | 5.0 |
+|   4 | 7.0 |
+
+Bagaimana memperkirakan nilai $y$ ketika $x=2.5$?
+
+Salah satu pendekatan yang dapat digunakan adalah **interpolasi**.
+
+Secara sederhana, interpolasi digunakan untuk memperkirakan nilai suatu fungsi **di antara titik-titik data yang telah diketahui**.
+
+# Tujuan Pembelajaran
+
+Setelah mempelajari materi ini, mahasiswa diharapkan mampu:
+
+1. menjelaskan konsep interpolasi;
+2. membedakan interpolasi dan ekstrapolasi;
+3. melakukan interpolasi linear;
+4. membentuk polinom interpolasi;
+5. menggunakan metode Lagrange untuk interpolasi;
+6. menggunakan metode Newton untuk interpolasi;
+7. menjelaskan sumber galat pada interpolasi;
+8. mengimplementasikan interpolasi menggunakan R;
+9. memvisualisasikan hasil interpolasi dan data pengamatan.
+
+# Konsep Dasar Interpolasi
+
+Misalkan terdapat sejumlah titik data
+
+$$
+(x_0,y_0), (x_1,y_1), \ldots,(x_n,y_n).
+$$
+
+Nilai $y_i$ diketahui untuk setiap $x_i$.
+
+Jika ingin mengetahui nilai fungsi pada suatu titik $x$ yang berada di antara titik-titik data tersebut, maka kita dapat menggunakan interpolasi.
+
+Secara umum:
+
+$$
+f(x) \approx P(x),
+$$
+
+dengan $P(x)$ merupakan fungsi pendekatan yang dibentuk berdasarkan data yang tersedia.
+
+## Contoh sederhana
+
+Misalkan diketahui:
+
+$$
+f(1)=2
+$$
+
+dan
+
+$$
+f(3)=6.
+$$
+
+Jika ingin memperkirakan $f(2)$, kita dapat menggunakan garis yang menghubungkan kedua titik tersebut.
+
+Secara geometris:
+
+```{r}
+x <- c(1, 3)
+y <- c(2, 6)
+
+plot(x, y,
+     pch = 19,
+     xlab = "x",
+     ylab = "f(x)",
+     main = "Interpolasi Linear")
+
+abline(lm(y ~ x), lwd = 2)
+
+points(2, 4, pch = 19)
+
+text(1, 2, "(1, 2)", pos = 2)
+text(3, 6, "(3, 6)", pos = 4)
+text(2, 4, "(2, 4)", pos = 3)
+```
+
+Dari garis tersebut diperoleh
+
+$$
+f(2)\approx 4.
+$$
+
+# Interpolasi dan Ekstrapolasi
+
+Hal penting yang perlu dibedakan adalah **interpolasi** dan **ekstrapolasi**.
+
+## Interpolasi
+
+Interpolasi dilakukan untuk memperkirakan nilai **di dalam rentang data yang tersedia**.
+
+Misalnya data tersedia pada
+
+$$
+1\leq x\leq5.
+$$
+
+Maka memperkirakan $f(3)$ merupakan interpolasi.
+
+## Ekstrapolasi
+
+Ekstrapolasi dilakukan untuk memperkirakan nilai **di luar rentang data yang tersedia**.
+
+Jika data tersedia pada
+
+$$
+1\leq x\leq5,
+$$
+
+maka memperkirakan $f(7)$ merupakan ekstrapolasi.
+
+Secara umum, interpolasi lebih dapat dikendalikan karena estimasi dilakukan di antara titik-titik yang telah diketahui.
+
+# Interpolasi Linear
+
+Metode interpolasi paling sederhana adalah **interpolasi linear**.
+
+Misalkan diketahui dua titik:
+
+$$
+(x_0,y_0)
+$$
+
+dan
+
+$$
+(x_1,y_1).
+$$
+
+Kita ingin memperkirakan nilai $y$ pada $x$ di antara $x_0$ dan $x_1$.
+
+Persamaan garis yang melalui kedua titik tersebut adalah
+
+$$
+y-y_0
+=
+\frac{y_1-y_0}{x_1-x_0}(x-x_0).
+$$
+
+Sehingga:
+
+$$
+\boxed{
+y =
+y_0+
+\frac{y_1-y_0}{x_1-x_0}(x-x_0)
+}
+$$
+
+## Contoh
+
+Diketahui:
+
+$$
+(1,2)
+$$
+
+dan
+
+$$
+(3,6).
+$$
+
+Tentukan perkiraan $f(2)$.
+
+Dengan rumus:
+
+$$
+f(2)
+=
+2+
+\frac{6-2}{3-1}(2-1).
+$$
+
+Maka:
+
+$$
+f(2)
+=
+2+
+\frac{4}{2}(1)
+=4.
+$$
+
+Jadi:
+
+$$
+\boxed{f(2)\approx4}
+$$
+
+## Implementasi R
+
+```{r}
+x0 <- 1
+x1 <- 3
+
+y0 <- 2
+y1 <- 6
+
+x <- 2
+
+y <- y0 + 
+  (y1 - y0)/(x1 - x0) * (x - x0)
+
+y
+```
+
+# Implementasi Fungsi Interpolasi Linear
+
+Kita dapat membuat fungsi R agar interpolasi dapat dilakukan untuk berbagai data.
+
+```{r}
+interpolasi_linear <- function(x0, y0, x1, y1, x) {
+  
+  y <- y0 + 
+    (y1 - y0)/(x1 - x0) * (x - x0)
+  
+  return(y)
+}
+```
+
+Contoh:
+
+```{r}
+interpolasi_linear(
+  x0 = 1,
+  y0 = 2,
+  x1 = 3,
+  y1 = 6,
+  x = 2
+)
+```
+
+# Mengapa Tidak Selalu Menggunakan Garis?
+
+Interpolasi linear hanya menggunakan dua titik terdekat.
+
+Namun, jika tersedia lebih banyak titik data, kita dapat menggunakan **polinom** yang melewati lebih banyak titik.
+
+Misalnya tersedia tiga titik:
+
+$$
+(x_0,y_0),\quad
+(x_1,y_1),\quad
+(x_2,y_2).
+$$
+
+Kita dapat mencari polinom berderajat dua:
+
+$$
+P_2(x)=a_0+a_1x+a_2x^2.
+$$
+
+Polinom tersebut dipilih sehingga
+
+$$
+P_2(x_0)=y_0,
+$$
+
+$$
+P_2(x_1)=y_1,
+$$
+
+dan
+
+$$
+P_2(x_2)=y_2.
+$$
+
+Secara umum, jika terdapat $n+1$ titik data yang berbeda, terdapat polinom berderajat paling tinggi $n$ yang melalui seluruh titik tersebut.
+
+# Interpolasi Polinomial
+
+Misalkan tersedia $n+1$ titik:
+
+$$
+(x_0,y_0),
+(x_1,y_1),
+\ldots,
+(x_n,y_n).
+$$
+
+Kita ingin membentuk polinom
+
+$$
+P_n(x)
+$$
+
+sedemikian sehingga
+
+$$
+P_n(x_i)=y_i,
+\qquad i=0,1,\ldots,n.
+$$
+
+Bentuk umum polinom adalah
+
+$$
+P_n(x)
+=
+a_0+a_1x+a_2x^2+\cdots+a_nx^n.
+$$
+
+Terdapat beberapa cara untuk membentuk polinom interpolasi.
+
+Dua metode yang penting adalah:
+
+* metode Lagrange;
+* metode Newton.
+
+# Polinom Lagrange
+
+Polinom interpolasi Lagrange ditulis sebagai
+
+$$
+P_n(x)
+=
+\sum_{i=0}^{n}
+y_iL_i(x),
+$$
+
+dengan
+
+$$
+L_i(x)
+=
+\prod_{\substack{j=0\\j\neq i}}^{n}
+\frac{x-x_j}{x_i-x_j}.
+$$
+
+Fungsi $L_i(x)$ disebut **polinom basis Lagrange**.
+
+Sifat pentingnya adalah:
+
+$$
+L_i(x_i)=1
+$$
+
+dan
+
+$$
+L_i(x_j)=0,
+\qquad j\neq i.
+$$
+
+Karena sifat tersebut, pada setiap titik $x_i$ diperoleh
+
+$$
+P_n(x_i)=y_i.
+$$
+
+# Contoh Lagrange dengan Tiga Titik
+
+Diketahui:
+
+| $x$ | $f(x)$ |
+| --: | -----: |
+|   1 |      2 |
+|   2 |      3 |
+|   4 |      5 |
+
+Tentukan nilai $f(3)$ menggunakan interpolasi Lagrange.
+
+Polinomnya adalah
+
+$$
+P_2(x)
+=
+y_0L_0(x)+y_1L_1(x)+y_2L_2(x).
+$$
+
+Dengan
+
+$$
+L_0(x)
+=
+\frac{(x-2)(x-4)}
+{(1-2)(1-4)},
+$$
+
+$$
+L_1(x)
+=
+\frac{(x-1)(x-4)}
+{(2-1)(2-4)},
+$$
+
+dan
+
+$$
+L_2(x)
+=
+\frac{(x-1)(x-2)}
+{(4-1)(4-2)}.
+$$
+
+Untuk $x=3$:
+
+$$
+L_0(3)
+=
+\frac{(3-2)(3-4)}
+{(1-2)(1-4)}
+=
+-\frac{1}{3},
+$$
+
+$$
+L_1(3)
+=
+\frac{(3-1)(3-4)}
+{(2-1)(2-4)}
+=
+1,
+$$
+
+dan
+
+$$
+L_2(3)
+=
+\frac{(3-1)(3-2)}
+{(4-1)(4-2)}
+=
+\frac{1}{3}.
+$$
+
+Maka:
+
+$$
+P_2(3)
+=
+2\left(-\frac13\right)
++
+3(1)
++
+5\left(\frac13\right).
+$$
+
+Sehingga:
+
+$$
+P_2(3)
+=
+-\frac23+3+\frac53
+=
+4.
+$$
+
+Jadi:
+
+$$
+\boxed{f(3)\approx4}
+$$
+
+# Implementasi Lagrange dalam R
+
+Fungsi berikut dapat digunakan untuk menghitung interpolasi Lagrange.
+
+```{r}
+lagrange <- function(x_data, y_data, x) {
+  
+  n <- length(x_data)
+  result <- 0
+  
+  for (i in 1:n) {
+    
+    L <- 1
+    
+    for (j in 1:n) {
+      
+      if (j != i) {
+        L <- L * 
+          (x - x_data[j]) /
+          (x_data[i] - x_data[j])
+      }
+    }
+    
+    result <- result + y_data[i] * L
+  }
+  
+  return(result)
+}
+```
+
+Gunakan fungsi tersebut:
+
+```{r}
+x_data <- c(1, 2, 4)
+y_data <- c(2, 3, 5)
+
+lagrange(
+  x_data,
+  y_data,
+  x = 3
+)
+```
+
+Hasilnya adalah:
+
+```text
+4
+```
+
+# Visualisasi Interpolasi Lagrange
+
+```{r}
+x_data <- c(1, 2, 4)
+y_data <- c(2, 3, 5)
+
+x_grid <- seq(
+  min(x_data),
+  max(x_data),
+  length.out = 300
+)
+
+y_grid <- sapply(
+  x_grid,
+  function(x) lagrange(x_data, y_data, x)
+)
+
+plot(
+  x_grid,
+  y_grid,
+  type = "l",
+  lwd = 2,
+  xlab = "x",
+  ylab = "P(x)",
+  main = "Interpolasi Polinomial Lagrange"
+)
+
+points(
+  x_data,
+  y_data,
+  pch = 19
+)
+
+points(
+  3,
+  lagrange(x_data, y_data, 3),
+  pch = 19
+)
+```
+
+Grafik menunjukkan bahwa polinom interpolasi melewati seluruh titik data.
+
+# Polinom Newton
+
+Metode lain untuk membentuk polinom interpolasi adalah **interpolasi Newton**.
+
+Bentuk umum polinom Newton adalah
+
+$$
+P_n(x)
+=
+f[x_0]
++
+f[x_0,x_1](x-x_0)
+$$
+
+$$
++
+f[x_0,x_1,x_2]
+(x-x_0)(x-x_1)
++\cdots
+$$
+
+$$
++
+f[x_0,x_1,\ldots,x_n]
+\prod_{j=0}^{n-1}(x-x_j).
+$$
+
+Koefisien polinom diperoleh melalui **divided differences**.
+
+# Divided Differences
+
+Divided difference orde pertama:
+
+$$
+f[x_i,x_{i+1}]
+=
+\frac{f(x_{i+1})-f(x_i)}
+{x_{i+1}-x_i}.
+$$
+
+Divided difference orde kedua:
+
+$$
+f[x_i,x_{i+1},x_{i+2}]
+=
+\frac{
+f[x_{i+1},x_{i+2}]
+-
+f[x_i,x_{i+1}]
+}
+{x_{i+2}-x_i}.
+$$
+
+Proses ini dapat dilanjutkan hingga orde yang lebih tinggi.
+
+## Contoh
+
+Gunakan data:
+
+| $x$ | $f(x)$ |
+| --: | -----: |
+|   1 |      2 |
+|   2 |      3 |
+|   4 |      5 |
+
+Divided difference orde pertama:
+
+$$
+f[1,2]
+=
+\frac{3-2}{2-1}
+=1.
+$$
+
+$$
+f[2,4]
+=
+\frac{5-3}{4-2}
+=1.
+$$
+
+Divided difference orde kedua:
+
+$$
+f[1,2,4]
+=
+\frac{1-1}{4-1}
+=0.
+$$
+
+Maka polinom Newton:
+
+$$
+P_2(x)
+=
+2+1(x-1)+0(x-1)(x-2).
+$$
+
+Sehingga:
+
+$$
+P_2(x)=x+1.
+$$
+
+Untuk $x=3$:
+
+$$
+P_2(3)=4.
+$$
+
+# Implementasi Newton dalam R
+
+Pertama, buat tabel divided differences.
+
+```{r}
+divided_difference <- function(x, y) {
+  
+  n <- length(x)
+  
+  table <- matrix(
+    0,
+    nrow = n,
+    ncol = n
+  )
+  
+  table[, 1] <- y
+  
+  for (j in 2:n) {
+    
+    for (i in 1:(n-j+1)) {
+      
+      table[i, j] <-
+        (table[i+1, j-1] -
+           table[i, j-1]) /
+        (x[i+j-1] - x[i])
+    }
+  }
+  
+  return(table)
+}
+```
+
+Contoh:
+
+```{r}
+x_data <- c(1, 2, 4)
+y_data <- c(2, 3, 5)
+
+divided_difference(
+  x_data,
+  y_data
+)
+```
+
+# Evaluasi Polinom Newton
+
+```{r}
+newton <- function(x_data, y_data, x) {
+  
+  n <- length(x_data)
+  
+  dd <- divided_difference(
+    x_data,
+    y_data
+  )
+  
+  result <- dd[1, 1]
+  product <- 1
+  
+  if (n >= 2) {
+    
+    for (j in 2:n) {
+      
+      product <- product *
+        (x - x_data[j-1])
+      
+      result <- result +
+        dd[1, j] * product
+    }
+  }
+  
+  return(result)
+}
+```
+
+Contoh:
+
+```{r}
+newton(
+  x_data = c(1, 2, 4),
+  y_data = c(2, 3, 5),
+  x = 3
+)
+```
+
+# Lagrange vs Newton
+
+Kedua metode menghasilkan **polinom interpolasi yang sama** jika digunakan pada data yang sama.
+
+Perbedaannya terutama terletak pada cara polinom dibentuk.
+
+| Aspek            | Lagrange                      | Newton                          |
+| ---------------- | ----------------------------- | ------------------------------- |
+| Bentuk           | Menggunakan basis Lagrange    | Menggunakan divided differences |
+| Perhitungan      | Relatif langsung              | Bertahap                        |
+| Penambahan titik | Perlu menghitung ulang        | Lebih mudah diperbarui          |
+| Konsep utama     | Basis polinom                 | Divided differences             |
+| Implementasi     | Sederhana untuk sedikit titik | Efisien untuk penambahan titik  |
+
+Untuk pembelajaran awal, Lagrange dapat digunakan untuk memahami konsep interpolasi polinomial, sedangkan Newton penting untuk memahami struktur perhitungan interpolasi secara bertahap.
+
+# Galat Interpolasi
+
+Interpolasi menghasilkan pendekatan:
+
+$$
+f(x)\approx P_n(x).
+$$
+
+Jika fungsi sebenarnya $f(x)$ diketahui, galat dapat ditulis sebagai
+
+$$
+E(x)=f(x)-P_n(x).
+$$
+
+Untuk interpolasi polinomial, bentuk galat teoritis adalah
+
+$$
+\boxed{
+E(x)
+=
+\frac{f^{(n+1)}(\xi)}
+{(n+1)!}
+\prod_{i=0}^{n}(x-x_i)
+}
+$$
+
+untuk suatu $\xi$ yang berada dalam interval yang memuat titik-titik interpolasi.
+
+Rumus tersebut menunjukkan bahwa galat dipengaruhi oleh:
+
+1. turunan fungsi orde $n+1$;
+2. jumlah titik interpolasi;
+3. posisi titik yang digunakan;
+4. posisi $x$ tempat interpolasi dilakukan.
+
+# Contoh Galat
+
+Misalkan
+
+$$
+f(x)=x^2.
+$$
+
+Gunakan titik:
+
+$$
+x_0=1,\qquad x_1=2.
+$$
+
+Karena fungsi sebenarnya adalah polinom derajat dua, interpolasi linear tidak menghasilkan fungsi yang sama persis.
+
+```{r}
+f <- function(x) x^2
+
+x_data <- c(1, 2)
+y_data <- f(x_data)
+
+x_grid <- seq(1, 2, length.out = 200)
+
+y_true <- f(x_grid)
+
+y_interp <- sapply(
+  x_grid,
+  function(x)
+    interpolasi_linear(
+      1, 1,
+      2, 4,
+      x
+    )
+)
+
+plot(
+  x_grid,
+  y_true,
+  type = "l",
+  lwd = 2,
+  xlab = "x",
+  ylab = "y",
+  main = "Fungsi Sebenarnya dan Interpolasi Linear"
+)
+
+lines(
+  x_grid,
+  y_interp,
+  lwd = 2,
+  lty = 2
+)
+
+points(
+  x_data,
+  y_data,
+  pch = 19
+)
+
+legend(
+  "topleft",
+  legend = c(
+    "f(x) = x²",
+    "Interpolasi linear",
+    "Data"
+  ),
+  lty = c(1, 2, NA),
+  pch = c(NA, NA, 19)
+)
+```
+
+# Mengapa Titik Data Penting?
+
+Jumlah dan posisi titik data memengaruhi kualitas interpolasi.
+
+Jika titik terlalu sedikit, pendekatan mungkin kurang akurat.
+
+Namun, menggunakan polinom dengan derajat yang sangat tinggi juga tidak selalu menghasilkan pendekatan yang lebih baik.
+
+Pada interpolasi polinomial derajat tinggi dapat muncul osilasi, terutama jika titik data tersebar dengan cara yang kurang sesuai.
+
+Fenomena ini dikenal sebagai **Runge's phenomenon**.
+
+Karena itu, dalam praktik numerik, pemilihan titik dan metode interpolasi perlu diperhatikan.
+
+# Interpolasi dengan Fungsi `approx()` di R
+
+R menyediakan fungsi `approx()` untuk interpolasi linear.
+
+Contoh:
+
+```{r}
+x <- c(1, 2, 4, 5)
+y <- c(2, 3, 5, 8)
+
+approx(
+  x,
+  y,
+  xout = 3
+)
+```
+
+Untuk beberapa nilai sekaligus:
+
+```{r}
+approx(
+  x,
+  y,
+  xout = c(1.5, 2.5, 3, 3.5)
+)
+```
+
+Hasil `approx()` dapat digunakan untuk melihat nilai interpolasi pada beberapa titik.
+
+# Contoh Aplikasi
+
+Misalkan seorang peneliti memperoleh data suhu pada beberapa waktu:
+
+| Waktu (jam) | Suhu (°C) |
+| ----------: | --------: |
+|       08.00 |      24.0 |
+|       10.00 |      27.0 |
+|       12.00 |      30.5 |
+|       14.00 |      32.0 |
+|       16.00 |      31.0 |
+
+Peneliti ingin memperkirakan suhu pada pukul 11.00.
+
+Data pada pukul 10.00 dan 12.00 dapat digunakan untuk interpolasi linear.
+
+```{r}
+waktu <- c(8, 10, 12, 14, 16)
+
+suhu <- c(
+  24.0,
+  27.0,
+  30.5,
+  32.0,
+  31.0
+)
+
+approx(
+  waktu,
+  suhu,
+  xout = 11
+)
+```
+
+Visualisasi:
+
+```{r}
+plot(
+  waktu,
+  suhu,
+  pch = 19,
+  xlab = "Waktu",
+  ylab = "Suhu (°C)",
+  main = "Interpolasi Data Suhu"
+)
+
+x_grid <- seq(
+  min(waktu),
+  max(waktu),
+  length.out = 300
+)
+
+y_grid <- approx(
+  waktu,
+  suhu,
+  xout = x_grid
+)$y
+
+lines(
+  x_grid,
+  y_grid,
+  lwd = 2
+)
+
+points(
+  11,
+  approx(
+    waktu,
+    suhu,
+    xout = 11
+  )$y,
+  pch = 19
+)
+```
+
+# Latihan Terbimbing
+
+Diberikan data berikut:
+
+| $x$ | $f(x)$ |
+| --: | -----: |
+|   0 |      1 |
+|   1 |      2 |
+|   2 |      5 |
+|   3 |     10 |
+
+## Soal 1
+
+Gunakan interpolasi linear untuk memperkirakan
+
+$$
+f(1.5).
+$$
+
+## Soal 2
+
+Gunakan interpolasi Lagrange dengan tiga titik terdekat untuk memperkirakan
+
+$$
+f(1.5).
+$$
+
+## Soal 3
+
+Gunakan seluruh titik untuk membentuk polinom interpolasi Lagrange.
+
+Bandingkan hasilnya dengan nilai sebenarnya jika diketahui bahwa
+
+$$
+f(x)=x^2+1.
+$$
+
+## Soal 4
+
+Visualisasikan data dan polinom interpolasi menggunakan R.
+
+## Soal 5
+
+Hitung galat absolut:
+
+$$
+E_{\text{abs}}
+=
+|f(x)-P(x)|.
+$$
+
+# Latihan Implementasi R
+
+Gunakan data:
+
+```{r}
+x <- c(0, 1, 2, 3, 4)
+
+y <- c(
+  1.0,
+  2.1,
+  4.0,
+  7.2,
+  10.9
+)
+```
+
+Lakukan hal berikut:
+
+1. Hitung interpolasi linear pada $x=2.5$.
+2. Hitung interpolasi Lagrange pada $x=2.5$.
+3. Hitung interpolasi Newton pada $x=2.5$.
+4. Bandingkan ketiga hasil tersebut.
+5. Buat grafik yang menunjukkan titik data dan hasil interpolasi.
+6. Diskusikan mengapa hasil interpolasi linear dan polinomial dapat berbeda.
+
+# Ringkasan
+
+Interpolasi merupakan metode numerik untuk memperkirakan nilai fungsi berdasarkan sejumlah titik data yang diketahui.
+
+Interpolasi linear menggunakan dua titik dan menghasilkan pendekatan berupa garis.
+
+Interpolasi polinomial menggunakan lebih banyak titik dan menghasilkan polinom yang melewati titik-titik data tersebut.
+
+Dua metode penting dalam interpolasi polinomial adalah metode Lagrange dan Newton.
+
+Metode Lagrange menggunakan polinom basis
+
+$$
+L_i(x),
+$$
+
+sedangkan metode Newton menggunakan divided differences.
+
+Keduanya menghasilkan polinom interpolasi yang sama untuk sekumpulan titik data yang sama.
+
+Dalam penggunaan numerik, jumlah dan posisi titik interpolasi perlu diperhatikan karena penggunaan polinom berderajat tinggi dapat menyebabkan osilasi.
+
+Secara umum:
+
+$$
+\boxed{
+\text{Data}
+\longrightarrow
+\text{Interpolasi}
+\longrightarrow
+\text{Fungsi Pendekatan}
+\longrightarrow
+\text{Estimasi}
+}
+$$
+
+# Pertanyaan Diskusi
+
+1. Mengapa interpolasi tidak sama dengan ekstrapolasi?
+2. Apa keuntungan interpolasi linear?
+3. Apa kelemahan interpolasi linear?
+4. Mengapa polinom Lagrange dapat melewati semua titik data?
+5. Apa fungsi divided differences pada metode Newton?
+6. Apakah semakin banyak titik selalu menghasilkan interpolasi yang lebih baik?
+7. Mengapa interpolasi polinomial berderajat tinggi dapat menghasilkan osilasi?
+8. Dalam situasi seperti apa interpolasi lebih tepat digunakan dibandingkan regresi?
+
+# Tugas
+
+Pilih satu dataset sederhana yang memiliki variabel numerik $x$ dan $y$.
+
+Lakukan:
+
+1. tampilkan data;
+2. buat scatter plot;
+3. pilih minimal 4 titik data;
+4. lakukan interpolasi linear;
+5. lakukan interpolasi Lagrange;
+6. lakukan interpolasi Newton;
+7. estimasikan minimal tiga nilai $y$ pada nilai $x$ yang berada di antara data;
+8. visualisasikan hasil interpolasi;
+9. bandingkan hasil ketiga metode;
+10. jelaskan metode mana yang digunakan dan mengapa.
+
+Laporan dikumpulkan dalam bentuk **Quarto (`.qmd`)** yang memuat penjelasan, perhitungan, kode R, dan grafik.

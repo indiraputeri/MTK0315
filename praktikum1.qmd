@@ -1,0 +1,1367 @@
+---
+title: "Modul Metode Numerik"
+subtitle: "Metode Pencarian Akar Persamaan Nonlinear (1-3)"
+author: "Dr. Indira Puteri Kinasih"
+lang: id
+documentclass: book
+classoption:
+  - openany
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    
+  pdf:
+    toc: true
+    toc-depth: 3
+    geometry:
+      - top=2.5cm
+      - bottom=2.5cm
+      - left=3cm
+      - right=2.5cm
+    number-sections: true
+    include-in-header:
+      text: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhf{}
+        \fancyfoot[C]{\thepage}
+        \renewcommand{\headrulewidth}{0pt}
+  
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+\newpage
+
+## Pendahuluan {.unnumbered}
+
+Praktikum dilakukan menggunakan R sebagai alat bantu komputasi dan mengacu pada Modul 1 yang telah dibagikan di pertemuan sebelumnya.
+Pastikan R dan RStudio telah ter*install* sebelum praktikum dimulai.
+Sebagian besar praktikum hanya menggunakan fungsi dasar R.
+
+Untuk membuat grafik, digunakan `ggplot2`.
+
+```{r}
+library(ggplot2)
+```
+
+
+Namun, penggunaan R bukan tujuan utama praktikum. Hal yang lebih penting adalah memahami bagaimana setiap metode bekerja.
+
+Oleh karena itu, setiap metode akan dipelajari dengan urutan:
+
+> **Ide dasar → Perhitungan manual → Algoritma → Implementasi R → Penerapan → Eksperimen → Analisis**
+
+
+## Tujuan Praktikum {.unnumbered}
+
+Setelah mengikuti praktikum ini, mahasiswa diharapkan mampu:
+
+1. Menjelaskan konsep dasar pencarian akar persamaan nonlinear.
+2. Menjelaskan ide dasar lima metode pencarian akar.
+3. Melakukan beberapa iterasi secara manual.
+4. Menuliskan langkah algoritmik suatu metode.
+5. Mengimplementasikan metode menggunakan R.
+6. Mengubah fungsi dan parameter pada kode R.
+7. Menentukan akar persamaan nonlinear secara numerik.
+8. Membandingkan kecepatan dan karakteristik beberapa metode.
+9. Menjelaskan kondisi ketika suatu metode dapat mengalami kegagalan atau tidak konvergen.
+10. Menginterpretasikan hasil komputasi numerik.
+
+
+
+# Praktikum 1 — Metode *Bisection* {.unnumbered}
+
+## Ide Dasar {.unnumbered}
+
+Ide utama metode *Bisection* adalah:
+
+> **mencari akar dengan cara mempersempit/mengurung interval yang mengandung akar.**
+
+Jika pada suatu interval $[a,b]$ berlaku
+
+$$
+f(a)f(b)<0,
+$$
+
+maka terdapat setidaknya satu akar di antara $a$ dan $b$, dengan asumsi $f$ kontinu.
+Titik tengah interval dihitung dengan
+
+$$
+c=\frac{a+b}{2}.
+$$
+
+Kemudian diperiksa tanda $f(c)$. Jika $f(a)f(c)<0,$ maka akar berada pada interval $[a,c].$
+Jika $f(c)f(b)<0,$ maka akar berada pada interval $[c,b]$.
+Proses tersebut diulang sampai diperoleh ketelitian yang diinginkan.
+
+
+## Perhitungan Manual {.unnumbered}
+
+Gunakan $f(x)=x^3-x-2$ dengan interval awal $[a,b]=[1,2].$
+
+
+### Iterasi 1 {.unnumbered}
+
+Titik tengah:
+
+$$
+c_1=\frac{1+2}{2}=1.5.
+$$
+
+Hitung:
+
+$$
+f(1.5)=1.5^3-1.5-2=-0.125.
+$$
+
+Karena $f(1)<0$ dan $f(1.5)<0,$ akar belum berada pada interval $[1,1.5]$.
+
+Karena $f(1.5)<0$ dan $f(2)>0,$ diperoleh interval baru adalah
+
+$$
+[1.5,2].
+$$
+
+### Iterasi 2 {.unnumbered}
+
+$$
+c_2=\frac{1.5+2}{2}=1.75.
+$$
+
+Hitung:
+
+$$
+f(1.75)=1.75^3-1.75-2=1.609375.
+$$
+
+Karena $f(1.5)<0$ dan $f(1.75)>0,$ diperoleh interval baru adalah
+
+$$
+[1.5,1.75].
+$$
+
+### Iterasi 3 {.unnumbered}
+
+$$
+c_3=\frac{1.5+1.75}{2}=1.625.
+$$
+
+Hitung:
+
+$$
+f(1.625)=1.625^3-1.625-2.
+$$
+
+Lanjutkan perhitungan!
+
+### Latihan Perhitungan Manual {.unnumbered}
+
+Lengkapi minimal 5 iterasi berikut.
+
+| Iterasi | $a$ | $b$| $c$ | $f(c)$ | Interval Baru |
+| ------: | ----: | ----: | ----: | -------: | ------------- |
+|       1 |     1 |     2 |   1.5 |   -0.125 | [1.5, 2]      |
+|       2 |   1.5 |     2 |  1.75 | 1.609375 | [1.5, 1.75]   |
+|       3 |       |       |       |          |               |
+|       4 |       |       |       |          |               |
+|       5 |       |       |       |          |               |
+
+
+## Algoritma *Bisection* {.unnumbered}
+
+Secara umum:
+
+1. Tentukan $a$ dan $b$.
+2. Pastikan $f(a)f(b)<0$.
+3. Hitung titik tengah
+
+   $$
+   c=\frac{a+b}{2}.
+   $$
+
+4. Hitung \(f(c)\).
+
+5. Tentukan interval baru berdasarkan perubahan tanda.
+
+6. Ulangi proses.
+
+7. Berhenti ketika interval atau error telah memenuhi toleransi.
+
+
+
+### Implementasi R {.unnumbered}
+
+```{r}
+#| code-line-numbers: true
+
+bisection <- function(f, a, b, tol = 1e-6, max_iter = 100) {
+  
+  if (f(a) * f(b) > 0) {
+    stop("Interval tidak mengandung perubahan tanda.")
+  }
+  
+  hasil <- data.frame()
+  
+  for (i in 1:max_iter) {
+    
+    c <- (a + b) / 2
+    fc <- f(c)
+    
+    hasil <- rbind(
+      hasil,
+      data.frame(
+        iterasi = i,
+        a = a,
+        b = b,
+        c = c,
+        f_c = fc,
+        error = abs(b - a)
+      )
+    )
+    
+    if (abs(b - a) < tol || abs(fc) < tol) {
+      break
+    }
+    
+    if (f(a) * fc < 0) {
+      b <- c
+    } else {
+      a <- c
+    }
+  }
+  
+  list(
+    akar = c,
+    iterasi = hasil
+  )
+}
+```
+
+
+
+### Eksekusi Program {.unnumbered}
+
+Definisikan fungsi:
+
+```{r}
+#| code-line-numbers: true
+
+f <- function(x) {
+  x^3 - x - 2
+}
+```
+
+Jalankan:
+
+```{r}
+#| code-line-numbers: true
+
+hasil_bisection <- bisection(
+  f = f,
+  a = 1,
+  b = 2
+)
+
+hasil_bisection$akar
+```
+
+Tampilkan tabel iterasi:
+
+```{r}
+#| code-line-numbers: true
+
+hasil_bisection$iterasi
+```
+
+
+
+## Pertanyaan {.unnumbered}
+
+1. Apakah hasil R sama dengan hasil perhitungan manual?
+2. Berapa iterasi yang diperlukan?
+3. Berapa nilai akar yang diperoleh?
+4. Apa yang terjadi pada panjang interval dari satu iterasi ke iterasi berikutnya?
+5. Mengapa *Bisection* disebut sebagai metode yang stabil?
+
+
+# Praktikum 2 — Metode *Regula Falsi* {.unnumbered}
+
+## Ide Dasar {.unnumbered}
+
+Regula Falsi memiliki prinsip yang mirip dengan Bisection, yaitu mempertahankan interval yang memiliki perubahan tanda. Perbedaannya adalah titik baru tidak diperoleh dari titik tengah. Regula Falsi menggunakan **garis lurus yang menghubungkan dua titik** pada grafik fungsi.
+
+Jika terdapat dua titik
+
+$$
+(a,f(a))
+$$
+
+dan
+
+$$
+(b,f(b)),
+$$
+
+maka titik potong garis tersebut dengan sumbu-$x$ diberikan oleh
+
+$$
+c=
+\frac{a f(b)-b f(a)}
+{f(b)-f(a)}.
+$$
+
+Jadi ide dasarnya adalah:
+
+> **menggunakan garis lurus untuk memperkirakan lokasi akar.**
+
+
+## Perhitungan Manual{.unnumbered}
+
+Gunakan $f(x)=x^3-x-2$ dengan $a=1,\qquad b=2.$
+
+Diketahui: $f(1)=-2$ dan $f(2)=4.$
+Maka:
+
+$$
+c=
+\frac{1(4)-2(-2)}
+{4-(-2)}
+$$
+
+sehingga $c=\frac{8}{6}=1.3333.$
+
+Hitung:
+
+$$
+f(1.3333)\approx-0.9629.
+$$
+
+Karena $f(c)<0$, sedangkan $f(b)>0$, interval baru menjadi
+
+$$
+[1.3333,2].
+$$
+
+Lanjutkan perhitungan hingga minimal 4 iterasi.
+
+
+## Algoritma {.unnumbered}
+
+1. Tentukan $a$ dan $b$.
+2. Pastikan $f(a)f(b)<0$.
+3. Hitung
+
+$$
+c=
+\frac{a f(b)-b f(a)}
+{f(b)-f(a)}.
+$$
+
+4. Hitung $f(c)$.
+5. Perbarui interval berdasarkan perubahan tanda.
+6. Ulangi.
+7. Berhenti ketika kriteria toleransi terpenuhi.
+
+
+### Implementasi R {.unnumbered}
+
+```{r}
+#| code-line-numbers: true
+
+regula_falsi <- function(f, a, b, tol = 1e-6, max_iter = 100) {
+  
+  if (f(a) * f(b) > 0) {
+    stop("Interval tidak mengandung perubahan tanda.")
+  }
+  
+  hasil <- data.frame()
+  
+  for (i in 1:max_iter) {
+    
+    c <- (a * f(b) - b * f(a)) / (f(b) - f(a))
+    fc <- f(c)
+    
+    hasil <- rbind(
+      hasil,
+      data.frame(
+        iterasi = i,
+        a = a,
+        b = b,
+        c = c,
+        f_c = fc
+      )
+    )
+    
+    if (abs(fc) < tol) {
+      break
+    }
+    
+    if (f(a) * fc < 0) {
+      b <- c
+    } else {
+      a <- c
+    }
+  }
+  
+  list(
+    akar = c,
+    iterasi = hasil
+  )
+}
+```
+
+Jalankan:
+
+```{r}
+#| code-line-numbers: true
+
+hasil_rf <- regula_falsi(f, 1, 2)
+
+hasil_rf$akar
+hasil_rf$iterasi
+```
+
+
+## Pertanyaan{.unnumbered}
+
+1. Apa perbedaan utama *Bisection* dan Regula Falsi?
+2. Mengapa Regula Falsi tidak menggunakan titik tengah?
+3. Bandingkan jumlah iterasi *Regula Falsi* dan *Bisection*.
+4. Apakah Regula Falsi selalu lebih cepat?
+
+
+
+# Praktikum 3 — Metode *fixed point* {.unnumbered}
+
+## Ide Dasar {.unnumbered}
+
+Metode *fixed point* mengubah persamaan
+
+$$
+f(x)=0
+$$
+
+menjadi bentuk
+
+$$
+x=g(x).
+$$
+
+Kemudian digunakan proses iterasi:
+
+$$
+x_{n+1}=g(x_n).
+$$
+
+Ide dasarnya:
+
+> **gunakan nilai sebelumnya untuk menghasilkan nilai berikutnya.**
+
+Berbeda dengan Bisection dan Regula Falsi, metode *fixed point* tidak secara langsung mempertahankan interval yang mengandung perubahan tanda.
+
+
+## Contoh {.unnumbered}
+
+Gunakan persamaan
+
+$$
+x^2+x-2=0.
+$$
+
+Persamaan tersebut dapat ditulis menjadi
+
+$$
+x^2=2-x.
+$$
+
+Sehingga
+
+$$
+x=\sqrt{2-x}.
+$$
+
+Dengan demikian:
+
+$$
+g(x)=\sqrt{2-x}.
+$$
+
+Gunakan tebakan awal:
+
+$$
+x_0=0.
+$$
+
+
+## Perhitungan Manual {.unnumbered}
+
+Iterasi pertama:
+
+$$
+x_1=g(x_0)
+$$
+
+$$
+x_1=\sqrt{2-0}=\sqrt{2}=1.4142.
+$$
+
+Iterasi kedua:
+
+$$
+x_2=\sqrt{2-1.4142}
+$$
+
+$$
+x_2\approx0.7654.
+$$
+
+Iterasi berikutnya:
+
+$$
+x_3=\sqrt{2-0.7654}.
+$$
+
+Mahasiswa melanjutkan sampai minimal 5 iterasi.
+
+| Iterasi | $x_n$ | $g(x_n)$ | $|x_{n+1}-x_n|$ |
+|---:|---:|---:|---:|
+| 0 | 0 | 1.4142 | 1.4142 |
+| 1 | 1.4142 | 0.7654 | 0.6488 |
+| 2 | 0.7654 | ... | ... |
+| 3 | ... | ... | ... |
+| 4 | ... | ... | ... |
+
+
+## Konvergensi *fixed point* {.unnumbered}
+
+Tidak semua bentuk
+
+$$
+x=g(x)
+$$
+
+akan menghasilkan metode yang konvergen.
+Salah satu kondisi yang umum digunakan adalah
+
+$$
+|g'(x^*)|<1
+$$
+
+di sekitar *fixed point* $x^*$.
+
+Hal ini menunjukkan bahwa pemilihan bentuk $g(x)$ sangat penting.
+
+
+## Implementasi R {.unnumbered}
+
+```{r}
+#| code-line-numbers: true
+
+fixed_point <- function(g, x0, tol = 1e-6, max_iter = 100) {
+  
+  hasil <- data.frame()
+  
+  x <- x0
+  
+  for (i in 1:max_iter) {
+    
+    x_new <- g(x)
+    error <- abs(x_new - x)
+    
+    hasil <- rbind(
+      hasil,
+      data.frame(
+        iterasi = i,
+        x_lama = x,
+        x_baru = x_new,
+        error = error
+      )
+    )
+    
+    if (error < tol) {
+      x <- x_new
+      break
+    }
+    
+    x <- x_new
+  }
+  
+  list(
+    akar = x,
+    iterasi = hasil
+  )
+}
+```
+
+Jalankan:
+
+```{r}
+#| code-line-numbers: true
+
+g <- function(x) {
+  sqrt(2 - x)
+}
+
+hasil_fp <- fixed_point(
+  g = g,
+  x0 = 0
+)
+
+hasil_fp$akar
+hasil_fp$iterasi
+```
+
+
+## Latihan {.unnumbered}
+
+Gunakan persamaan
+
+$$
+x^3+x-1=0.
+$$
+
+Ubah persamaan tersebut menjadi bentuk
+
+$$
+x=g(x).
+$$
+
+Kemudian:
+
+1. Tentukan $g(x)$.
+2. Tentukan tebakan awal.
+3. Lakukan 5 iterasi manual.
+4. Implementasikan menggunakan R.
+5. Bandingkan hasil manual dan R.
+6. Periksa apakah metode konvergen.
+
+
+# Praktikum 4 — Metode Newton-Raphson {.unnumbered}
+
+## Ide Dasar {.unnumbered}
+
+Newton-Raphson menggunakan **garis singgung** untuk memperkirakan lokasi akar.
+Jika kita berada pada titik \(x_n\), garis singgung grafik \(f(x)\) digunakan untuk memperkirakan titik potong dengan sumbu-\(x\).
+
+Rumus iterasinya adalah
+
+$$
+x_{n+1}
+=
+x_n-
+\frac{f(x_n)}
+{f'(x_n)}.
+$$
+
+Ide dasarnya:
+
+> **bergerak dari satu titik ke titik berikutnya menggunakan kemiringan garis singgung.**
+
+
+## Perhitungan Manual {.unnumbered}
+
+Gunakan
+
+$$
+f(x)=x^3-x-2.
+$$
+
+Turunannya:
+
+$$
+f'(x)=3x^2-1.
+$$
+
+Gunakan
+
+$$
+x_0=1.5.
+$$
+
+Maka:
+
+$$
+f(1.5)=-0.125
+$$
+
+dan
+
+$$
+f'(1.5)=3(1.5)^2-1=5.75.
+$$
+
+Sehingga
+
+$$
+x_1=
+1.5-\frac{-0.125}{5.75}.
+$$
+
+Maka:
+
+$$
+x_1\approx1.52174.
+$$
+
+Lakukan beberapa iterasi berikutnya secara manual.
+
+| Iterasi | $x_n$ | $f(x_n)$ | $f'(x_n)$ | $x_{n+1}$ |
+| ------: | ------: | ---------: | ----------: | ----------: |
+|       0 | 1.50000 |   -0.12500 |     5.75000 |     1.52174 |
+|       1 | 1.52174 |        ... |         ... |         ... |
+|       2 |     ... |        ... |         ... |         ... |
+|       3 |     ... |        ... |         ... |         ... |
+
+
+## Implementasi R {.unnumbered}
+
+```{r}
+#| code-line-numbers: true
+
+newraph <- function(f, df, x0, tol = 1e-6, max_iter = 100) {
+  
+  hasil <- data.frame()
+  
+  x <- x0
+  
+  for (i in 1:max_iter) {
+    
+    fx <- f(x)
+    dfx <- df(x)
+    
+    if (dfx == 0) {
+      stop("Turunan bernilai nol.")
+    }
+    
+    x_new <- x - fx / dfx
+    error <- abs(x_new - x)
+    
+    hasil <- rbind(
+      hasil,
+      data.frame(
+        iterasi = i,
+        x_lama = x,
+        f_x = fx,
+        df_x = dfx,
+        x_baru = x_new,
+        error = error
+      )
+    )
+    
+    if (error < tol) {
+      x <- x_new
+      break
+    }
+    
+    x <- x_new
+  }
+  
+  list(
+    akar = x,
+    iterasi = hasil
+  )
+}
+```
+
+Definisikan fungsi dan turunannya:
+
+```{r}
+#| code-line-numbers: true
+
+f <- function(x) {
+  x^3 - x - 2
+}
+
+df <- function(x) {
+  3*x^2 - 1
+}
+```
+
+Jalankan:
+
+```{r}
+#| code-line-numbers: true
+
+hasil_newraph <- newraph(
+  f = f,
+  df = df,
+  x0 = 1.5
+)
+
+hasil_newraph$akar
+hasil_newraph$iterasi
+```
+
+
+## Pertanyaan {.unnumbered}
+
+1. Mengapa Newton-Raphson membutuhkan turunan?
+2. Apa yang terjadi jika \(f'(x_n)=0\)?
+3. Mengapa Newton-Raphson dapat mencapai akar dengan sedikit iterasi?
+4. Apakah Newton-Raphson selalu konvergen?
+5. Bagaimana pengaruh pemilihan \(x_0\)?
+
+
+# Praktikum 5 — Metode *Secant* {.unnumbered}
+
+## Ide Dasar {.unnumbered}
+
+Metode *Secant* memiliki ide yang mirip dengan Newton-Raphson.
+Perbedaannya:
+
+> Newton-Raphson menggunakan turunan, sedangkan *Secant* memperkirakan kemiringan menggunakan dua titik.
+
+Kemiringan garis *Secant* antara $x_{n-1}$ dan $x_n$ digunakan untuk menentukan titik berikutnya.
+Rumusnya adalah:
+
+$$
+x_{n+1}
+=
+x_n-
+f(x_n)
+\frac{x_n-x_{n-1}}
+{f(x_n)-f(x_{n-1})}.
+$$
+
+
+## Perhitungan Manual{.unnumbered}
+
+Gunakan
+
+$$
+f(x)=x^3-x-2.
+$$
+
+Gunakan dua tebakan awal:
+
+$$
+x_0=1,\qquad x_1=2.
+$$
+
+Maka:
+
+$$
+f(x_0)=-2
+$$
+
+dan
+
+$$
+f(x_1)=4.
+$$
+
+Hitung:
+
+$$
+x_2=
+2-
+4
+\frac{2-1}{4-(-2)}.
+$$
+
+Sehingga:
+
+$$
+x_2
+=
+2-\frac{4}{6}
+=
+1.3333.
+$$
+
+Lanjutkan perhitungan secara manual.
+
+| Iterasi | $x_{n-1}$ | $x_n$ | $f(x_{n-1})$ | $f(x_n)$ | $x_{n+1}$ |
+| ------: | ----------: | ------: | -------------: | ---------: | ----------: |
+|       1 |           1 |       2 |             -2 |          4 |      1.3333 |
+|       2 |           2 |  1.3333 |              4 |    -0.9629 |         ... |
+|       3 |             |         |                |            |             |
+|       4 |             |         |                |            |             |
+
+
+## Implementasi R {.unnumbered}
+
+```{r}
+#| code-line-numbers: true
+
+secant <- function(f, x0, x1, tol = 1e-6, max_iter = 100) {
+  
+  hasil <- data.frame()
+  
+  for (i in 1:max_iter) {
+    
+    f0 <- f(x0)
+    f1 <- f(x1)
+    
+    if (f1 - f0 == 0) {
+      stop("Penyebut bernilai nol.")
+    }
+    
+    x2 <- x1 - f1 * (x1 - x0) / (f1 - f0)
+    
+    error <- abs(x2 - x1)
+    
+    hasil <- rbind(
+      hasil,
+      data.frame(
+        iterasi = i,
+        x_sebelumnya = x0,
+        x_sekarang = x1,
+        x_baru = x2,
+        error = error
+      )
+    )
+    
+    if (error < tol) {
+      x1 <- x2
+      break
+    }
+    
+    x0 <- x1
+    x1 <- x2
+  }
+  
+  list(
+    akar = x1,
+    iterasi = hasil
+  )
+}
+```
+
+Jalankan:
+
+```{r}
+#| code-line-numbers: true
+
+hasil_secant <- secant(
+  f = f,
+  x0 = 1,
+  x1 = 2
+)
+
+hasil_secant$akar
+hasil_secant$iterasi
+```
+
+
+# Visualisasi dan Perbandingan {.unnumbered}
+
+Berdasarkan fungsi yang sama: $f(x)=x^3-x-2,$ (lihat grafik)
+
+
+```{r, echo=FALSE, eval=FALSE}
+hasil_bisection$akar
+hasil_rf$akar
+hasil_fp$akar
+hasil_newraph$akar
+hasil_secant$akar
+```
+
+```{r, echo=FALSE}
+#| label: fig-grafik-fungsi
+#| fig-cap: "Grafik fungsi $f(x)=x^3-x-2$ dan lokasi akar persamaan."
+#| fig-width: 6
+#| fig-height: 4
+
+x <- seq(0.5, 2, length.out = 500)
+
+data_plot <- data.frame(
+  x = x,
+  y = f(x)
+)
+
+ggplot(data_plot, aes(x = x, y = y)) +
+  geom_line(linewidth = 0.8) +
+  geom_hline(
+    yintercept = 0,
+    linetype = "dashed",
+    linewidth = 0.5
+  ) +
+  labs(
+    title = expression(f(x) == x^3 - x - 2),
+    x = "x",
+    y = "f(x)"
+  ) +
+  theme_minimal(base_size = 9) +
+  theme(
+    plot.title = element_text(
+      size = 10,
+      hjust = 0.5
+    ),
+    axis.title = element_text(size = 8),
+    axis.text = element_text(size = 7),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(
+      linewidth = 0.25
+    ),
+    plot.margin = margin(5, 5, 5, 5)
+  )
+```
+
+Berikut tabel perbandingannya 
+
+```{r, echo=FALSE}
+perbandingan <- data.frame(
+  Metode = c(
+    "Bisection",
+    "Regula Falsi",
+    "fixed point",
+    "Newton-Raphson",
+    "Secant"
+  ),
+  Akar = c(
+    hasil_bisection$akar,
+    hasil_rf$akar,
+    hasil_fp$akar,
+    hasil_newraph$akar,
+    hasil_secant$akar
+  ),
+  Iterasi = c(
+    nrow(hasil_bisection$iterasi),
+    nrow(hasil_rf$iterasi),
+    nrow(hasil_fp$iterasi),
+    nrow(hasil_newraph$iterasi),
+    nrow(hasil_secant$iterasi)
+  )
+)
+
+perbandingan
+```
+
+
+Plot berikut menunjukkan bagaimana nilai pendekatan akar berubah pada setiap iterasi untuk kelima metode.
+
+```{r, echo=FALSE}
+#| label: fig-konv
+#| fig-cap: "Konvergensi nilai akar dari kelima metode"
+
+
+library(ggplot2)
+
+konvergensi <- rbind(
+  data.frame(
+    Iterasi = hasil_bisection$iterasi$iterasi,
+    Nilai = hasil_bisection$iterasi$c,
+    Metode = "Bisection"
+  ),
+  data.frame(
+    Iterasi = hasil_rf$iterasi$iterasi,
+    Nilai = hasil_rf$iterasi$c,
+    Metode = "Regula Falsi"
+  ),
+  data.frame(
+    Iterasi = hasil_fp$iterasi$iterasi,
+    Nilai = hasil_fp$iterasi$x_baru,
+    Metode = "Fixed Point"
+  ),
+  data.frame(
+    Iterasi = hasil_newraph$iterasi$iterasi,
+    Nilai = hasil_newraph$iterasi$x_baru,
+    Metode = "Newton-Raphson"
+  ),
+  data.frame(
+    Iterasi = hasil_secant$iterasi$iterasi,
+    Nilai = hasil_secant$iterasi$x_baru,
+    Metode = "Secant"
+  )
+)
+
+ggplot(konvergensi, aes(x = Iterasi, y = Nilai)) +
+  geom_hline(
+    yintercept = 1.52138,
+    linetype = "dashed",
+    linewidth = 0.5
+  ) +
+  geom_line(linewidth = 0.6) +
+  geom_point(size = 1) +
+  facet_wrap(
+    ~ Metode,
+    ncol = 2,
+    scales = "free_x"
+  ) +
+  labs(
+    x = "Iterasi",
+    y = "Aproksimasi akar"
+  ) +
+  theme_minimal(base_size = 9) +
+  theme(
+    strip.text = element_text(
+      size = 8
+    ),
+    axis.title = element_text(size = 8),
+    axis.text = element_text(size = 7),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(
+      linewidth = 0.25
+    ),
+    plot.title = element_text(size = 10),
+    plot.margin = margin(5, 5, 5, 5)
+  )
+```
+
+
+Perhatikan hubungan antara grafik fungsi dan akar.
+
+Pertanyaan:
+
+1. Mengapa akar berada pada titik ketika @fig-grafik-fungsi memotong sumbu-$x$?
+2. Bagaimana interval awal dapat ditentukan dari @fig-grafik-fungsi?
+3. Apa yang terjadi jika interval awal tidak mengandung perubahan tanda?
+4. Apa yang bisa kalian simpulkan dari @fig-konv? 
+
+
+# Praktikum 6 — Menerapkan Metode pada Berbagai Fungsi {.unnumbered}
+
+Selanjutnya, beberapa fungsi non-linear berbeda akan digunakan dan dicoba untuk dicari akarnya.
+Tujuannya adalah menunjukkan bahwa metode pencarian akar dapat digunakan pada berbagai bentuk persamaan non-linear.
+
+
+| No. | Jenis Fungsi     | Persamaan              | Keterangan                                       |
+| :-: | ---------------- | ---------------------- | ------------------------------------------------ |
+|  1  | Polinomial       | $f_1(x)=x^2-5$       | Akar positif: $x\approx2.23607$                |
+|  2  | Polinomial Kubik | $f_2(x)=x^3-4x-1$    | Cari salah satu akar pada interval yang sesuai   |
+|  3  | Eksponensial     | $f_3(x)=e^{-x}-x$    | Akar: $x\approx0.567143$                       |
+|  4  | Trigonometri     | $f_4(x)=\cos(x)-x$   | Akar: $x\approx0.739085$ |
+|  5  | Logaritmik       | $f_5(x)=\ln(x)-2$    | Domain: $x>0$                                |
+|  6  | Fungsi Campuran  | $f_6(x)=xe^{-x}-0.2$ | Cari akar pada interval yang sesuai              |
+> **Catatan:** Fungsi trigonometri dalam R menggunakan satuan **radian**.
+
+Fungsi-fungsi ini memberikan contoh persamaan nonlinear yang tidak berbentuk polinomial sederhana.
+
+
+## Tugas 1 — Penerapan Terbimbing {.unnumbered}
+
+Pilih tiga fungsi dari bagian sebelumnya.
+Untuk setiap fungsi:
+
+1. Tentukan interval atau tebakan awal.
+2. Jalankan metode *Bisection*.
+3. Jalankan Regula Falsi.
+4. Jalankan **fixed point** jika memungkinkan.
+5. Jalankan Newton-Raphson.
+6. Jalankan **Secant**.
+7. Catat hasil akar.
+8. Catat jumlah iterasi.
+9. Catat *error*/galat.
+10. Tentukan apakah metode konvergen.
+
+Gunakan tabel berikut.
+
+| Fungsi  | Metode       | Tebakan/Interval | Akar | Iterasi | Error | Konvergen |
+| ------- | ------------ | ---------------- | ---: | ------: | ----: | --------- |
+| $f_1$ | Bisection    |                  |      |         |       |           |
+| $f_1$ | Regula Falsi |                  |      |         |       |           |
+| $f_1$ | Newton       |                  |      |         |       |           |
+| $f_1$ | *Secant*       |                  |      |         |       |           |
+| ...     | ...          |                  |      |         |       |           |
+
+## Tugas 2 — Mengubah Fungsi {.unnumbered}
+
+Jangan mengubah algoritma metode yang sudah diberikan.
+Ubahlah hanya fungsi yang digunakan.
+Misalnya:
+
+```{r}
+#| code-line-numbers: true
+
+f_baru <- function(x) {
+  cos(x) - x
+}
+```
+
+Kemudian gunakan fungsi tersebut pada metode yang sesuai.
+
+**Contoh:**
+
+```{r}
+#| code-line-numbers: true
+
+hasil <- bisection(
+  f = f_baru,
+  a = 0,
+  b = 1
+)
+
+hasil$akar
+```
+
+Lakukan hal yang sama untuk fungsi nonlinear lainnya.
+
+
+## Tugas 3 — Eksperimen tebakan awal{.unnumbered}
+
+Gunakan fungsi
+
+$$
+f(x)=\cos(x)-x.
+$$
+
+Gunakan Newton-Raphson dengan beberapa nilai awal:
+
+$$
+x_0=0,\quad
+x_0=0.5,\quad
+x_0=1,\quad
+x_0=2.
+$$
+
+Bandingkan hasilnya.
+
+| $x_0$ | Akar | Iterasi | Konvergen? |
+| ------: | ---: | ------: | ---------- |
+|       0 |      |         |            |
+|     0.5 |      |         |            |
+|       1 |      |         |            |
+|       2 |      |         |            |
+
+Jawab:
+
+1. Apakah semua tebakan awal menghasilkan akar yang sama?
+2. Apakah jumlah iterasi sama?
+3. Apa yang dapat disimpulkan mengenai pengaruh tebakan awal?
+
+
+## Tugas 4 — Eksperimen Nilai Toleransi {.unnumbered}
+
+Gunakan salah satu metode dan fungsi
+
+$$
+f(x)=x^3-x-2.
+$$
+
+Gunakan beberapa nilai toleransi, misal:
+
+```text
+10^-2
+10^-4
+10^-6
+10^-8
+```
+
+Bandingkan:
+
+* nilai akar,
+* jumlah iterasi,
+* error.
+
+Buat tabel:
+
+|   Toleransi | Akar | Iterasi | Error |
+| ----------: | ---: | ------: | ----: |
+| $10^{-2}$ |      |         |       |
+| $10^{-4}$ |      |         |       |
+| $10^{-6}$|      |         |       |
+| $10^{-8}$ |      |         |       |
+
+Pertanyaan:
+
+1. Apa yang terjadi ketika toleransi semakin kecil?
+2. Apakah jumlah iterasi bertambah?
+3. Apakah hasil akar menjadi lebih presisi?
+
+
+## Tugas 5 — Perbandingan Metode{.unnumbered}
+
+Gunakan minimal tiga fungsi nonlinear yang berbeda.
+Bandingkan kelima metode berdasarkan:
+
+1. jumlah iterasi,
+2. nilai akar,
+3. error,
+4. kebutuhan turunan,
+5. kebutuhan interval awal,
+6. kestabilan,
+7. kemudahan implementasi.
+
+Lengkapi tabel:
+
+| Karakteristik                | Bisection | Regula Falsi | *fixed point* | Newton-Raphson | *Secant* |
+| ---------------------------- | --------- | ------------ | ----------- | -------------- | ------ |
+| Membutuhkan interval         |           |              |             |                |        |
+| Membutuhkan turunan          |           |              |             |                |        |
+| Membutuhkan dua tebakan awal |           |              |             |                |        |
+| Menggunakan $g(x)$         |           |              |             |                |        |
+| Relatif stabil               |           |              |             |                |        |
+| Cepat konvergen              |           |              |             |                |        |
+
+
+## Tugas 6 — Analisis Konvergensi{.unnumbered}
+
+Tidak semua metode selalu konvergen. Carilah contoh fungsi atau kondisi tebakan awal yang menyebabkan suatu metode **lambat, tidak konvergen, atau gagal dijalankan**. Jelaskan penyebabnya.
+
+| Metode | Hal yang perlu diperhatikan |
+|---|---|
+| Bisection | Apakah interval awal memiliki perubahan tanda? |
+| Regula Falsi | Apakah interval awal memiliki perubahan tanda? |
+| *fixed point* | Apakah $g(x)$ memenuhi kondisi konvergensi? |
+| Newton-Raphson | Apakah $f'(x_n)$ mendekati nol? |
+| *Secant* | Apakah $f(x_n)-f(x_{n-1})$ mendekati nol? |
+
+
+# Refleksi {.unnumbered}
+
+Jawab pertanyaan berikut dengan kalimat sendiri.
+
+1. Apa perbedaan ide dasar kelima metode?
+2. Mengapa *Bisection* disebut sebagai metode yang menjamin penyempitan interval?
+3. Apa perbedaan *Bisection* dan *Regula Falsi*?
+4. Mengapa Newton-Raphson dapat lebih cepat daripada *Bisection*?
+5. Apa kelemahan Newton-Raphson?
+6. Mengapa *Secant* tidak membutuhkan turunan?
+7. Mengapa *fixed point* membutuhkan pemilihan $g(x)$ yang tepat?
+8. Apakah metode yang paling cepat selalu merupakan metode yang paling baik?
+9. Apa peran R dalam penyelesaian masalah numerik?
+
+
+# Tugas Akhir Praktikum {.unnumbered}
+
+Pilih **satu persamaan nonlinear** yang berbeda dari contoh utama, misalnya polinomial, eksponensial, logaritmik, trigonometri, atau kombinasi fungsi. Gunakan minimal **tiga metode** pencarian akar.
+
+Laporan memuat:
+
+1. **Persamaan dan grafik** — Tuliskan fungsi dan tampilkan grafik untuk memperkirakan lokasi akar.
+2. **Perhitungan manual** — Tunjukkan minimal 3 iterasi untuk setiap metode.
+3. **Algoritma** — Jelaskan langkah metode dengan bahasa sendiri.
+4. **Implementasi R** — Tampilkan kode yang digunakan.
+5. **Hasil** — Sajikan akar, jumlah iterasi, *error*, dan kriteria berhenti.
+6. **Perbandingan dan pembahasan** — Bandingkan kecepatan, kestabilan, pengaruh tebakan awal/interval, serta kemungkinan kegagalan metode.
+7. **Kesimpulan** — Tuliskan kesimpulan berdasarkan hasil eksperimen.
+
+
+# Ringkasan Lima Metode {.unnumbered}
+
+| Metode         | Ide Utama                             | Informasi yang Dibutuhkan |
+| -------------- | ------------------------------------- | ------------------------- |
+| Bisection      | Mempersempit interval                 | $a,b$                   |
+| Regula Falsi   | Menggunakan garis lurus               | $a,b$                   |
+| *fixed point*    | Menghasilkan $x$ baru dari $g(x)$ | $x_0,g(x)$              |
+| Newton-Raphson | Menggunakan garis singgung            | $x_0,f'(x)$             |
+| *Secant*         | Menggunakan garis melalui dua titik   | $x_0,x_1$               |
+
+Secara konseptual:
+
+$$
+\boxed{
+\text{Persamaan}
+\rightarrow
+\text{Perhitungan Manual}
+\rightarrow
+\text{Algoritma}
+\rightarrow
+\text{R}
+\rightarrow
+\text{Eksperimen}
+\rightarrow
+\text{Analisis}
+}
+$$
+
+Inilah alur utama praktikum metode numerik.
+

@@ -1,0 +1,417 @@
+---
+title: "Modul Metode Numerik"
+subtitle: "Diferensiasi dan Integrasi Numerik"
+author: "Indira Puteri Kinasih"
+lang: id
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    theme: cosmo
+    html-math-method: katex
+jupyter: false
+---
+
+# Capaian Pembelajaran {.unnumbered}
+
+Setelah mempelajari materi ini, mahasiswa diharapkan mampu:
+
+1. menjelaskan konsep dasar diferensiasi numerik dan integrasi numerik;
+2. menjelaskan ide dasar metode *forward difference*, *backward difference*, dan *central difference*;
+3. menghitung turunan secara numerik menggunakan ketiga metode tersebut;
+4. menjelaskan konsep galat pada diferensiasi numerik;
+5. menjelaskan ide dasar metode trapesium dan Simpson;
+6. menghitung integral secara numerik menggunakan metode trapesium, Simpson 1/3, dan Simpson 3/8;
+7. mengimplementasikan metode diferensiasi dan integrasi numerik menggunakan R;
+8. membandingkan akurasi beberapa metode numerik berdasarkan nilai galat;
+9. menerapkan metode numerik pada berbagai fungsi matematika.
+
+# Pendahuluan {.unnumbered}
+
+Dalam kalkulus, turunan dan integral biasanya dihitung secara analitik.
+Sebagai contoh,
+
+$$
+f(x)=x^2
+$$
+
+memiliki turunan
+
+$$
+f'(x)=2x,
+$$
+
+sedangkan
+
+$$
+\int_0^2 x^2\,dx
+=
+\frac{8}{3}.
+$$
+
+Namun, dalam banyak persoalan nyata, kita tidak selalu memiliki bentuk analitik dari suatu fungsi.
+Kita mungkin hanya memiliki:
+
+- data hasil pengamatan;
+- tabel nilai fungsi;
+- fungsi yang sangat kompleks;
+- fungsi yang sulit atau bahkan tidak dapat diintegralkan secara analitik.
+
+Dalam kondisi tersebut, pendekatan numerik diperlukan.
+Secara umum:
+
+> **Diferensiasi numerik** digunakan untuk mendekati nilai turunan suatu fungsi.
+
+> **Integrasi numerik** digunakan untuk mendekati nilai integral suatu fungsi.
+
+Ide utama kedua metode tersebut adalah mengganti persoalan matematika yang sulit dengan pendekatan yang dapat dihitung menggunakan operasi aritmetika sederhana.
+
+# Diferensiasi Numerik {.unnumbered}
+
+## Konsep Dasar Turunan {.unnumbered}
+
+Turunan pertama suatu fungsi didefinisikan sebagai
+
+$$
+f'(x)
+=
+\lim_{h\rightarrow0}
+\frac{f(x+h)-f(x)}{h}.
+$$
+
+Jika $h$ cukup kecil, maka limit tersebut dapat didekati dengan
+
+$$
+f'(x)
+\approx
+\frac{f(x+h)-f(x)}{h}.
+$$
+
+Inilah ide dasar diferensiasi numerik.
+Perhatikan bahwa
+
+$$
+\frac{f(x+h)-f(x)}{h}
+$$
+
+menggunakan dua titik, yaitu:
+
+$$
+(x,f(x))
+$$
+
+dan
+
+$$
+(x+h,f(x+h)).
+$$
+
+Secara geometris, nilai tersebut merupakan kemiringan garis yang menghubungkan dua titik pada kurva.
+
+# Forward Difference {.unnumbered}
+
+## Ide Dasar {.unnumbered}
+
+Metode *forward difference* menggunakan nilai fungsi di titik $x$ dan titik di sebelah kanannya, yaitu $x+h$.
+Rumusnya:
+
+$$
+\boxed{
+f'(x)
+\approx
+\frac{f(x+h)-f(x)}{h}
+}
+$$
+
+Metode ini disebut *forward* karena kita bergerak maju dari $x$ menuju $x+h$.
+
+## Contoh Manual {.unnumbered}
+
+Diberikan
+
+$$
+f(x)=x^2.
+$$
+
+Tentukan pendekatan $f'(2)$ dengan $h=0.1.$.
+Nilai sebenarnya adalah
+
+$$
+f'(x)=2x,
+$$
+
+sehingga
+
+$$
+f'(2)=4.
+$$
+
+Sekarang gunakan metode *forward difference*.
+Diperoleh
+
+$$
+f(2)=2^2=4
+$$
+
+dan
+
+$$
+f(2.1)=2.1^2=4.41.
+$$
+
+Maka
+
+$$
+f'(2)
+\approx
+\frac{f(2.1)-f(2)}{0.1}
+$$
+
+$$
+=
+\frac{4.41-4}{0.1}
+$$
+
+$$
+=4.1.
+$$
+
+Jadi pendekatan numeriknya adalah
+
+$$
+\boxed{f'(2)\approx4.1}
+$$
+
+sedangkan nilai sebenarnya adalah
+
+$$
+f'(2)=4.
+$$
+
+Galat absolut:
+
+$$
+E=
+|4.1-4|
+=0.1.
+$$
+
+# Backward Difference {.unnumbered}
+
+## Ide Dasar {.unnumbered}
+
+Berbeda dengan *forward difference*, metode *backward difference* menggunakan titik di sebelah kiri.
+Rumusnya:
+
+$$
+\boxed{
+f'(x)
+\approx
+\frac{f(x)-f(x-h)}{h}
+}
+$$
+
+Metode ini disebut *backward* karena kita bergerak mundur dari $x$ menuju $x-h$.
+
+## Contoh Manual{.unnumbered}
+
+Gunakan $f(x)=x^2$ untuk menghitung $f'(2)$ dengan
+
+$$
+h=0.1.
+$$
+
+Diketahui
+
+$$
+f(2)=4
+$$
+
+dan
+
+$$
+f(1.9)=1.9^2=3.61.
+$$
+
+Maka
+
+$$
+f'(2)
+\approx
+\frac{f(2)-f(1.9)}{0.1}
+$$
+
+$$
+=
+\frac{4-3.61}{0.1}
+$$
+
+$$
+=3.9.
+$$
+
+Jadi
+
+$$
+\boxed{f'(2)\approx3.9}
+$$
+
+Galat absolut:
+
+$$
+E=
+|3.9-4|
+=0.1.
+$$
+
+# Central Difference {.unnumbered}
+
+## Ide Dasar{.unnumbered}
+
+Metode *central difference* menggunakan informasi dari kedua sisi titik $x$.
+Kita menggunakan:
+
+$$
+x-h
+$$
+
+dan
+
+$$
+x+h.
+$$
+
+Rumusnya:
+
+$$
+\boxed{
+f'(x)
+\approx
+\frac{f(x+h)-f(x-h)}{2h}
+}
+$$
+
+Metode ini biasanya lebih akurat daripada *forward difference* dan *backward difference* untuk nilai $h$ yang sama.
+
+## Contoh Manual {.unnumbered}
+
+Gunakan
+
+$$
+f(x)=x^2
+$$
+
+untuk menghitung $f'(2)$ dengan
+
+$$
+h=0.1.
+$$
+
+Diketahui:
+
+$$
+f(2.1)=4.41
+$$
+
+dan
+
+$$
+f(1.9)=3.61.
+$$
+
+Maka
+
+$$
+f'(2)
+\approx
+\frac{f(2.1)-f(1.9)}
+{2(0.1)}
+$$
+
+$$
+=
+\frac{4.41-3.61}{0.2}
+$$
+
+$$
+=4.
+$$
+
+Dengan demikian,
+
+$$
+\boxed{f'(2)\approx4}
+$$
+
+Hasil tersebut sama dengan nilai analitik.
+
+# Perbandingan Tiga Metode {.unnumbered}
+
+Ketiga metode dapat dirangkum sebagai berikut.
+
+| Metode | Rumus | Orde galat |
+|---|---|---|
+| Forward | $\frac{f(x+h)-f(x)}{h}$ | $O(h)$ |
+| Backward | $\frac{f(x)-f(x-h)}{h}$ | $O(h)$ |
+| Central | $\frac{f(x+h)-f(x-h)}{2h}$ | $O(h^2)$ |
+
+Artinya, secara umum:
+
+- *forward difference* memiliki galat yang sebanding dengan $h$;
+- *backward difference* memiliki galat yang sebanding dengan $h$;
+- *central difference* memiliki galat yang sebanding dengan $h^2$.
+
+Karena $h^2$ mengecil lebih cepat daripada $h$, *central difference* biasanya memberikan hasil yang lebih akurat.
+
+# Implementasi Diferensiasi Numerik dengan R {.unnumbered}
+
+## Forward Difference {.unnumbered}
+
+```{r}
+f <- function(x) {
+  x^2
+}
+
+x <- 2
+h <- 0.1
+
+forward <- (f(x + h) - f(x)) / h
+
+forward
+```
+
+## Backward Difference {.unnumbered}
+
+```{r, }
+backward <- (f(x) - f(x - h)) / h
+
+backward
+```
+
+## Central Difference {.unnumbered}
+
+```{r}
+central <- (f(x + h) - f(x - h)) / (2*h)
+
+central
+```
+
+## Nilai Analitik {.unnumbered}
+
+```{r}
+actual <- 2*x
+
+actual
+
+error_forward <- abs(forward - actual)
+error_backward <- abs(backward - actual)
+error_central <- abs(central - actual)
+
+error_forward
+error_backward
+error_central
+```
+

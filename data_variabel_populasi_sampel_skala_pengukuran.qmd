@@ -1,0 +1,1172 @@
+---
+title: "Data, Variabel, Populasi, Sampel, dan Skala Pengukuran"
+subtitle: "Statistik Pendidikan"
+author: Dr. Indira Puteri Kinasih
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    html-math-method: katex
+    theme: cosmo
+  
+  pdf:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+\newpage
+
+# Capaian Pembelajaran
+
+Setelah mempelajari materi ini, mahasiswa mampu:
+
+1. menjelaskan pengertian data dan variabel;
+2. membedakan populasi dan sampel;
+3. mengidentifikasi jenis data dalam penelitian pendidikan;
+4. menjelaskan skala pengukuran nominal, ordinal, interval, dan rasio;
+5. menentukan skala pengukuran suatu variabel;
+6. menerapkan konsep data, variabel, populasi, sampel, dan skala pengukuran pada penelitian PIAUD.
+
+---
+
+# Pendahuluan
+
+Statistik tidak hanya berkaitan dengan menghitung rata-rata, persentase, atau membuat grafik. Sebelum melakukan perhitungan statistik, seorang peneliti harus memahami **data yang dimilikinya**.
+
+Bayangkan kita ingin melakukan penelitian dengan judul:
+
+> **"Hubungan penggunaan media pembelajaran digital dengan kemampuan bahasa anak usia dini."**
+
+Sebelum melakukan analisis statistik, kita perlu menjawab beberapa pertanyaan:
+
+- Siapa yang menjadi objek penelitian?
+- Data apa yang akan dikumpulkan?
+- Apa saja variabel penelitian?
+- Dari siapa data diperoleh?
+- Bagaimana setiap variabel diukur?
+- Termasuk skala pengukuran apa data tersebut?
+
+::: {.callout-important}
+**Prinsip penting:** kenali karakteristik data terlebih dahulu sebelum memilih metode statistik.
+:::
+
+# Data
+
+## Pengertian Data
+
+**Data** adalah sekumpulan informasi yang diperoleh melalui proses pengamatan, pengukuran, atau pengumpulan informasi untuk menjawab pertanyaan penelitian.
+
+Dalam penelitian pendidikan anak usia dini, data dapat berupa:
+
+- usia anak;
+- jenis kelamin anak;
+- tinggi badan;
+- berat badan;
+- skor kemampuan bahasa;
+- skor kemampuan kognitif;
+- jumlah kehadiran;
+- lama penggunaan media digital;
+- tingkat keaktifan anak;
+- jenis permainan yang digunakan.
+
+Dengan kata lain, **data merupakan bahan yang akan dianalisis oleh peneliti**.
+
+## Contoh Data
+
+Misalnya seorang mahasiswa PIAUD melakukan pengamatan terhadap beberapa anak.
+
+| Anak | Usia | Jenis Kelamin | Skor Bahasa | Kehadiran |
+|:---:|---:|:---:|---:|---:|
+| A | 5 | Laki-laki | 78 | 18 |
+| B | 6 | Perempuan | 85 | 20 |
+| C | 5 | Perempuan | 72 | 17 |
+| D | 6 | Laki-laki | 90 | 19 |
+| E | 5 | Perempuan | 80 | 20 |
+
+Tabel tersebut merupakan contoh **data penelitian**.
+
+Setiap baris menunjukkan satu objek atau individu yang diamati, sedangkan setiap kolom menunjukkan informasi atau karakteristik yang dikumpulkan.
+
+# Jenis Data
+
+Salah satu cara sederhana untuk mengelompokkan data adalah berdasarkan bentuk informasinya:
+
+1. **Data kualitatif**
+2. **Data kuantitatif**
+
+## Data Kualitatif
+
+**Data kualitatif** adalah data yang menunjukkan karakteristik atau kategori suatu objek.
+
+Contoh:
+
+- jenis kelamin;
+- jenis sekolah;
+- jenis permainan;
+- jenis media pembelajaran;
+- kategori perkembangan anak;
+- tingkat kepuasan.
+
+Contoh:
+
+| Anak | Jenis Permainan |
+|:---:|---|
+| A | Puzzle |
+| B | Balok |
+| C | Menggambar |
+| D | Bermain peran |
+
+Data tersebut menunjukkan **kategori**, bukan ukuran numerik.
+
+## Data Kuantitatif
+
+**Data kuantitatif** adalah data yang dinyatakan dalam bentuk angka dan dapat digunakan dalam operasi atau perhitungan numerik.
+
+Contoh:
+
+- usia anak;
+- tinggi badan;
+- berat badan;
+- jumlah kehadiran;
+- lama belajar;
+- jumlah saudara;
+- skor hasil pengukuran.
+
+Contoh:
+
+| Anak | Usia | Tinggi Badan |
+|:---:|---:|---:|
+| A | 5 tahun | 108 cm |
+| B | 6 tahun | 115 cm |
+| C | 5 tahun | 110 cm |
+
+## Kualitatif dan Kuantitatif
+
+| Karakteristik | Kualitatif | Kuantitatif |
+|---|---|---|
+| Bentuk utama | Kategori | Angka |
+| Fokus | Karakteristik | Besaran/nilai |
+| Contoh | Jenis kelamin | Usia |
+| Contoh | Jenis permainan | Tinggi badan |
+| Contoh | Jenis sekolah | Berat badan |
+| Contoh | Kategori perkembangan | Jumlah kehadiran |
+
+::: {.callout-note}
+**Perhatian:** tidak semua angka otomatis merupakan data kuantitatif dalam arti yang sama. Angka dapat digunakan hanya sebagai **kode kategori**. Hal ini akan dibahas lebih lanjut pada skala nominal.
+:::
+
+# Variabel
+
+## Pengertian Variabel
+
+**Variabel adalah karakteristik atau atribut dari objek penelitian yang nilainya dapat berbeda antara satu objek dengan objek lainnya.**
+
+Contoh:
+
+Jika peneliti mengukur **usia anak**, maka usia merupakan variabel karena setiap anak dapat memiliki usia yang berbeda.
+
+Misalnya:
+
+- Anak A = 5 tahun
+- Anak B = 6 tahun
+- Anak C = 5 tahun
+
+Nilai variabel **usia** berbeda antar anak.
+
+## Contoh Variabel dalam Penelitian PIAUD
+
+Misalnya penelitian:
+
+> **"Hubungan penggunaan media digital dengan kemampuan bahasa anak usia dini."**
+
+Variabel yang mungkin digunakan antara lain:
+
+| Variabel | Contoh Nilai |
+|---|---|
+| Usia anak | 5 tahun, 6 tahun |
+| Jenis kelamin | Laki-laki, perempuan |
+| Lama penggunaan media | 30, 60, 90 menit |
+| Jenis media | Video, aplikasi, game |
+| Kemampuan bahasa | Skor 70, 80, 90 |
+| Tingkat keaktifan | Rendah, sedang, tinggi |
+
+# Variabel Bebas dan Variabel Terikat
+
+Dalam penelitian yang bertujuan melihat hubungan atau pengaruh, variabel sering dibedakan menjadi **variabel bebas** dan **variabel terikat**.
+
+## Variabel Bebas
+
+**Variabel bebas (independent variable)** adalah variabel yang digunakan sebagai faktor yang diduga memiliki hubungan atau pengaruh terhadap variabel lain.
+
+Biasanya dilambangkan dengan:
+
+$$
+X
+$$
+
+## Variabel Terikat
+
+**Variabel terikat (dependent variable)** adalah variabel yang menjadi hasil atau outcome yang diamati.
+
+Biasanya dilambangkan dengan:
+
+$$
+Y
+$$
+
+## Contoh
+
+Judul penelitian:
+
+> **"Pengaruh penggunaan media gambar terhadap kemampuan bahasa anak usia dini."**
+
+Maka:
+
+- $X$ = penggunaan media gambar
+- $Y$ = kemampuan bahasa anak
+
+Secara sederhana:
+
+$$
+X \longrightarrow Y
+$$
+
+Artinya, peneliti ingin mengetahui apakah **penggunaan media gambar** berhubungan dengan atau memberikan pengaruh terhadap **kemampuan bahasa anak**.
+
+::: {.callout-warning}
+Penentuan variabel bebas dan terikat bergantung pada **pertanyaan dan desain penelitian**. Tidak semua penelitian harus memiliki variabel bebas dan variabel terikat.
+:::
+
+# Latihan 1: Mengidentifikasi Variabel
+
+Perhatikan judul penelitian berikut:
+
+> **"Pengaruh aktivitas bermain puzzle terhadap kemampuan kognitif anak kelompok B."**
+
+Tentukan:
+
+1. Apa variabel bebasnya?
+2. Apa variabel terikatnya?
+3. Apa contoh nilai yang mungkin diperoleh dari masing-masing variabel?
+
+::: {.callout-tip}
+**Diskusikan dengan teman selama 2 menit.**
+:::
+
+# Populasi
+
+## Pengertian Populasi
+
+**Populasi adalah seluruh objek atau individu yang menjadi sasaran penelitian dan memiliki karakteristik tertentu sesuai dengan tujuan penelitian.**
+
+Contoh:
+
+> Seorang mahasiswa ingin mengetahui kemampuan bahasa anak kelompok B di TK X.
+
+Jika seluruh anak kelompok B di TK X berjumlah 80 anak, maka populasi penelitian adalah:
+
+> **Seluruh 80 anak kelompok B di TK X.**
+
+Ukuran populasi biasanya dilambangkan dengan:
+
+$$
+N
+$$
+
+Dalam contoh tersebut:
+
+$$
+N = 80
+$$
+
+## Populasi Harus Memiliki Batas yang Jelas
+
+Populasi tidak selalu berarti "semua orang".
+
+Populasi harus ditentukan berdasarkan:
+
+- siapa yang menjadi sasaran;
+- karakteristik yang dimiliki;
+- lokasi;
+- waktu atau periode penelitian jika diperlukan.
+
+### Contoh 1
+
+> Kemampuan bahasa anak kelompok B di TK X.
+
+Populasi:
+
+**Seluruh anak kelompok B di TK X.**
+
+### Contoh 2
+
+> Kemampuan bahasa anak usia 5–6 tahun di Kota Mataram.
+
+Populasi:
+
+**Seluruh anak usia 5–6 tahun yang memenuhi kriteria penelitian di Kota Mataram.**
+
+::: {.callout-warning}
+Semakin jelas batas populasi, semakin jelas pula siapa yang menjadi sasaran generalisasi penelitian.
+:::
+
+# Sampel
+
+## Pengertian Sampel
+
+**Sampel adalah sebagian anggota populasi yang dipilih untuk diteliti.**
+
+Misalnya:
+
+- Populasi = 80 anak
+- Sampel = 30 anak
+
+Maka:
+
+$$
+N = 80
+$$
+
+dan
+
+$$
+n = 30
+$$
+
+dengan:
+
+- $N$ = ukuran populasi;
+- $n$ = ukuran sampel.
+
+## Mengapa Menggunakan Sampel?
+
+Tidak semua penelitian memungkinkan peneliti mengamati seluruh populasi.
+
+Misalnya:
+
+> Populasi penelitian terdiri dari 5.000 anak.
+
+Jika seluruh anak harus diamati, penelitian dapat membutuhkan:
+
+- waktu yang sangat lama;
+- biaya yang besar;
+- tenaga peneliti yang banyak.
+
+Oleh karena itu, peneliti dapat mengambil **sampel** yang dipilih dengan metode tertentu.
+
+# Populasi dan Sampel
+
+Hubungan antara populasi dan sampel dapat digambarkan secara sederhana:
+
+$$
+\boxed{\text{Populasi}}
+\supset
+\boxed{\text{Sampel}}
+$$
+
+**Populasi**
+
+→ seluruh anggota yang menjadi sasaran penelitian.
+
+**Sampel**
+
+→ sebagian anggota populasi yang dipilih untuk diteliti.
+
+::: {.callout-important}
+Sampel harus dipilih dengan cara yang sesuai agar informasi yang diperoleh dapat digunakan untuk memberikan gambaran tentang populasi.
+:::
+
+# Contoh Populasi dan Sampel
+
+Judul penelitian:
+
+> **"Pengaruh penggunaan media permainan edukatif terhadap perkembangan kognitif anak usia 5–6 tahun di Kota Mataram."**
+
+Misalnya peneliti menentukan:
+
+- Populasi = seluruh anak usia 5–6 tahun yang memenuhi kriteria penelitian di Kota Mataram.
+- Sampel = 150 anak yang dipilih untuk mengikuti penelitian.
+
+Maka:
+
+$$
+\boxed{\text{Populasi} \neq \text{Sampel}}
+$$
+
+Populasi merupakan **keseluruhan sasaran**, sedangkan sampel merupakan **sebagian anggota populasi**.
+
+# Latihan 2: Populasi dan Sampel
+
+Seorang mahasiswa ingin mengetahui tingkat penggunaan media digital oleh guru PAUD di Kota Mataram.
+
+Terdapat **500 guru PAUD**, kemudian dipilih **100 guru** untuk mengisi kuesioner.
+
+Tentukan:
+
+1. Populasi penelitian.
+2. Sampel penelitian.
+3. Ukuran populasi ($N$).
+4. Ukuran sampel ($n$).
+
+::: {.callout-note}
+### Pertanyaan diskusi
+
+Mengapa peneliti tidak harus meminta seluruh 500 guru mengisi kuesioner?
+:::
+
+# Skala Pengukuran
+
+Setelah memahami data dan variabel, kita perlu mengetahui:
+
+> **Bagaimana suatu variabel diukur?**
+
+Dalam statistik, terdapat empat skala pengukuran utama:
+
+1. **Nominal**
+2. **Ordinal**
+3. **Interval**
+4. **Rasio**
+
+Keempat skala tersebut memiliki karakteristik yang berbeda.
+
+# Skala Nominal
+
+## Nominal = Kategori
+
+Skala nominal digunakan untuk **mengelompokkan objek ke dalam kategori yang berbeda**.
+
+Pada skala nominal:
+
+- tidak ada urutan;
+- tidak ada tingkatan;
+- angka, jika digunakan, hanya berfungsi sebagai kode.
+
+Contoh:
+
+- jenis kelamin;
+- jenis permainan;
+- jenis sekolah;
+- jenis media pembelajaran;
+- kecamatan;
+- program studi.
+
+## Contoh Skala Nominal
+
+Variabel:
+
+> **Jenis kelamin anak**
+
+Kategori:
+
+- Laki-laki
+- Perempuan
+
+Contoh data:
+
+| Anak | Jenis Kelamin |
+|:---:|---|
+| A | Laki-laki |
+| B | Perempuan |
+| C | Perempuan |
+| D | Laki-laki |
+
+Tidak terdapat urutan:
+
+$$
+\text{Laki-laki} > \text{Perempuan}
+$$
+
+atau sebaliknya.
+
+Kedua kategori hanya menunjukkan **perbedaan kelompok**.
+
+# Nominal: Angka sebagai Kode
+
+Misalnya peneliti menggunakan kode:
+
+- 1 = Laki-laki
+- 2 = Perempuan
+
+Apakah berarti:
+
+$$
+2 > 1
+$$
+
+secara substantif?
+
+**Tidak.**
+
+Angka 1 dan 2 hanya digunakan sebagai **kode kategori**.
+
+Oleh karena itu, tidak tepat menghitung:
+
+$$
+\frac{1+2+2+1}{4}
+$$
+
+kemudian menyebut hasilnya sebagai "rata-rata jenis kelamin".
+
+::: {.callout-warning}
+**Angka tidak selalu berarti data kuantitatif.** Jika angka hanya digunakan sebagai kode kategori, maka data tersebut tetap berskala nominal.
+:::
+
+# Skala Ordinal
+
+## Ordinal = Kategori + Urutan
+
+Skala ordinal memiliki:
+
+- kategori;
+- urutan atau tingkatan.
+
+Namun, **jarak antar kategori belum tentu sama**.
+
+Contoh:
+
+> Tingkat keaktifan anak
+
+1. Sangat rendah
+2. Rendah
+3. Sedang
+4. Tinggi
+5. Sangat tinggi
+
+Kita mengetahui bahwa:
+
+$$
+\text{Sangat rendah}
+<
+\text{Rendah}
+<
+\text{Sedang}
+<
+\text{Tinggi}
+<
+\text{Sangat tinggi}
+$$
+
+Tetapi kita tidak mengetahui bahwa jarak antara "rendah" dan "sedang" sama persis dengan jarak antara "tinggi" dan "sangat tinggi".
+
+## Contoh Ordinal dalam PIAUD
+
+Contoh variabel ordinal:
+
+- tingkat keaktifan;
+- tingkat kepuasan;
+- tingkat motivasi;
+- tingkat perkembangan;
+- tingkat keterampilan;
+- peringkat lomba.
+
+Misalnya tingkat kepuasan orang tua:
+
+| Skor | Kategori |
+|---:|---|
+| 1 | Sangat tidak puas |
+| 2 | Tidak puas |
+| 3 | Cukup puas |
+| 4 | Puas |
+| 5 | Sangat puas |
+
+Angka menunjukkan **urutan kategori**.
+
+# Nominal vs Ordinal
+
+| Karakteristik | Nominal | Ordinal |
+|---|:---:|:---:|
+| Kategori | ✓ | ✓ |
+| Memiliki urutan | ✗ | ✓ |
+| Jarak antar kategori sama | ✗ | Tidak harus |
+| Contoh | Jenis kelamin | Tingkat kepuasan |
+| Contoh | Jenis permainan | Tingkat keaktifan |
+
+### Cara mengingat
+
+> **Nominal = kategori**
+
+> **Ordinal = kategori + urutan**
+
+# Skala Interval
+
+## Interval = Urutan + Jarak yang Sama
+
+Skala interval memiliki:
+
+- urutan;
+- jarak antar nilai yang sama;
+- tetapi **tidak memiliki nol absolut**.
+
+Contoh klasik adalah **suhu dalam derajat Celsius**.
+
+Misalnya:
+
+$$
+30^\circ C - 20^\circ C = 10^\circ C
+$$
+
+dan:
+
+$$
+20^\circ C - 10^\circ C = 10^\circ C
+$$
+
+Perbedaan 10°C memiliki makna yang sama.
+
+Namun, 0°C **bukan berarti tidak ada suhu**.
+
+# Mengapa Celsius Bukan Rasio?
+
+Perhatikan:
+
+$$
+20^\circ C \neq 2(10^\circ C)
+$$
+
+Kita tidak dapat mengatakan:
+
+> "20°C dua kali lebih panas daripada 10°C."
+
+Hal ini karena titik nol pada skala Celsius bukan **nol absolut**.
+
+Jika menggunakan Kelvin, konsepnya berbeda karena 0 Kelvin merupakan titik nol absolut.
+
+# Contoh Data Interval
+
+Contoh yang sering digunakan dalam pembahasan skala interval:
+
+- suhu Celsius;
+- suhu Fahrenheit;
+- beberapa skor standar.
+
+Misalnya skor standar:
+
+| Anak | Skor |
+|:---:|---:|
+| A | 40 |
+| B | 50 |
+| C | 60 |
+
+Perbedaan antara 40 dan 50 sama dengan perbedaan antara 50 dan 60.
+
+# Skala Rasio
+
+## Rasio = Interval + Nol Absolut
+
+Skala rasio memiliki seluruh karakteristik skala interval dan tambahan:
+
+> **Memiliki nol absolut.**
+
+Artinya, nilai nol menunjukkan **ketiadaan kuantitas yang diukur**.
+
+Contoh:
+
+- tinggi badan;
+- berat badan;
+- usia;
+- lama belajar;
+- jumlah kehadiran;
+- jumlah anak;
+- jumlah saudara;
+- pendapatan.
+
+# Contoh Rasio dalam Penelitian PIAUD
+
+### Tinggi badan anak
+
+Misalnya:
+
+- Anak A = 100 cm
+- Anak B = 120 cm
+
+Selisih:
+
+$$
+120-100=20\text{ cm}
+$$
+
+Perbandingan:
+
+$$
+\frac{120}{100}=1.2
+$$
+
+Kita dapat mengatakan:
+
+> Tinggi badan anak B adalah **1,2 kali** tinggi badan anak A.
+
+Nilai nol juga memiliki makna:
+
+$$
+0\text{ cm}
+$$
+
+menunjukkan tidak adanya panjang.
+
+# Contoh Rasio Lain
+
+### Lama penggunaan media digital
+
+Misalnya:
+
+- Anak A = 30 menit
+- Anak B = 60 menit
+
+Maka:
+
+$$
+60 = 2(30)
+$$
+
+Kita dapat mengatakan bahwa anak B menggunakan media digital **dua kali lebih lama** daripada anak A.
+
+Nilai:
+
+$$
+0\text{ menit}
+$$
+
+memiliki makna, yaitu tidak ada waktu penggunaan.
+
+# Interval vs Rasio
+
+| Karakteristik | Interval | Rasio |
+|---|:---:|:---:|
+| Memiliki kategori/urutan | ✓ | ✓ |
+| Jarak antar nilai sama | ✓ | ✓ |
+| Memiliki nol absolut | ✗ | ✓ |
+| Rasio "dua kali" bermakna | ✗ | ✓ |
+| Contoh | Suhu Celsius | Tinggi badan |
+| Contoh | Suhu Fahrenheit | Berat badan |
+| Contoh | Skor standar | Lama belajar |
+
+### Kunci utama
+
+> **Rasio memiliki nol absolut.**
+
+# Empat Skala Pengukuran
+
+| Skala | Kategori | Urutan | Jarak Sama | Nol Absolut |
+|:---|:---:|:---:|:---:|:---:|
+| **Nominal** | ✓ | ✗ | ✗ | ✗ |
+| **Ordinal** | ✓ | ✓ | ✗ | ✗ |
+| **Interval** | ✓ | ✓ | ✓ | ✗ |
+| **Rasio** | ✓ | ✓ | ✓ | ✓ |
+
+Cara mengingat:
+
+$$
+\boxed{N \rightarrow O \rightarrow I \rightarrow R}
+$$
+
+**Nominal → Ordinal → Interval → Rasio**
+
+# Latihan 3: Tentukan Skala Pengukuran
+
+Tentukan skala pengukuran untuk setiap variabel berikut.
+
+| No. | Variabel | Skala |
+|---:|---|---|
+| 1 | Jenis kelamin anak | ? |
+| 2 | Tingkat kepuasan orang tua | ? |
+| 3 | Tinggi badan anak (cm) | ? |
+| 4 | Suhu ruangan (°C) | ? |
+| 5 | Jumlah saudara | ? |
+| 6 | Jenis permainan favorit | ? |
+| 7 | Peringkat lomba | ? |
+| 8 | Lama belajar (menit) | ? |
+
+::: {.callout-tip}
+### Petunjuk
+
+Tanyakan:
+
+1. Apakah hanya berupa kategori?
+2. Apakah kategorinya memiliki urutan?
+3. Apakah jarak antar nilai sama?
+4. Apakah terdapat nol absolut?
+:::
+
+# Pembahasan Latihan 3
+
+| Variabel | Skala | Alasan |
+|---|---|---|
+| Jenis kelamin | **Nominal** | Hanya kategori |
+| Kepuasan orang tua | **Ordinal** | Memiliki tingkatan |
+| Tinggi badan | **Rasio** | Memiliki nol absolut |
+| Suhu Celsius | **Interval** | Tidak memiliki nol absolut |
+| Jumlah saudara | **Rasio** | Nol bermakna |
+| Jenis permainan | **Nominal** | Hanya kategori |
+| Peringkat lomba | **Ordinal** | Memiliki urutan |
+| Lama belajar | **Rasio** | Nol menit bermakna |
+
+# Studi Kasus PIAUD
+
+Seorang mahasiswa melakukan penelitian:
+
+> **"Hubungan intensitas penggunaan media digital dengan kemampuan bahasa anak usia 5–6 tahun."**
+
+Data yang dikumpulkan:
+
+1. usia anak;
+2. jenis kelamin;
+3. lama penggunaan media digital per hari;
+4. skor kemampuan bahasa;
+5. tingkat keaktifan anak;
+6. jenis media digital yang digunakan.
+
+### Pertanyaan
+
+Identifikasi:
+
+- jenis data;
+- variabel;
+- skala pengukuran.
+
+# Identifikasi Studi Kasus
+
+| Variabel | Contoh Data | Jenis Data | Skala |
+|---|---|---|---|
+| Usia anak | 5, 6 tahun | Kuantitatif | Rasio |
+| Jenis kelamin | L/P | Kualitatif | Nominal |
+| Lama penggunaan | 30, 60, 90 menit | Kuantitatif | Rasio |
+| Skor bahasa | 70, 80, 90 | Kuantitatif | Perlu melihat instrumen |
+| Tingkat keaktifan | Rendah–tinggi | Kualitatif | Ordinal |
+| Jenis media | Video, aplikasi, game | Kualitatif | Nominal |
+
+::: {.callout-warning}
+**Catatan penting:** Skor berbentuk angka tidak otomatis berarti interval atau rasio. Skala pengukuran harus ditentukan berdasarkan **cara skor tersebut dibentuk dan maknanya**.
+:::
+
+# Dari Penelitian ke Data
+
+Secara sederhana, proses penelitian dapat dipahami sebagai:
+
+$$
+\boxed{\text{Populasi}}
+\rightarrow
+\boxed{\text{Sampel}}
+\rightarrow
+\boxed{\text{Variabel}}
+\rightarrow
+\boxed{\text{Data}}
+\rightarrow
+\boxed{\text{Analisis}}
+$$
+
+Contoh:
+
+**Populasi**
+
+500 anak usia 5–6 tahun
+
+↓
+
+**Sampel**
+
+100 anak
+
+↓
+
+**Variabel**
+
+Usia, jenis kelamin, kemampuan bahasa, dll.
+
+↓
+
+**Data**
+
+Hasil pengukuran dari 100 anak
+
+↓
+
+**Analisis**
+
+Statistik deskriptif dan/atau inferensial
+
+# Mengapa Skala Pengukuran Penting?
+
+Skala pengukuran membantu peneliti menentukan bagaimana data dapat:
+
+- disajikan;
+- diringkas;
+- divisualisasikan;
+- dianalisis.
+
+Misalnya:
+
+### Jenis kelamin
+
+Dapat disajikan dengan:
+
+- frekuensi;
+- persentase;
+- diagram batang.
+
+### Tinggi badan
+
+Dapat diringkas dengan:
+
+- mean;
+- median;
+- standar deviasi;
+- minimum dan maksimum.
+
+### Tingkat kepuasan
+
+Dapat disajikan dengan:
+
+- frekuensi;
+- persentase;
+- median.
+
+::: {.callout-important}
+Pemahaman terhadap skala pengukuran merupakan salah satu dasar dalam menentukan **analisis statistik yang sesuai**.
+:::
+
+# Aktivitas Kelompok
+
+Buat satu contoh penelitian sederhana tentang **pendidikan anak usia dini**.
+
+Kemudian tentukan:
+
+1. Judul penelitian
+2. Populasi
+3. Sampel
+4. Minimal 4 variabel
+5. Jenis data setiap variabel
+6. Skala pengukuran setiap variabel
+
+### Contoh
+
+Judul:
+
+> **"Penggunaan media permainan edukatif dan kemampuan sosial anak."**
+
+| Variabel | Jenis Data | Skala |
+|---|---|---|
+| Jenis media | Kualitatif | Nominal |
+| Usia anak | Kuantitatif | Rasio |
+| Tingkat kemampuan sosial | Kualitatif | Ordinal |
+| Jumlah interaksi | Kuantitatif | Rasio |
+
+# Mini Quiz
+
+## Pertanyaan 1
+
+Peneliti mengelompokkan anak berdasarkan jenis permainan favorit:
+
+- Balok
+- Puzzle
+- Menggambar
+- Bermain peran
+
+Skala pengukurannya adalah:
+
+A. Nominal
+
+B. Ordinal
+
+C. Interval
+
+D. Rasio
+
+::: {.callout-success}
+**Jawaban: A. Nominal**
+:::
+
+# Mini Quiz
+
+## Pertanyaan 2
+
+Tingkat kepuasan orang tua:
+
+1. Sangat tidak puas
+2. Tidak puas
+3. Cukup puas
+4. Puas
+5. Sangat puas
+
+Skala pengukurannya adalah:
+
+A. Nominal
+
+B. Ordinal
+
+C. Interval
+
+D. Rasio
+
+::: {.callout-success}
+**Jawaban: B. Ordinal**
+:::
+
+# Mini Quiz
+
+## Pertanyaan 3
+
+Variabel berikut yang termasuk skala rasio adalah:
+
+A. Jenis kelamin
+
+B. Tingkat kepuasan
+
+C. Suhu Celsius
+
+D. Tinggi badan
+
+::: {.callout-success}
+**Jawaban: D. Tinggi badan**
+:::
+
+# Mini Quiz
+
+## Pertanyaan 4
+
+Dalam penelitian terhadap 1.000 anak PAUD, peneliti memilih 100 anak untuk diteliti.
+
+Yang disebut **sampel** adalah:
+
+A. 1.000 anak
+
+B. 100 anak
+
+C. Seluruh anak PAUD
+
+D. Semua anak di Indonesia
+
+::: {.callout-success}
+**Jawaban: B. 100 anak**
+:::
+
+# Ringkasan Materi
+
+## Data
+
+Informasi yang diperoleh melalui pengamatan atau pengukuran.
+
+## Variabel
+
+Karakteristik yang nilainya dapat berbeda antarobjek.
+
+## Populasi
+
+Seluruh objek yang menjadi sasaran penelitian.
+
+## Sampel
+
+Sebagian anggota populasi yang dipilih untuk diteliti.
+
+## Skala Pengukuran
+
+- **Nominal** → kategori
+- **Ordinal** → kategori + urutan
+- **Interval** → urutan + jarak yang sama
+- **Rasio** → interval + nol absolut
+
+# Cara Cepat Mengidentifikasi Skala
+
+Ketika menemukan sebuah variabel, gunakan pertanyaan berikut:
+
+### 1. Hanya kategori?
+
+→ **Nominal**
+
+### 2. Kategori + ada urutan?
+
+→ **Ordinal**
+
+### 3. Ada urutan + jarak yang sama?
+
+→ **Interval**
+
+### 4. Ada semua karakteristik tersebut + nol absolut?
+
+→ **Rasio**
+
+Secara ringkas:
+
+$$
+\boxed{
+\text{Nominal}
+\rightarrow
+\text{Ordinal}
+\rightarrow
+\text{Interval}
+\rightarrow
+\text{Rasio}
+}
+$$
+
+# Tantangan Penutup
+
+Perhatikan penelitian berikut:
+
+> **"Hubungan karakteristik keluarga dan penggunaan media digital dengan perkembangan bahasa anak usia dini."**
+
+Sebagai calon peneliti PIAUD, tentukan:
+
+1. Siapa populasinya?
+2. Siapa sampelnya?
+3. Apa saja variabel yang mungkin digunakan?
+4. Mana variabel kualitatif?
+5. Mana variabel kuantitatif?
+6. Apa skala pengukuran setiap variabel?
+7. Data apa yang perlu dikumpulkan?
+
+::: {.callout-tip}
+### Diskusikan dalam kelompok.
+
+Gunakan konsep yang telah dipelajari untuk memberikan alasan atas setiap jawaban.
+:::
+
+# Tugas
+
+Cari **satu artikel penelitian tentang pendidikan anak usia dini**.
+
+Kemudian identifikasi:
+
+1. **Populasi penelitian**
+2. **Sampel penelitian**
+3. Minimal **5 variabel penelitian**
+4. **Jenis data** setiap variabel
+5. **Skala pengukuran** setiap variabel
+6. **Metode pengumpulan data**
+
+Sajikan hasil identifikasi dalam tabel berikut:
+
+| No. | Variabel | Jenis Data | Skala Pengukuran | Cara Pengumpulan Data |
+|---:|---|---|---|---|
+| 1 | | | | |
+| 2 | | | | |
+| 3 | | | | |
+| 4 | | | | |
+| 5 | | | | |
+
+::: {.callout-important}
+### Pertanyaan refleksi
+
+**Mengapa peneliti perlu memahami skala pengukuran sebelum melakukan analisis statistik?**
+:::
+
+# Kesimpulan
+
+::: {.callout-success}
+## Sebelum menghitung statistik, tanyakan:
+
+**Apa datanya?**
+
+**Apa variabelnya?**
+
+**Siapa populasinya?**
+
+**Siapa sampelnya?**
+
+**Bagaimana variabel tersebut diukur?**
+
+**Apa skala pengukurannya?**
+:::
+
+> **Kenali datanya terlebih dahulu, baru pilih statistiknya.**

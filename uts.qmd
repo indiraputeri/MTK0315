@@ -1,0 +1,287 @@
+---
+title: "Evaluasi Tengah Semester"
+subtitle: "Metode Numerik – MTK0315"
+author: "Indira Puteri Kinasih, Ph.D."
+format:
+  pdf:
+    documentclass: article
+classoption:
+  - 10pt
+  - a4paper
+geometry:
+  - margin=3cm 
+---
+
+### Petunjuk
+
+1. Kerjakan setiap soal dengan langkah yang jelas.
+2. Tuliskan rumus atau metode yang digunakan sebelum melakukan perhitungan.
+3. Untuk soal iterasi, tampilkan tabel iterasi apabila diminta.
+4. Gunakan kalkulator atau R apabila diperlukan untuk membantu perhitungan.
+5. Jawaban tanpa langkah perhitungan dapat memperoleh nilai yang tidak maksimal.
+6. Gunakan pembulatan minimal 4 angka di belakang koma untuk hasil numerik.
+
+## 1. Konsep Akar Persamaan Nonlinear
+
+**10 poin**
+
+Diberikan persamaan
+
+$$
+f(x)=x^3-4x-1.
+$$
+
+a. Jelaskan apa yang dimaksud dengan akar persamaan nonlinear.
+
+b. Hitung nilai $f(1)$ dan $f(2)$.
+
+c. Berdasarkan hasil pada bagian (b), tentukan apakah terdapat sedikitnya satu akar pada interval $[1,2]$. Jelaskan alasan Anda.
+
+d. Jelaskan mengapa perubahan tanda pada nilai fungsi di kedua ujung interval penting dalam metode Bisection.
+
+
+## 2. Metode Bisection
+
+**15 poin**
+
+Gunakan metode **Bisection** untuk mencari akar persamaan
+
+$$
+f(x)=x^3-4x-1=0
+$$
+
+pada interval
+
+$$
+[1,2].
+$$
+
+Lakukan **empat iterasi**.
+
+Gunakan tabel berikut:
+
+| Iterasi | $a$ | $b$ | $c=(a+b)/2$ | $f(c)$ | Interval baru |
+| ------: | --: | --: | ----------: | -----: | ------------: |
+|       1 |     |     |             |        |               |
+|       2 |     |     |             |        |               |
+|       3 |     |     |             |        |               |
+|       4 |     |     |             |        |               |
+
+a. Tentukan pendekatan akar setelah empat iterasi.
+
+b. Jelaskan bagaimana menentukan interval baru pada setiap iterasi.
+
+c. Jika jumlah iterasi diperbanyak, apa yang terjadi terhadap panjang interval pencarian? Jelaskan.
+
+
+## 3. Metode Newton-Raphson
+
+**15 poin**
+
+Gunakan metode **Newton-Raphson** untuk mencari akar
+
+$$
+f(x)=x^2-3=0.
+$$
+
+Gunakan tebakan awal
+
+$$
+x_0=2.
+$$
+
+a. Tentukan turunan $f'(x)$.
+
+b. Tuliskan rumus iterasi Newton-Raphson khusus untuk persamaan tersebut.
+
+c. Lakukan tiga iterasi.
+
+Gunakan tabel:
+
+| Iterasi | $x_n$ | $f(x_n)$ | $x_{n+1}$ |
+| ------: | ----: | -------: | --------: |
+|       0 |       |          |           |
+|       1 |       |          |           |
+|       2 |       |          |           |
+
+d. Bandingkan hasil pendekatan terakhir dengan nilai sebenarnya
+
+$$
+\sqrt{3}\approx1.7321.
+$$
+
+Hitung galat absolutnya.
+
+
+## 4. Perbandingan Metode Akar Persamaan
+
+**10 poin**
+
+Perhatikan dua metode berikut.
+
+Metode A menggunakan dua titik yang mengapit akar dan mempertahankan interval yang mengandung akar pada setiap iterasi.
+
+Metode B menggunakan garis singgung pada kurva untuk memperoleh pendekatan akar berikutnya.
+
+a. Identifikasi metode A dan metode B.
+
+b. Jelaskan perbedaan informasi yang digunakan oleh kedua metode tersebut.
+
+c. Metode mana yang memerlukan turunan fungsi?
+
+d. Menurut Anda, metode mana yang lebih aman digunakan apabila interval awal diketahui mengandung akar tetapi tebakan awal yang baik tidak tersedia? Jelaskan.
+
+
+# DERET
+
+## 5. Interpretasi R Code: Deret Maclaurin
+
+**10 poin**
+
+Perhatikan potongan kode R berikut.
+
+```r
+x <- 0.5
+n <- 5
+
+approx <- 0
+
+for (k in 0:n) {
+  term <- (-1)^k * x^(2*k + 1) / factorial(2*k + 1)
+  approx <- approx + term
+}
+
+actual <- sin(x)
+error <- abs(actual - approx)
+
+approx
+actual
+error
+```
+
+Kode tersebut digunakan untuk memperoleh pendekatan nilai suatu fungsi menggunakan deret Mclaurin.
+
+a. Fungsi matematika apa yang dihampiri oleh kode tersebut? (2 poin)
+
+b. Apa yang dimaksud dengan `n <- 5`? (2 poin)
+
+c. Jelaskan maksud baris term `<- ...` berdasarkan bentuk deret Maclaurin. (4 poin)
+
+d. Apa fungsi `approx <- approx + term`? (2 poin)
+
+
+## 6. Deret Mclaurin
+
+**15 poin**
+
+Gunakan deret Mclaurin
+
+$$
+\sin x
+=
+x-\frac{x^3}{3!}
++\frac{x^5}{5!}
+-\frac{x^7}{7!}
++\cdots
+$$
+
+untuk mendekati nilai
+
+$$
+\sin(0.5).
+$$
+
+a. Gunakan dua suku pertama untuk memperoleh pendekatan.
+
+b. Gunakan tiga suku pertama untuk memperoleh pendekatan.
+
+c. Gunakan empat suku pertama untuk memperoleh pendekatan.
+
+d. Bandingkan ketiga hasil tersebut dengan nilai sebenarnya
+
+$$
+\sin(0.5)\approx0.4794255.
+$$
+
+Hitung galat absolut masing-masing pendekatan.
+
+e. Jelaskan pengaruh penambahan suku terhadap ketelitian pendekatan.
+
+
+# INTERPOLASI
+
+## 7. Interpolasi Lagrange
+
+**20 poin**
+
+Diberikan data:
+
+| $x$ | $f(x)$ |
+| --: | -----: |
+|   0 |      1 |
+|   1 |      3 |
+|   2 |      7 |
+|   4 |     21 |
+
+a. Gunakan seluruh titik data untuk membentuk polinom interpolasi Lagrange.
+
+Gunakan bentuk umum
+
+$$
+P(x)=
+\sum_{i=0}^{3}y_iL_i(x).
+$$
+
+b. Tuliskan masing-masing basis Lagrange
+
+$$
+L_0(x),L_1(x),L_2(x),L_3(x).
+$$
+
+c. Sederhanakan polinom interpolasi yang diperoleh.
+
+d. Gunakan polinom tersebut untuk menghitung
+
+$$
+P(1.5)
+$$
+
+dan
+
+$$
+P(3).
+$$
+
+e. Jelaskan mengapa nilai $x=3$ masih termasuk interpolasi meskipun tidak terdapat pada tabel data.
+
+f. Gambarkan titik data dan polinom interpolasi yang diperoleh pada satu grafik.
+
+
+# Bonus: Implementasi R
+
+**Bonus 5 poin**
+
+Tuliskan fungsi R untuk menghitung interpolasi Lagrange berdasarkan data:
+
+```r
+x <- c(0, 1, 2, 4)
+y <- c(1, 3, 7, 21)
+```
+
+Fungsi harus dapat menerima suatu nilai $x_0$ dan menghasilkan nilai interpolasi $P(x_0)$.
+
+<!-- --- -->
+
+<!-- # Kriteria Penilaian -->
+
+<!-- | Komponen                |   Bobot | -->
+<!-- | ----------------------- | ------: | -->
+<!-- | Konsep akar PNL         |      10 | -->
+<!-- | Bisection               |      15 | -->
+<!-- | Newton-Raphson          |      15 | -->
+<!-- | Perbandingan metode PNL |      10 | -->
+<!-- | Deret geometri          |      15 | -->
+<!-- | Deret Taylor            |      15 | -->
+<!-- | Interpolasi Lagrange    |      20 | -->
+<!-- | **Total**               | **100** | -->
+<!-- | Bonus R                 |      +5 | -->

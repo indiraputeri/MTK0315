@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dr.&nbsp;Indira Puteri Kinasih">
+
+<title>Modul Metode Numerik</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="spnl_files/libs/clipboard/clipboard.min.js"></script>
+<script src="spnl_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="spnl_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="spnl_files/libs/quarto-html/popper.min.js"></script>
+<script src="spnl_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="spnl_files/libs/quarto-html/anchor.min.js"></script>
+<link href="spnl_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="spnl_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="spnl_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="spnl_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="spnl_files/libs/bootstrap/bootstrap-c2e55264ed47ce3b2e0326a2269f9400.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Daftar Isi</h2>
+   
+  <ul>
+  <li><a href="#pendahuluan" id="toc-pendahuluan" class="nav-link active" data-scroll-target="#pendahuluan">Pendahuluan</a></li>
+  <li><a href="#tujuan-pembelajaran" id="toc-tujuan-pembelajaran" class="nav-link" data-scroll-target="#tujuan-pembelajaran"><span class="header-section-number">1</span> Tujuan Pembelajaran</a></li>
+  <li><a href="#konsep-dasar-spnl" id="toc-konsep-dasar-spnl" class="nav-link" data-scroll-target="#konsep-dasar-spnl"><span class="header-section-number">2</span> Konsep Dasar SPNL</a>
+  <ul class="collapse">
+  <li><a href="#apa-itu-spnl" id="toc-apa-itu-spnl" class="nav-link" data-scroll-target="#apa-itu-spnl"><span class="header-section-number">2.1</span> Apa itu SPNL?</a></li>
+  <li><a href="#contoh" id="toc-contoh" class="nav-link" data-scroll-target="#contoh"><span class="header-section-number">2.2</span> Contoh</a></li>
+  </ul></li>
+  <li><a href="#persamaan-linear-vs-nonlinear" id="toc-persamaan-linear-vs-nonlinear" class="nav-link" data-scroll-target="#persamaan-linear-vs-nonlinear"><span class="header-section-number">3</span> Persamaan Linear vs Nonlinear</a>
+  <ul class="collapse">
+  <li><a href="#sistem-linear" id="toc-sistem-linear" class="nav-link" data-scroll-target="#sistem-linear"><span class="header-section-number">3.0.1</span> Sistem linear</a></li>
+  <li><a href="#sistem-nonlinear" id="toc-sistem-nonlinear" class="nav-link" data-scroll-target="#sistem-nonlinear"><span class="header-section-number">3.0.2</span> Sistem nonlinear</a></li>
+  </ul></li>
+  <li><a href="#bentuk-vektor" id="toc-bentuk-vektor" class="nav-link" data-scroll-target="#bentuk-vektor"><span class="header-section-number">4</span> Bentuk Vektor</a></li>
+  <li><a href="#mengapa-tidak-langsung-menggunakan-newton-raphson-biasa" id="toc-mengapa-tidak-langsung-menggunakan-newton-raphson-biasa" class="nav-link" data-scroll-target="#mengapa-tidak-langsung-menggunakan-newton-raphson-biasa"><span class="header-section-number">5</span> Mengapa Tidak Langsung Menggunakan Newton-Raphson Biasa?</a></li>
+  <li><a href="#matriks-jacobian" id="toc-matriks-jacobian" class="nav-link" data-scroll-target="#matriks-jacobian"><span class="header-section-number">6</span> Matriks Jacobian</a>
+  <ul class="collapse">
+  <li><a href="#contoh-jacobian" id="toc-contoh-jacobian" class="nav-link" data-scroll-target="#contoh-jacobian"><span class="header-section-number">6.1</span> Contoh Jacobian</a></li>
+  </ul></li>
+  <li><a href="#ide-dasar-metode-newton-untuk-spnl" id="toc-ide-dasar-metode-newton-untuk-spnl" class="nav-link" data-scroll-target="#ide-dasar-metode-newton-untuk-spnl"><span class="header-section-number">7</span> Ide Dasar Metode Newton untuk SPNL</a></li>
+  <li><a href="#hal-penting-tidak-perlu-menghitung-invers-jacobian" id="toc-hal-penting-tidak-perlu-menghitung-invers-jacobian" class="nav-link" data-scroll-target="#hal-penting-tidak-perlu-menghitung-invers-jacobian"><span class="header-section-number">8</span> Hal Penting: Tidak Perlu Menghitung Invers Jacobian</a></li>
+  <li><a href="#algoritma-newton-untuk-spnl" id="toc-algoritma-newton-untuk-spnl" class="nav-link" data-scroll-target="#algoritma-newton-untuk-spnl"><span class="header-section-number">9</span> Algoritma Newton untuk SPNL</a></li>
+  <li><a href="#contoh-perhitungan" id="toc-contoh-perhitungan" class="nav-link" data-scroll-target="#contoh-perhitungan"><span class="header-section-number">10</span> Contoh Perhitungan</a></li>
+  <li><a href="#implementasi-dengan-r" id="toc-implementasi-dengan-r" class="nav-link" data-scroll-target="#implementasi-dengan-r"><span class="header-section-number">11</span> Implementasi dengan R</a></li>
+  <li><a href="#fungsi-newton-untuk-spnl" id="toc-fungsi-newton-untuk-spnl" class="nav-link" data-scroll-target="#fungsi-newton-untuk-spnl"><span class="header-section-number">12</span> Fungsi Newton untuk SPNL</a></li>
+  <li><a href="#melihat-proses-iterasi" id="toc-melihat-proses-iterasi" class="nav-link" data-scroll-target="#melihat-proses-iterasi"><span class="header-section-number">13</span> Melihat Proses Iterasi</a></li>
+  <li><a href="#memeriksa-solusi" id="toc-memeriksa-solusi" class="nav-link" data-scroll-target="#memeriksa-solusi"><span class="header-section-number">14</span> Memeriksa Solusi</a></li>
+  <li><a href="#visualisasi-geometris" id="toc-visualisasi-geometris" class="nav-link" data-scroll-target="#visualisasi-geometris"><span class="header-section-number">15</span> Visualisasi Geometris</a></li>
+  <li><a href="#mengapa-tebakan-awal-penting" id="toc-mengapa-tebakan-awal-penting" class="nav-link" data-scroll-target="#mengapa-tebakan-awal-penting"><span class="header-section-number">16</span> Mengapa Tebakan Awal Penting?</a></li>
+  <li><a href="#beberapa-solusi" id="toc-beberapa-solusi" class="nav-link" data-scroll-target="#beberapa-solusi"><span class="header-section-number">17</span> Beberapa Solusi</a></li>
+  <li><a href="#kriteria-berhenti" id="toc-kriteria-berhenti" class="nav-link" data-scroll-target="#kriteria-berhenti"><span class="header-section-number">18</span> Kriteria Berhenti</a>
+  <ul class="collapse">
+  <li><a href="#berdasarkan-residual" id="toc-berdasarkan-residual" class="nav-link" data-scroll-target="#berdasarkan-residual"><span class="header-section-number">18.1</span> Berdasarkan residual</a></li>
+  <li><a href="#berdasarkan-perubahan-solusi" id="toc-berdasarkan-perubahan-solusi" class="nav-link" data-scroll-target="#berdasarkan-perubahan-solusi"><span class="header-section-number">18.2</span> Berdasarkan perubahan solusi</a></li>
+  <li><a href="#mengapa-residual-lebih-penting" id="toc-mengapa-residual-lebih-penting" class="nav-link" data-scroll-target="#mengapa-residual-lebih-penting"><span class="header-section-number">18.3</span> Mengapa residual lebih penting?</a></li>
+  </ul></li>
+  <li><a href="#permasalahan-jacobian-singular" id="toc-permasalahan-jacobian-singular" class="nav-link" data-scroll-target="#permasalahan-jacobian-singular"><span class="header-section-number">19</span> Permasalahan Jacobian Singular</a></li>
+  <li><a href="#newton-spnl-dalam-bentuk-algoritma" id="toc-newton-spnl-dalam-bentuk-algoritma" class="nav-link" data-scroll-target="#newton-spnl-dalam-bentuk-algoritma"><span class="header-section-number">20</span> Newton SPNL dalam Bentuk Algoritma</a></li>
+  <li><a href="#perbandingan-dengan-newton-raphson-satu-variabel" id="toc-perbandingan-dengan-newton-raphson-satu-variabel" class="nav-link" data-scroll-target="#perbandingan-dengan-newton-raphson-satu-variabel"><span class="header-section-number">21</span> Perbandingan dengan Newton-Raphson Satu Variabel</a></li>
+  <li><a href="#eksperimen-pengaruh-tebakan-awal" id="toc-eksperimen-pengaruh-tebakan-awal" class="nav-link" data-scroll-target="#eksperimen-pengaruh-tebakan-awal"><span class="header-section-number">22</span> Eksperimen: Pengaruh Tebakan Awal</a></li>
+  <li><a href="#latihan-1-menentukan-jacobian" id="toc-latihan-1-menentukan-jacobian" class="nav-link" data-scroll-target="#latihan-1-menentukan-jacobian"><span class="header-section-number">23</span> Latihan 1 — Menentukan Jacobian</a></li>
+  <li><a href="#latihan-2-implementasi-newton" id="toc-latihan-2-implementasi-newton" class="nav-link" data-scroll-target="#latihan-2-implementasi-newton"><span class="header-section-number">24</span> Latihan 2 — Implementasi Newton</a></li>
+  <li><a href="#latihan-3-eksperimen-tebakan-awal" id="toc-latihan-3-eksperimen-tebakan-awal" class="nav-link" data-scroll-target="#latihan-3-eksperimen-tebakan-awal"><span class="header-section-number">25</span> Latihan 3 — Eksperimen Tebakan Awal</a></li>
+  <li><a href="#latihan-4-visualisasi" id="toc-latihan-4-visualisasi" class="nav-link" data-scroll-target="#latihan-4-visualisasi"><span class="header-section-number">26</span> Latihan 4 — Visualisasi</a></li>
+  <li><a href="#latihan-5-kasus-tiga-peubah" id="toc-latihan-5-kasus-tiga-peubah" class="nav-link" data-scroll-target="#latihan-5-kasus-tiga-peubah"><span class="header-section-number">27</span> Latihan 5 — Kasus Tiga Peubah</a></li>
+  <li><a href="#aktivitas-eksplorasi" id="toc-aktivitas-eksplorasi" class="nav-link" data-scroll-target="#aktivitas-eksplorasi"><span class="header-section-number">28</span> Aktivitas Eksplorasi</a></li>
+  <li><a href="#ringkasan" id="toc-ringkasan" class="nav-link" data-scroll-target="#ringkasan"><span class="header-section-number">29</span> Ringkasan</a></li>
+  <li><a href="#pertanyaan-refleksi" id="toc-pertanyaan-refleksi" class="nav-link" data-scroll-target="#pertanyaan-refleksi"><span class="header-section-number">30</span> Pertanyaan Refleksi</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Format Lain</h2><ul><li><a href="spnl.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Modul Metode Numerik</h1>
+<p class="subtitle lead">Solusi Sistem Persamaan Nonlinear (SPNL)</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Penulis</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dr.&nbsp;Indira Puteri Kinasih </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div style="page-break-after: always;"></div>
+<section id="pendahuluan" class="level1 unnumbered">
+<h1 class="unnumbered">Pendahuluan</h1>
+<p>Pada materi sebelumnya, kita telah mempelajari metode numerik untuk mencari akar suatu persamaan nonlinear, misalnya</p>
+<p><span class="math display">\[
+f(x)=0.
+\]</span></p>
+<p>Metode seperti <strong>bisection, regula falsi, fixed point, secant</strong>, dan <strong>Newton-Raphson</strong> digunakan untuk memperoleh pendekatan numerik terhadap nilai (x) yang memenuhi persamaan tersebut.</p>
+<p>Namun, dalam banyak permasalahan matematika, kita tidak hanya memiliki satu persamaan dengan satu peubah. Kita dapat memiliki beberapa persamaan nonlinear yang harus dipenuhi secara simultan.</p>
+<p>Sebagai contoh,</p>
+<p><span class="math display">\[
+\begin{cases}
+x^2+y^2=4,\\
+x^2-y=1.
+\end{cases}
+\]</span></p>
+<p>Kita ingin menentukan nilai (x) dan (y) yang memenuhi <strong>kedua persamaan sekaligus</strong>.</p>
+<p>Sistem seperti ini disebut <strong>Sistem Persamaan Nonlinear (SPNL)</strong> atau <em>System of Nonlinear Equations</em>.</p>
+<p>Dalam modul ini kita akan mempelajari:</p>
+<ol type="1">
+<li>konsep dasar SPNL;</li>
+<li>representasi SPNL dalam bentuk vektor;</li>
+<li>konsep Jacobian;</li>
+<li>metode Newton untuk SPNL;</li>
+<li>algoritma penyelesaian SPNL;</li>
+<li>implementasi metode Newton menggunakan R;</li>
+<li>visualisasi solusi;</li>
+<li>kriteria konvergensi dan penghentian;</li>
+<li>pengaruh tebakan awal;</li>
+<li>latihan dan eksperimen numerik.</li>
+</ol>
+</section>
+<section id="tujuan-pembelajaran" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Tujuan Pembelajaran</h1>
+<p>Setelah mempelajari materi ini, mahasiswa diharapkan mampu:</p>
+<ul>
+<li>menjelaskan pengertian sistem persamaan nonlinear;</li>
+<li>membedakan persamaan linear dan nonlinear;</li>
+<li>menuliskan SPNL dalam bentuk fungsi vektor;</li>
+<li>menentukan matriks Jacobian suatu SPNL;</li>
+<li>menjelaskan prinsip metode Newton untuk SPNL;</li>
+<li>menerapkan algoritma Newton untuk memperoleh solusi numerik;</li>
+<li>mengimplementasikan metode Newton menggunakan R;</li>
+<li>mengevaluasi konvergensi suatu solusi numerik;</li>
+<li>menjelaskan pengaruh tebakan awal terhadap hasil iterasi.</li>
+</ul>
+</section>
+<section id="konsep-dasar-spnl" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Konsep Dasar SPNL</h1>
+<section id="apa-itu-spnl" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="apa-itu-spnl"><span class="header-section-number">2.1</span> Apa itu SPNL?</h2>
+<p>Sistem persamaan nonlinear terdiri atas beberapa persamaan yang melibatkan beberapa peubah, dengan setidaknya satu persamaan bersifat nonlinear.</p>
+<p>Bentuk umum SPNL dengan (n) persamaan dan (n) peubah dapat ditulis sebagai</p>
+<p><span class="math display">\[
+\begin{aligned}
+f_1(x_1,x_2,\ldots,x_n)&amp;=0,\\
+f_2(x_1,x_2,\ldots,x_n)&amp;=0,\\
+&amp;\vdots\\
+f_n(x_1,x_2,\ldots,x_n)&amp;=0.
+\end{aligned}
+\]</span></p>
+<p>Tujuan kita adalah menemukan</p>
+<p><span class="math display">\[
+(x_1,x_2,\ldots,x_n)
+\]</span></p>
+<p>yang memenuhi seluruh persamaan secara simultan.</p>
+</section>
+<section id="contoh" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="contoh"><span class="header-section-number">2.2</span> Contoh</h2>
+<p>Perhatikan sistem berikut:</p>
+<p><span class="math display">\[
+\begin{cases}
+x^2+y^2-4=0,\\
+x^2-y-1=0.
+\end{cases}
+\]</span></p>
+<p>Definisikan</p>
+<p><span class="math display">\[
+f_1(x,y)=x^2+y^2-4
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+f_2(x,y)=x^2-y-1.
+\]</span></p>
+<p>Maka SPNL dapat ditulis sebagai</p>
+<p><span class="math display">\[
+\begin{cases}
+f_1(x,y)=0,\\
+f_2(x,y)=0.
+\end{cases}
+\]</span></p>
+<p>Secara geometris, solusi SPNL merupakan <strong>titik potong</strong> dari kurva-kurva yang dibentuk oleh masing-masing persamaan.</p>
+</section>
+</section>
+<section id="persamaan-linear-vs-nonlinear" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Persamaan Linear vs Nonlinear</h1>
+<p>Perhatikan dua sistem berikut.</p>
+<section id="sistem-linear" class="level3" data-number="3.0.1">
+<h3 data-number="3.0.1" class="anchored" data-anchor-id="sistem-linear"><span class="header-section-number">3.0.1</span> Sistem linear</h3>
+<p><span class="math display">\[
+\begin{cases}
+2x+y=5,\\
+x-y=1.
+\end{cases}
+\]</span></p>
+<p>Tidak terdapat pangkat (x^2), (y^2), hasil kali (xy), fungsi eksponensial, logaritma, dan sebagainya.</p>
+</section>
+<section id="sistem-nonlinear" class="level3" data-number="3.0.2">
+<h3 data-number="3.0.2" class="anchored" data-anchor-id="sistem-nonlinear"><span class="header-section-number">3.0.2</span> Sistem nonlinear</h3>
+<p><span class="math display">\[
+\begin{cases}
+x^2+y^2=4,\\
+xy=1.
+\end{cases}
+\]</span></p>
+<p>Sistem tersebut nonlinear karena terdapat (x^2), (y^2), dan (xy).</p>
+<p>Beberapa bentuk yang umumnya menyebabkan persamaan menjadi nonlinear adalah:</p>
+<ul>
+<li>(x^2), (x^3), dan pangkat lainnya;</li>
+<li>(xy);</li>
+<li>((x));</li>
+<li>((x));</li>
+<li>(e^x);</li>
+<li>((x));</li>
+<li>();</li>
+<li>dan bentuk nonlinear lainnya.</li>
+</ul>
+</section>
+</section>
+<section id="bentuk-vektor" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Bentuk Vektor</h1>
+<p>Agar metode numerik dapat diterapkan dengan lebih sistematis, SPNL dituliskan dalam bentuk fungsi vektor.</p>
+<p>Misalkan</p>
+<p><span class="math display">\[
+\mathbf{x}
+=
+\begin{bmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{bmatrix}
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+\mathbf{F}(\mathbf{x})
+=
+\begin{bmatrix}
+f_1(\mathbf{x})\\
+f_2(\mathbf{x})\\
+\vdots\\
+f_n(\mathbf{x})
+\end{bmatrix}.
+\]</span></p>
+<p>Maka SPNL ditulis sebagai</p>
+<p><span class="math display">\[
+\boxed{\mathbf{F}(\mathbf{x})=\mathbf{0}}
+\]</span></p>
+<p>dengan</p>
+<p><span class="math display">\[
+\mathbf{0}
+=
+\begin{bmatrix}
+0\\
+0\\
+\vdots\\
+0
+\end{bmatrix}.
+\]</span></p>
+<p>Misalnya,</p>
+<p><span class="math display">\[
+\begin{cases}
+x^2+y^2-4=0,\\
+x^2-y-1=0
+\end{cases}
+\]</span></p>
+<p>dapat ditulis sebagai</p>
+<p><span class="math display">\[
+\mathbf{F}(x,y)
+=
+\begin{bmatrix}
+x^2+y^2-4\\
+x^2-y-1
+\end{bmatrix}.
+\]</span></p>
+<p>Solusi yang dicari memenuhi</p>
+<p><span class="math display">\[
+\mathbf{F}(x,y)=
+\begin{bmatrix}
+0\\
+0
+\end{bmatrix}.
+\]</span></p>
+</section>
+<section id="mengapa-tidak-langsung-menggunakan-newton-raphson-biasa" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Mengapa Tidak Langsung Menggunakan Newton-Raphson Biasa?</h1>
+<p>Pada kasus satu persamaan,</p>
+<p><span class="math display">\[
+f(x)=0,
+\]</span></p>
+<p>metode Newton-Raphson menggunakan</p>
+<p><span class="math display">\[
+x_{k+1}
+=
+x_k-\frac{f(x_k)}{f'(x_k)}.
+\]</span></p>
+<p>Perhatikan bahwa kita hanya memiliki:</p>
+<ul>
+<li>satu peubah (x);</li>
+<li>satu fungsi (f(x));</li>
+<li>satu turunan (f’(x)).</li>
+</ul>
+<p>Pada SPNL kita memiliki beberapa peubah dan beberapa fungsi.</p>
+<p>Misalnya,</p>
+<p><span class="math display">\[
+\mathbf{F}(x,y)
+=
+\begin{bmatrix}
+f_1(x,y)\\
+f_2(x,y)
+\end{bmatrix}.
+\]</span></p>
+<p>Tidak ada lagi satu turunan (f’(x)).</p>
+<p>Sebagai gantinya, kita menggunakan <strong>matriks Jacobian</strong>.</p>
+</section>
+<section id="matriks-jacobian" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Matriks Jacobian</h1>
+<p>Jacobian merupakan generalisasi turunan pertama untuk fungsi yang memiliki beberapa peubah.</p>
+<p>Untuk</p>
+<p><span class="math display">\[
+\mathbf{F}(\mathbf{x})
+=
+\begin{bmatrix}
+f_1(\mathbf{x})\\
+f_2(\mathbf{x})\\
+\vdots\\
+f_n(\mathbf{x})
+\end{bmatrix},
+\]</span></p>
+<p>matriks Jacobian didefinisikan sebagai</p>
+<p><span class="math display">\[
+J(\mathbf{x})
+=
+\begin{bmatrix}
+\frac{\partial f_1}{\partial x_1}
+&amp;
+\frac{\partial f_1}{\partial x_2}
+&amp;
+\cdots
+&amp;
+\frac{\partial f_1}{\partial x_n}
+\\
+\frac{\partial f_2}{\partial x_1}
+&amp;
+\frac{\partial f_2}{\partial x_2}
+&amp;
+\cdots
+&amp;
+\frac{\partial f_2}{\partial x_n}
+\\
+\vdots
+&amp;
+\vdots
+&amp;
+\ddots
+&amp;
+\vdots
+\\
+\frac{\partial f_n}{\partial x_1}
+&amp;
+\frac{\partial f_n}{\partial x_2}
+&amp;
+\cdots
+&amp;
+\frac{\partial f_n}{\partial x_n}
+\end{bmatrix}.
+\]</span></p>
+<p>Dengan kata lain, setiap elemen Jacobian adalah turunan parsial.</p>
+<section id="contoh-jacobian" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="contoh-jacobian"><span class="header-section-number">6.1</span> Contoh Jacobian</h2>
+<p>Diberikan</p>
+<p><span class="math display">\[
+\begin{cases}
+f_1(x,y)=x^2+y^2-4,\\
+f_2(x,y)=x^2-y-1.
+\end{cases}
+\]</span></p>
+<p>Turunan parsialnya adalah</p>
+<p><span class="math display">\[
+\frac{\partial f_1}{\partial x}=2x,
+\qquad
+\frac{\partial f_1}{\partial y}=2y,
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+\frac{\partial f_2}{\partial x}=2x,
+\qquad
+\frac{\partial f_2}{\partial y}=-1.
+\]</span></p>
+<p>Sehingga Jacobian-nya adalah</p>
+<p><span class="math display">\[
+\boxed{
+J(x,y)=
+\begin{bmatrix}
+2x &amp; 2y\\
+2x &amp; -1
+\end{bmatrix}
+}
+\]</span></p>
+</section>
+</section>
+<section id="ide-dasar-metode-newton-untuk-spnl" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Ide Dasar Metode Newton untuk SPNL</h1>
+<p>Ide dasarnya masih sama dengan Newton-Raphson satu variabel:</p>
+<blockquote class="blockquote">
+<p>Gunakan informasi lokal mengenai fungsi untuk memperkirakan posisi solusi berikutnya.</p>
+</blockquote>
+<p>Pada satu variabel, kita menggunakan garis singgung.</p>
+<p>Pada beberapa variabel, kita menggunakan <strong>aproksimasi linear lokal</strong>.</p>
+<p>Untuk suatu tebakan (_k),</p>
+<p><span class="math display">\[
+\mathbf{F}(\mathbf{x}_k+\Delta\mathbf{x})
+\approx
+\mathbf{F}(\mathbf{x}_k)
++
+J(\mathbf{x}_k)\Delta\mathbf{x}.
+\]</span></p>
+<p>Kita ingin mencari (_{k+1}) sehingga</p>
+<p><span class="math display">\[
+\mathbf{F}(\mathbf{x}_{k+1})\approx\mathbf{0}.
+\]</span></p>
+<p>Dengan demikian,</p>
+<p><span class="math display">\[
+\mathbf{F}(\mathbf{x}_k)
++
+J(\mathbf{x}_k)\Delta\mathbf{x}
+\approx
+\mathbf{0}.
+\]</span></p>
+<p>Maka</p>
+<p><span class="math display">\[
+\boxed{
+J(\mathbf{x}_k)\Delta\mathbf{x}
+=
+-\mathbf{F}(\mathbf{x}_k)
+}
+\]</span></p>
+<p>dan setelah () diperoleh,</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{x}_{k+1}
+=
+\mathbf{x}_k+\Delta\mathbf{x}.
+}
+\]</span></p>
+<p>Inilah bentuk utama metode Newton untuk SPNL.</p>
+</section>
+<section id="hal-penting-tidak-perlu-menghitung-invers-jacobian" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Hal Penting: Tidak Perlu Menghitung Invers Jacobian</h1>
+<p>Secara teoritis, kita dapat menulis</p>
+<p><span class="math display">\[
+\Delta\mathbf{x}
+=
+-J(\mathbf{x}_k)^{-1}\mathbf{F}(\mathbf{x}_k).
+\]</span></p>
+<p>Namun, dalam implementasi numerik kita <strong>tidak dianjurkan menghitung invers matriks secara eksplisit</strong>.</p>
+<p>Kita cukup menyelesaikan sistem linear</p>
+<p><span class="math display">\[
+J(\mathbf{x}_k)\Delta\mathbf{x}
+=
+-\mathbf{F}(\mathbf{x}_k).
+\]</span></p>
+<p>Dalam R, sistem tersebut dapat diselesaikan dengan operator:</p>
+<p><span class="math display">\[
+J %*% delta = -F
+\]</span></p>
+<p>Secara praktis kita menggunakan:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fu">solve</span>(J, <span class="sc">-</span>F)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Pendekatan ini lebih sesuai dengan praktik komputasi numerik.</p>
+</section>
+<section id="algoritma-newton-untuk-spnl" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Algoritma Newton untuk SPNL</h1>
+<p>Diberikan SPNL</p>
+<p><span class="math display">\[
+\mathbf{F}(\mathbf{x})=\mathbf{0}.
+\]</span></p>
+<p>Pilih:</p>
+<ul>
+<li>tebakan awal (_0);</li>
+<li>toleransi ();</li>
+<li>jumlah iterasi maksimum.</li>
+</ul>
+<p>Kemudian lakukan:</p>
+<p><strong>Langkah 1.</strong> Hitung</p>
+<p><span class="math display">\[
+\mathbf{F}(\mathbf{x}_k).
+\]</span></p>
+<p><strong>Langkah 2.</strong> Hitung Jacobian</p>
+<p><span class="math display">\[
+J(\mathbf{x}_k).
+\]</span></p>
+<p><strong>Langkah 3.</strong> Selesaikan</p>
+<p><span class="math display">\[
+J(\mathbf{x}_k)\Delta\mathbf{x}
+=
+-\mathbf{F}(\mathbf{x}_k).
+\]</span></p>
+<p><strong>Langkah 4.</strong> Perbarui solusi:</p>
+<p><span class="math display">\[
+\mathbf{x}_{k+1}
+=
+\mathbf{x}_k+\Delta\mathbf{x}.
+\]</span></p>
+<p><strong>Langkah 5.</strong> Periksa kriteria berhenti.</p>
+<p>Misalnya,</p>
+<p><span class="math display">\[
+\|\mathbf{F}(\mathbf{x}_{k+1})\|&lt;\varepsilon.
+\]</span></p>
+<p>Jika belum memenuhi kriteria, kembali ke Langkah 1.</p>
+</section>
+<section id="contoh-perhitungan" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Contoh Perhitungan</h1>
+<p>Pertimbangkan SPNL</p>
+<p><span class="math display">\[
+\begin{cases}
+x^2+y^2-4=0,\\
+x^2-y-1=0.
+\end{cases}
+\]</span></p>
+<p>Kita telah memperoleh</p>
+<p><span class="math display">\[
+\mathbf{F}(x,y)
+=
+\begin{bmatrix}
+x^2+y^2-4\\
+x^2-y-1
+\end{bmatrix}
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+J(x,y)
+=
+\begin{bmatrix}
+2x &amp; 2y\\
+2x &amp; -1
+\end{bmatrix}.
+\]</span></p>
+<p>Misalkan tebakan awal adalah</p>
+<p><span class="math display">\[
+\mathbf{x}_0=
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}.
+\]</span></p>
+<p>Hitung fungsi:</p>
+<p><span class="math display">\[
+\mathbf{F}(1,1)
+=
+\begin{bmatrix}
+1+1-4\\
+1-1-1
+\end{bmatrix}
+=
+\begin{bmatrix}
+-2\\
+-1
+\end{bmatrix}.
+\]</span></p>
+<p>Jacobian:</p>
+<p><span class="math display">\[
+J(1,1)
+=
+\begin{bmatrix}
+2&amp;2\\
+2&amp;-1
+\end{bmatrix}.
+\]</span></p>
+<p>Kita kemudian menyelesaikan</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+2&amp;2\\
+2&amp;-1
+\end{bmatrix}
+\begin{bmatrix}
+\Delta x\\
+\Delta y
+\end{bmatrix}
+=
+-
+\begin{bmatrix}
+-2\\
+-1
+\end{bmatrix}.
+\]</span></p>
+<p>atau</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+2&amp;2\\
+2&amp;-1
+\end{bmatrix}
+\begin{bmatrix}
+\Delta x\\
+\Delta y
+\end{bmatrix}
+=
+\begin{bmatrix}
+2\\
+1
+\end{bmatrix}.
+\]</span></p>
+<p>Diperoleh</p>
+<p><span class="math display">\[
+\Delta x=0.5,
+\qquad
+\Delta y=0.5.
+\]</span></p>
+<p>Maka</p>
+<p><span class="math display">\[
+\mathbf{x}_1
+=
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}
++
+\begin{bmatrix}
+0.5\\
+0.5
+\end{bmatrix}
+=
+\begin{bmatrix}
+1.5\\
+1.5
+\end{bmatrix}.
+\]</span></p>
+<p>Proses ini kemudian diulangi sampai diperoleh solusi yang cukup akurat.</p>
+</section>
+<section id="implementasi-dengan-r" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Implementasi dengan R</h1>
+<p>Kita dapat mendefinisikan fungsi dan Jacobian sebagai berikut.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>F <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> x[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">4</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> x[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">matrix</span>(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      <span class="dv">2</span><span class="sc">*</span>x[<span class="dv">1</span>], <span class="dv">2</span><span class="sc">*</span>x[<span class="dv">2</span>],</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      <span class="dv">2</span><span class="sc">*</span>x[<span class="dv">1</span>], <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Periksa fungsi pada tebakan awal:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">F</span>(x)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -2 -1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">J</span>(x)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    2    2
+[2,]    2   -1</code></pre>
+</div>
+</div>
+</section>
+<section id="fungsi-newton-untuk-spnl" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> Fungsi Newton untuk SPNL</h1>
+<p>Selanjutnya kita membuat fungsi umum sederhana untuk metode Newton.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>newton_spnl <span class="ot">&lt;-</span> <span class="cf">function</span>(F, J, x0, <span class="at">tol =</span> <span class="fl">1e-8</span>, <span class="at">max_iter =</span> <span class="dv">100</span>) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x0</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  history <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">0</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x1 =</span> x[<span class="dv">1</span>],</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x2 =</span> x[<span class="dv">2</span>],</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">norm_F =</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>(<span class="fu">F</span>(x)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>max_iter) {</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    Fx <span class="ot">&lt;-</span> <span class="fu">F</span>(x)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    Jx <span class="ot">&lt;-</span> <span class="fu">J</span>(x)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Menyelesaikan J(x) delta = -F(x)</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    delta <span class="ot">&lt;-</span> <span class="fu">solve</span>(Jx, <span class="sc">-</span>Fx)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Update</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    x_new <span class="ot">&lt;-</span> x <span class="sc">+</span> delta</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simpan hasil</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    history <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>      history,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">iter =</span> k,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">x1 =</span> x_new[<span class="dv">1</span>],</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">x2 =</span> x_new[<span class="dv">2</span>],</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">norm_F =</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>(<span class="fu">F</span>(x_new)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Kriteria berhenti</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">sqrt</span>(<span class="fu">sum</span>(<span class="fu">F</span>(x_new)<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">&lt;</span> tol) {</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>        <span class="fu">list</span>(</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>          <span class="at">solution =</span> x_new,</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>          <span class="at">iterations =</span> k,</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>          <span class="at">history =</span> history,</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>          <span class="at">converged =</span> <span class="cn">TRUE</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x_new</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">solution =</span> x,</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">iterations =</span> max_iter,</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">history =</span> history,</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">converged =</span> <span class="cn">FALSE</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Jalankan metode dengan tebakan awal</p>
+<p><span class="math display">\[
+(x_0,y_0)=(1,1).
+\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>hasil <span class="ot">&lt;-</span> <span class="fu">newton_spnl</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">F =</span> F,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">J =</span> J,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x0 =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>hasil<span class="sc">$</span>solution</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.517490 1.302776</code></pre>
+</div>
+</div>
+<p>Jumlah iterasi:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>hasil<span class="sc">$</span>iterations</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<p>Status konvergensi:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>hasil<span class="sc">$</span>converged</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</section>
+<section id="melihat-proses-iterasi" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> Melihat Proses Iterasi</h1>
+<p>Riwayat iterasi dapat dilihat menggunakan:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>hasil<span class="sc">$</span>history</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  iter       x1       x2       norm_F
+1    0 1.000000 1.000000 2.236068e+00
+2    1 1.666667 1.333333 7.114582e-01
+3    2 1.524242 1.303030 2.934335e-02
+4    3 1.517505 1.302776 6.424346e-05
+5    4 1.517490 1.302776 3.166258e-10</code></pre>
+</div>
+</div>
+<p>Kolom <code>norm_F</code> menunjukkan ukuran residual:</p>
+<p><span class="math display">\[
+\|\mathbf{F}(\mathbf{x}_k)\|.
+\]</span></p>
+<p>Semakin kecil nilai tersebut, semakin dekat solusi terhadap akar SPNL.</p>
+<p>Kita dapat memvisualisasikan penurunan residual.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  hasil<span class="sc">$</span>history<span class="sc">$</span>iter,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  hasil<span class="sc">$</span>history<span class="sc">$</span>norm_F,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"b"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">log =</span> <span class="st">"y"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Iterasi"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"||F(x)||"</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Konvergensi Metode Newton untuk SPNL"</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="spnl_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Penggunaan skala logaritmik pada sumbu vertikal membantu melihat penurunan residual secara lebih jelas.</p>
+</section>
+<section id="memeriksa-solusi" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> Memeriksa Solusi</h1>
+<p>Solusi numerik yang diperoleh harus dikembalikan ke persamaan awal.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>hasil<span class="sc">$</span>solution</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.517490 1.302776</code></pre>
+</div>
+</div>
+<p>Kemudian:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">F</span>(hasil<span class="sc">$</span>solution)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.238885e-10 2.238880e-10</code></pre>
+</div>
+</div>
+<p>Jika metode telah konvergen dengan baik, kedua komponen residual akan sangat dekat dengan nol.</p>
+<p>Kita juga dapat menghitung norm residual:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(<span class="fu">F</span>(hasil<span class="sc">$</span>solution)<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.166258e-10</code></pre>
+</div>
+</div>
+</section>
+<section id="visualisasi-geometris" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> Visualisasi Geometris</h1>
+<p>Untuk SPNL dengan dua peubah, kita dapat memahami solusi secara geometris.</p>
+<p>Persamaan pertama:</p>
+<p><span class="math display">\[
+x^2+y^2-4=0
+\]</span></p>
+<p>merupakan lingkaran dengan pusat ((0,0)) dan radius (2).</p>
+<p>Persamaan kedua:</p>
+<p><span class="math display">\[
+x^2-y-1=0
+\]</span></p>
+<p>dapat ditulis sebagai</p>
+<p><span class="math display">\[
+y=x^2-1.
+\]</span></p>
+<p>Jadi kita mencari titik perpotongan antara lingkaran dan parabola.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>x_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>, <span class="at">length.out =</span> <span class="dv">500</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>y_circle <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">4</span> <span class="sc">-</span> x_grid<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>y_circle_lower <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">sqrt</span>(<span class="dv">4</span> <span class="sc">-</span> x_grid<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>y_parabola <span class="ot">&lt;-</span> x_grid<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  x_grid,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  y_circle,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"y"</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>),</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Visualisasi SPNL"</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x_grid, y_circle_lower)</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x_grid, y_parabola)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>  hasil<span class="sc">$</span>solution[<span class="dv">1</span>],</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>  hasil<span class="sc">$</span>solution[<span class="dv">2</span>],</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">1.5</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">v =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="spnl_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Secara geometris, solusi SPNL adalah <strong>titik perpotongan kurva</strong>.</p>
+</section>
+<section id="mengapa-tebakan-awal-penting" class="level1" data-number="16">
+<h1 data-number="16"><span class="header-section-number">16</span> Mengapa Tebakan Awal Penting?</h1>
+<p>Berbeda dengan metode bisection yang memiliki sifat <em>bracketing</em>, metode Newton tidak selalu menjamin konvergensi untuk sembarang tebakan awal.</p>
+<p>Misalnya kita mencoba beberapa tebakan awal:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>starts <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  starts,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(x0) {</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    hasil <span class="ot">&lt;-</span> <span class="fu">newton_spnl</span>(F, J, x0)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">x1 =</span> hasil<span class="sc">$</span>solution[<span class="dv">1</span>],</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">x2 =</span> hasil<span class="sc">$</span>solution[<span class="dv">2</span>],</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">iterasi =</span> hasil<span class="sc">$</span>iterations,</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">konvergen =</span> hasil<span class="sc">$</span>converged</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+       x1        x2   iterasi konvergen 
+ 1.517490  1.302776  4.000000  1.000000 
+
+[[2]]
+       x1        x2   iterasi konvergen 
+-1.517490  1.302776  4.000000  1.000000 
+
+[[3]]
+       x1        x2   iterasi konvergen 
+ 1.517490  1.302776  4.000000  1.000000 
+
+[[4]]
+       x1        x2   iterasi konvergen 
+-1.517490  1.302776  4.000000  1.000000 </code></pre>
+</div>
+</div>
+<p>Hal ini menunjukkan bahwa <strong>satu SPNL dapat memiliki lebih dari satu solusi</strong>.</p>
+<p>Selain itu, solusi yang diperoleh Newton dapat bergantung pada tebakan awal.</p>
+</section>
+<section id="beberapa-solusi" class="level1" data-number="17">
+<h1 data-number="17"><span class="header-section-number">17</span> Beberapa Solusi</h1>
+<p>Untuk sistem</p>
+<p><span class="math display">\[
+\begin{cases}
+x^2+y^2-4=0,\\
+x^2-y-1=0,
+\end{cases}
+\]</span></p>
+<p>kita dapat mengeliminasi (y):</p>
+<p><span class="math display">\[
+y=x^2-1.
+\]</span></p>
+<p>Substitusi ke persamaan pertama:</p>
+<p><span class="math display">\[
+x^2+(x^2-1)^2-4=0.
+\]</span></p>
+<p>Dengan demikian, sistem dapat memiliki beberapa solusi.</p>
+<p>Coba gunakan beberapa tebakan awal yang berbeda:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>initial_values <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>solutions <span class="ot">&lt;-</span> <span class="fu">lapply</span>(</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  initial_values,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(x0) {</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">newton_spnl</span>(F, J, x0)</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">x0 =</span> <span class="fu">paste</span>(x0, <span class="at">collapse =</span> <span class="st">", "</span>),</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> res<span class="sc">$</span>solution[<span class="dv">1</span>],</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> res<span class="sc">$</span>solution[<span class="dv">2</span>],</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">iterasi =</span> res<span class="sc">$</span>iterations,</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">konvergen =</span> res<span class="sc">$</span>converged</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="fu">do.call</span>(rbind, solutions)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      x0         x         y iterasi konvergen
+1   1, 1  1.517490  1.302776       4      TRUE
+2  -1, 1 -1.517490  1.302776       4      TRUE
+3  1, -1  8.498013 -2.302776     100     FALSE
+4 -1, -1 -8.498013 -2.302776     100     FALSE
+5   2, 2  1.517490  1.302776       4      TRUE
+6  -2, 2 -1.517490  1.302776       4      TRUE</code></pre>
+</div>
+</div>
+<p>Eksperimen ini penting untuk memahami bahwa metode numerik tidak hanya berkaitan dengan memperoleh angka, tetapi juga dengan memahami <strong>perilaku algoritma</strong>.</p>
+</section>
+<section id="kriteria-berhenti" class="level1" data-number="18">
+<h1 data-number="18"><span class="header-section-number">18</span> Kriteria Berhenti</h1>
+<p>Dalam metode Newton SPNL, terdapat beberapa kemungkinan kriteria berhenti.</p>
+<section id="berdasarkan-residual" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="berdasarkan-residual"><span class="header-section-number">18.1</span> Berdasarkan residual</h2>
+<p>Kita dapat menggunakan</p>
+<p><span class="math display">\[
+\|\mathbf{F}(\mathbf{x}_k)\|&lt;\varepsilon.
+\]</span></p>
+<p>Artinya, nilai fungsi sudah cukup dekat dengan nol.</p>
+<p>Dalam R:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>(<span class="fu">F</span>(x)<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">&lt;</span> <span class="fl">1e-8</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+</section>
+<section id="berdasarkan-perubahan-solusi" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="berdasarkan-perubahan-solusi"><span class="header-section-number">18.2</span> Berdasarkan perubahan solusi</h2>
+<p>Kita juga dapat menggunakan</p>
+<p><span class="math display">\[
+\|\mathbf{x}_{k+1}-\mathbf{x}_k\|&lt;\varepsilon.
+\]</span></p>
+<p>Kriteria ini menunjukkan bahwa iterasi sudah menghasilkan perubahan solusi yang sangat kecil.</p>
+<p>Dalam implementasi:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>((x_new <span class="sc">-</span> x)<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">&lt;</span> tol</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="mengapa-residual-lebih-penting" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="mengapa-residual-lebih-penting"><span class="header-section-number">18.3</span> Mengapa residual lebih penting?</h2>
+<p>Perubahan solusi yang kecil belum tentu berarti kita telah mendapatkan akar.</p>
+<p>Misalnya, algoritma dapat berhenti karena perubahan (x) sangat kecil, tetapi</p>
+<p><span class="math display">\[
+\|\mathbf{F}(\mathbf{x})\|
+\]</span></p>
+<p>masih besar.</p>
+<p>Oleh karena itu, dalam praktik kita sebaiknya memeriksa <strong>keduanya</strong>:</p>
+<p><span class="math display">\[
+\|\mathbf{F}(\mathbf{x}_k)\|&lt;\varepsilon
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+\|\mathbf{x}_{k+1}-\mathbf{x}_k\|&lt;\varepsilon.
+\]</span></p>
+</section>
+</section>
+<section id="permasalahan-jacobian-singular" class="level1" data-number="19">
+<h1 data-number="19"><span class="header-section-number">19</span> Permasalahan Jacobian Singular</h1>
+<p>Pada setiap iterasi metode Newton kita harus menyelesaikan</p>
+<p><span class="math display">\[
+J(\mathbf{x}_k)\Delta\mathbf{x}
+=
+-\mathbf{F}(\mathbf{x}_k).
+\]</span></p>
+<p>Jika Jacobian singular atau hampir singular, penyelesaian sistem linear dapat bermasalah.</p>
+<p>Dalam R, kondisi ini dapat diperiksa menggunakan:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(<span class="fu">J</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -6</code></pre>
+</div>
+</div>
+<p>atau dengan memeriksa <em>condition number</em>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kappa</span>(<span class="fu">J</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)))</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.416667</code></pre>
+</div>
+</div>
+<p>Nilai <code>kappa()</code> yang sangat besar menunjukkan bahwa sistem dapat bersifat ill-conditioned.</p>
+<p>Hal ini merupakan salah satu alasan mengapa metode Newton dapat mengalami kegagalan meskipun secara teoritis terlihat sederhana.</p>
+</section>
+<section id="newton-spnl-dalam-bentuk-algoritma" class="level1" data-number="20">
+<h1 data-number="20"><span class="header-section-number">20</span> Newton SPNL dalam Bentuk Algoritma</h1>
+<p>Secara ringkas:</p>
+<pre class="text"><code>Input:
+    F(x)
+    J(x)
+    tebakan awal x0
+    toleransi epsilon
+    maksimum iterasi
+
+Set x = x0
+
+Untuk k = 1, 2, ..., max_iter:
+
+    Hitung F(x)
+
+    Jika ||F(x)|| &lt; epsilon:
+        berhenti
+
+    Hitung J(x)
+
+    Selesaikan:
+        J(x) delta = -F(x)
+
+    Update:
+        x_new = x + delta
+
+    Jika ||x_new - x|| &lt; epsilon:
+        berhenti
+
+    x = x_new
+
+Jika tidak berhenti:
+    metode dianggap belum konvergen</code></pre>
+</section>
+<section id="perbandingan-dengan-newton-raphson-satu-variabel" class="level1" data-number="21">
+<h1 data-number="21"><span class="header-section-number">21</span> Perbandingan dengan Newton-Raphson Satu Variabel</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 37%">
+<col style="width: 49%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aspek</th>
+<th>Newton satu variabel</th>
+<th>Newton SPNL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Peubah</td>
+<td>(x)</td>
+<td>()</td>
+</tr>
+<tr class="even">
+<td>Fungsi</td>
+<td>(f(x))</td>
+<td>(())</td>
+</tr>
+<tr class="odd">
+<td>Turunan</td>
+<td>(f’(x))</td>
+<td>Jacobian (J())</td>
+</tr>
+<tr class="even">
+<td>Update</td>
+<td>(x_{k+1}=x_k-)</td>
+<td>(_{k+1}=_k+)</td>
+</tr>
+<tr class="odd">
+<td>Langkah utama</td>
+<td>Pembagian</td>
+<td>Penyelesaian sistem linear</td>
+</tr>
+<tr class="even">
+<td>Solusi</td>
+<td>Skalar</td>
+<td>Vektor</td>
+</tr>
+<tr class="odd">
+<td>Geometri</td>
+<td>Titik pada garis</td>
+<td>Titik perpotongan kurva/surface</td>
+</tr>
+</tbody>
+</table>
+<p>Ide dasarnya tetap sama:</p>
+<blockquote class="blockquote">
+<p><strong>Evaluasi fungsi → gunakan informasi lokal → lakukan koreksi → ulangi.</strong></p>
+</blockquote>
+</section>
+<section id="eksperimen-pengaruh-tebakan-awal" class="level1" data-number="22">
+<h1 data-number="22"><span class="header-section-number">22</span> Eksperimen: Pengaruh Tebakan Awal</h1>
+<p>Mahasiswa dapat melakukan eksperimen dengan beberapa tebakan awal.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x0 =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="at">by =</span> <span class="fl">0.5</span>),</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y0 =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>, <span class="at">by =</span> <span class="fl">0.5</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">lapply</span>(</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(grid),</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(i) {</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    x0 <span class="ot">&lt;-</span> <span class="fu">c</span>(grid<span class="sc">$</span>x0[i], grid<span class="sc">$</span>y0[i])</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">newton_spnl</span>(F, J, x0),</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(res)) {</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">data.frame</span>(</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">x0 =</span> x0[<span class="dv">1</span>],</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>          <span class="at">y0 =</span> x0[<span class="dv">2</span>],</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>          <span class="at">x =</span> <span class="cn">NA</span>,</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>          <span class="at">y =</span> <span class="cn">NA</span>,</span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>          <span class="at">iterasi =</span> <span class="cn">NA</span>,</span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>          <span class="at">konvergen =</span> <span class="cn">FALSE</span></span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">x0 =</span> x0[<span class="dv">1</span>],</span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">y0 =</span> x0[<span class="dv">2</span>],</span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> res<span class="sc">$</span>solution[<span class="dv">1</span>],</span>
+<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> res<span class="sc">$</span>solution[<span class="dv">2</span>],</span>
+<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">iterasi =</span> res<span class="sc">$</span>iterations,</span>
+<span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">konvergen =</span> res<span class="sc">$</span>converged</span>
+<span id="cb36-37"><a href="#cb36-37" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb36-39"><a href="#cb36-39" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-40"><a href="#cb36-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-41"><a href="#cb36-41" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, results)</span>
+<span id="cb36-42"><a href="#cb36-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-43"><a href="#cb36-43" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(results)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    x0 y0          x         y iterasi konvergen
+1 -2.0 -2  0.5986110 -2.302776     100     FALSE
+2 -1.5 -2  2.1803156 -2.302776     100     FALSE
+3 -1.0 -2 -2.1119159 -2.302776     100     FALSE
+4 -0.5 -2  0.7818358 -2.302776     100     FALSE
+5  0.0 -2         NA        NA      NA     FALSE
+6  0.5 -2 -0.7818358 -2.302776     100     FALSE</code></pre>
+</div>
+</div>
+<p>Mahasiswa dapat mengamati:</p>
+<ol type="1">
+<li>Apakah semua tebakan awal menghasilkan solusi?</li>
+<li>Apakah semua tebakan awal menghasilkan solusi yang sama?</li>
+<li>Berapa iterasi yang diperlukan?</li>
+<li>Apakah terdapat tebakan awal yang menyebabkan kegagalan?</li>
+</ol>
+</section>
+<section id="latihan-1-menentukan-jacobian" class="level1" data-number="23">
+<h1 data-number="23"><span class="header-section-number">23</span> Latihan 1 — Menentukan Jacobian</h1>
+<p>Diberikan SPNL</p>
+<p><span class="math display">\[
+\begin{cases}
+x^2+y^2-5=0,\\
+e^x+y-1=0.
+\end{cases}
+\]</span></p>
+<p>Tentukan:</p>
+<ol type="1">
+<li>fungsi (f_1(x,y));</li>
+<li>fungsi (f_2(x,y));</li>
+<li>vektor fungsi ((x,y));</li>
+<li>matriks Jacobian (J(x,y)).</li>
+</ol>
+</section>
+<section id="latihan-2-implementasi-newton" class="level1" data-number="24">
+<h1 data-number="24"><span class="header-section-number">24</span> Latihan 2 — Implementasi Newton</h1>
+<p>Gunakan SPNL</p>
+<p><span class="math display">\[
+\begin{cases}
+x^2+y^2-5=0,\\
+x-y-1=0.
+\end{cases}
+\]</span></p>
+<p>Lakukan:</p>
+<ol type="1">
+<li>tentukan Jacobian;</li>
+<li>gunakan tebakan awal ((1,1));</li>
+<li>implementasikan metode Newton menggunakan R;</li>
+<li>gunakan toleransi (10^{-8});</li>
+<li>tampilkan tabel iterasi;</li>
+<li>tentukan solusi akhirnya;</li>
+<li>periksa residual pada solusi.</li>
+</ol>
+</section>
+<section id="latihan-3-eksperimen-tebakan-awal" class="level1" data-number="25">
+<h1 data-number="25"><span class="header-section-number">25</span> Latihan 3 — Eksperimen Tebakan Awal</h1>
+<p>Gunakan sistem</p>
+<p><span class="math display">\[
+\begin{cases}
+x^2+y^2-4=0,\\
+x^2-y-1=0.
+\end{cases}
+\]</span></p>
+<p>Gunakan tebakan awal:</p>
+<p><span class="math display">\[
+(-2,-2),(-2,2),(2,-2),(2,2),(1,1),(-1,1).
+\]</span></p>
+<p>Bandingkan hasilnya.</p>
+<p>Buat tabel:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Tebakan awal</th>
+<th>Solusi</th>
+<th style="text-align: right;">Iterasi</th>
+<th>Konvergen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>((-2,-2))</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>((-2,2))</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>((2,-2))</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>((2,2))</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>((1,1))</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>((-1,1))</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Kemudian jawab:</p>
+<blockquote class="blockquote">
+<p>Mengapa tebakan awal yang berbeda dapat menghasilkan solusi yang berbeda?</p>
+</blockquote>
+</section>
+<section id="latihan-4-visualisasi" class="level1" data-number="26">
+<h1 data-number="26"><span class="header-section-number">26</span> Latihan 4 — Visualisasi</h1>
+<p>Untuk sistem</p>
+<p><span class="math display">\[
+\begin{cases}
+x^2+y^2-4=0,\\
+x^2-y-1=0,
+\end{cases}
+\]</span></p>
+<p>buat grafik kedua kurva dan tandai solusi yang diperoleh metode Newton.</p>
+<p>Kemudian jelaskan secara geometris arti dari solusi SPNL.</p>
+</section>
+<section id="latihan-5-kasus-tiga-peubah" class="level1" data-number="27">
+<h1 data-number="27"><span class="header-section-number">27</span> Latihan 5 — Kasus Tiga Peubah</h1>
+<p>Pertimbangkan sistem:</p>
+<p><span class="math display">\[
+\begin{cases}
+x+y+z-3=0,\\
+x^2+y^2+z^2-5=0,\\
+e^x+y-z-1=0.
+\end{cases}
+\]</span></p>
+<p>Tentukan:</p>
+<ol type="1">
+<li>((x,y,z));</li>
+<li>Jacobian (J(x,y,z));</li>
+<li>implementasi Newton dalam R;</li>
+<li>solusi numeriknya;</li>
+<li>residual pada solusi;</li>
+<li>jumlah iterasi yang diperlukan.</li>
+</ol>
+</section>
+<section id="aktivitas-eksplorasi" class="level1" data-number="28">
+<h1 data-number="28"><span class="header-section-number">28</span> Aktivitas Eksplorasi</h1>
+<p>Gunakan metode Newton untuk SPNL dengan beberapa tebakan awal.</p>
+<p>Mahasiswa diminta membuat eksperimen untuk menjawab pertanyaan berikut:</p>
+<ol type="1">
+<li>Apakah metode selalu konvergen?</li>
+<li>Apakah solusi selalu sama?</li>
+<li>Apa yang terjadi jika tebakan awal sangat jauh dari solusi?</li>
+<li>Apa yang terjadi ketika Jacobian mendekati singular?</li>
+<li>Bagaimana pengaruh toleransi terhadap jumlah iterasi?</li>
+<li>Apakah solusi numerik benar-benar memenuhi persamaan awal?</li>
+</ol>
+<p>Tuliskan hasil eksperimen dalam bentuk tabel dan berikan interpretasi.</p>
+</section>
+<section id="ringkasan" class="level1" data-number="29">
+<h1 data-number="29"><span class="header-section-number">29</span> Ringkasan</h1>
+<p>Sistem Persamaan Nonlinear dapat dituliskan dalam bentuk</p>
+<p><span class="math display">\[
+\boxed{\mathbf{F}(\mathbf{x})=\mathbf{0}}.
+\]</span></p>
+<p>Metode Newton untuk SPNL menggunakan pendekatan linear lokal:</p>
+<p><span class="math display">\[
+\mathbf{F}(\mathbf{x}_k+\Delta\mathbf{x})
+\approx
+\mathbf{F}(\mathbf{x}_k)
++
+J(\mathbf{x}_k)\Delta\mathbf{x}.
+\]</span></p>
+<p>Koreksi () diperoleh dengan menyelesaikan</p>
+<p><span class="math display">\[
+\boxed{
+J(\mathbf{x}_k)\Delta\mathbf{x}
+=
+-\mathbf{F}(\mathbf{x}_k)
+}
+\]</span></p>
+<p>kemudian solusi diperbarui:</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{x}_{k+1}
+=
+\mathbf{x}_k+\Delta\mathbf{x}.
+}
+\]</span></p>
+<p>Hal-hal penting yang perlu diperhatikan adalah:</p>
+<ul>
+<li>tebakan awal;</li>
+<li>Jacobian;</li>
+<li>penyelesaian sistem linear;</li>
+<li>kriteria berhenti;</li>
+<li>residual;</li>
+<li>kemungkinan lebih dari satu solusi;</li>
+<li>kemungkinan kegagalan konvergensi.</li>
+</ul>
+<p>Secara konseptual, metode Newton untuk SPNL dapat diringkas sebagai:</p>
+<p><span class="math display">\[
+\boxed{
+\text{tebak}
+\rightarrow
+\text{evaluasi}
+\rightarrow
+\text{koreksi}
+\rightarrow
+\text{update}
+\rightarrow
+\text{periksa}
+\rightarrow
+\text{ulang}
+}
+\]</span></p>
+</section>
+<section id="pertanyaan-refleksi" class="level1" data-number="30">
+<h1 data-number="30"><span class="header-section-number">30</span> Pertanyaan Refleksi</h1>
+<ol type="1">
+<li>Apa perbedaan utama antara akar persamaan nonlinear dan solusi SPNL?</li>
+<li>Mengapa turunan (f’(x)) digantikan oleh Jacobian?</li>
+<li>Mengapa pada metode Newton SPNL kita menyelesaikan sistem linear?</li>
+<li>Mengapa kita tidak perlu menghitung invers Jacobian secara eksplisit?</li>
+<li>Apa arti geometris solusi SPNL?</li>
+<li>Mengapa tebakan awal dapat memengaruhi solusi?</li>
+<li>Mengapa residual perlu diperiksa setelah algoritma berhenti?</li>
+<li>Apa yang terjadi jika Jacobian singular?</li>
+<li>Mengapa suatu SPNL dapat memiliki lebih dari satu solusi?</li>
+<li>Apa perbedaan metode Newton SPNL dengan metode bisection pada persamaan satu variabel?</li>
+</ol>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Disalin!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Disalin!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

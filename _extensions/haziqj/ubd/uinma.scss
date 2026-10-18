@@ -1,0 +1,546 @@
+/*-- scss:defaults --*/
+
+/* =========================================================
+   UIN MATARAM BRAND COLORS
+   ========================================================= */
+
+$uin-green:  #0B6B3A;
+$uin-gold:   #D4AF37;
+$uin-dark:   #1E2D26;
+$uin-light:  #EAF4EE;
+$uin-gray:   #8A8F8C;
+$white:      #ffffff;
+
+/* =========================================================
+   UBD VARIABLE ALIASING (COMPATIBILITY)
+   ========================================================= */
+
+$right-arrow: "\2192";
+$whitecircle: "\25cb";
+
+$ubdblue:   $uin-green;
+$ubdteal:   lighten($uin-green, 20%);
+$ubdyellow: $uin-gold;
+$ubdred:    darken($uin-gold, 20%);
+$ubdblack:  $uin-dark;
+$ubdgray:   $uin-gray;
+
+// Colour text
+
+.ubdblue {
+  color: $ubdblue;
+}
+
+.ubdteal {
+  color: #52ba99;
+}
+
+.ubdyellow {
+  color: $ubdyellow;
+}
+
+.ubdred {
+  color: $ubdred;
+}
+
+.ubdgray {
+  color: $ubdgray;
+}
+
+/* =========================================================
+   FONTS
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url(https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,350,350i,400,400i);
+
+$font-family-sans-serif: "Roboto", sans-serif !default;
+$presentation-font-size-root: 36px;
+
+$presentation-heading-font: "Roboto", sans-serif !default;
+$presentation-heading-color: $ubdblack !default;
+$presentation-heading-font-weight: 200;
+
+
+$body-color: $ubdblack !default;
+$link-color: $ubdblue !default;
+$selection-bg: $ubdyellow !default;
+
+
+
+/*-- scss:rules --*/
+
+/* =========================================================
+   BASIC TYPOGRAPHY
+   ========================================================= */
+
+.reveal {
+  color: $body-color;
+}
+
+.reveal p {
+  font-weight: 350;
+  margin-top: 1em;
+}
+
+.reveal a {
+  line-height: 1.5em;
+}
+
+/* =========================================================
+   TITLE SLIDE
+   ========================================================= */
+
+// title and headings
+
+#title-slide {
+  text-align: left;
+  display: block;
+  margin-top: 1.8em;
+  margin-left: 1em;
+  width: 90%;
+
+  .title {
+    color: $body-color;
+    font-size: 1.4em;
+    font-weight: 400;
+  }
+
+  .subtitle {
+    color: #04383f;
+    font-style: italic;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+ 
+  .institute {
+    color:$ubdred
+  }
+  .quarto-title-institute {
+    font-style: bold;
+    color: $ubdred;
+  }
+  .quarto-title-affiliation,
+  .quarto-title-author-email {
+    font-style: italic;
+    font-size: 40%;
+    // color: #7F7F7F;
+  }
+
+  .date {
+    margin-top: 0.25em;
+  }
+
+  .author,
+  .quarto-title-author-name {
+    margin-top: 0.5em;
+    // font-style: italic;
+    font-size: 75%;
+    color: $body-color;
+  }
+
+  .quarto-title-authors {
+    display: flex;
+    justify-content: left;
+
+    .quarto-title-author {
+      padding-left: 0em;
+      padding-right: 0em;
+      width: 100%;
+    }
+  }
+
+}
+
+.reveal h1 {
+  font-weight: 300;
+}
+
+.reveal h2 {
+  font-weight: 400;
+  font-size: 1.35em;
+  margin-top: -0.2em;
+}
+
+.reveal h3 {
+  color: $ubdblue;
+  font-style: italic;
+  font-weight: 350;
+  font-size: 1em;
+  margin-bottom: -5px;
+}
+
+.reveal h4 {
+  color: $ubdgray;
+  font-weight: 350;
+  font-size: 0.9em;
+  padding-top: 0.5em;
+  margin-top: 0.25em;
+  // margin-bottom: -0.25em;
+}
+
+/* =========================================================
+   LISTS
+   ========================================================= */
+
+// alerts etc.
+
+.alert {
+  color: $ubdred;
+}
+
+.fg {
+  color: var(--col, $ubdblack);
+}
+
+.bg {
+  background-color: var(--col, #fff);
+  padding: 0.1em;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+// lists
+
+// Unordered lists
+
+.reveal ul {
+  font-weight: 300;
+  padding-left: 16px;
+  font-size: 92%;
+  margin-top: 0;
+  padding-top: 0;
+
+  li::marker {
+    color: mix($ubdblue, white, 70%);
+  }
+}
+
+.reveal ul ul {
+  list-style: none;
+  font-size: 85%;
+  padding: 0;
+  margin-bottom: 0;
+  
+  li:before {
+    content: $whitecircle;
+    color: mix($ubdblue, white, 60%);
+    display: inline-block;
+    width: 0.3em;
+    margin-left: -1.2em;
+    margin-right: 0.8em;
+  }
+}
+
+// Ordered lists
+
+.reveal ol {
+  font-weight: 300;
+  padding-left: 16px;
+  font-size: 92%;
+  margin-top: 0;
+  margin-bottom: 0;
+
+  li::marker {
+    color: $ubdblue;
+  }
+}
+
+.reveal ol ol {
+  font-size: 85%;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+
+/* =========================================================
+   CODE
+   ========================================================= */
+
+.reveal code {
+  font-size: 0.9em;
+  background-color: mix($ubdgray, white, 40%);
+  padding: 0.15em 0.25em;
+  border-radius: 5px;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.button {
+  display: inline-block;
+  padding: 6px 12px;
+  background: $ubdblue;
+  color: #fff !important;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: darken($ubdblue, 10%);
+}
+
+/// UBD Logo
+.reveal .slide-logo {
+  display: block;
+  position: fixed;
+  z-index: 0;
+  top: unset !important;
+  left: unset !important;
+  bottom: 5px !important;
+  right: 10px;
+  max-height: 10% !important;
+  min-height: 10% !important;
+}
+
+
+.slide-number, .reveal.has-logo .slide-number {
+  top: unset !important;
+  right: unset !important;
+  bottom: 10px !important;
+  left: 10px !important;
+  color: #999 !important;
+}
+/* =========================================================
+   REVEAL TOOLS — TOP RIGHT
+   ========================================================= */
+
+.reveal .slide-menu-button {
+  position: fixed;
+  top: 6px;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.reveal .slide-menu-button > * {
+  pointer-events: auto;
+}
+
+// Same for chalkboard buttons (with an offset)
+
+.reveal .slide-chalkboard-buttons {
+  position: fixed;
+  top: 12px;
+  right: 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+// Hide logo and slide number on the title slide
+.reveal .slide-number > a[href*='title-slide'] {
+  display: none;
+}
+
+// Format for inline code and chunks
+
+.reveal .slides code{
+  font-size: 0.9em;
+  color: $ubdblack;
+  background-color: mix($ubdgray, white, 40%);
+  padding: 0.05em;
+  border-radius: 5px;  
+}
+
+.reveal .slides code.sourceCode {
+  font-size: 1.2em;
+}
+
+div.cell-output.cell-output-stdout > pre > code {
+  /* Your styles here, e.g., */
+  font-size: 1.2em;  /* Adjust this value to your preference */
+  background-color: mix($ubdgray, white, 0%);
+  padding: 0.25em;
+  border-radius: 0px;  
+  overflow-y: visible;
+  // max-height: none;
+}
+
+// Make column text smaller
+
+.column > p {
+  font-size: 0.95em; 
+  margin-bottom: -1em;
+}
+
+// Progress bar
+
+.reveal .progress {
+  background: $ubdblue;
+  color: #D4AF37;
+  height: 1.5%;
+}
+
+
+// Convenient transition slides
+
+.reveal .transition-slide {
+  background-color: $ubdblue;
+}
+
+.reveal .transition-slide-ubdyellow {
+  background-color: $ubdyellow;
+}
+
+.reveal .transition-slide-ubdteal {
+  background-color: $ubdteal;
+}
+
+.reveal .transition-slide-ubdblue {
+  background-color: $ubdblue;
+}
+
+// Make math fonts smaller
+
+span.math.inline, span.math.display {
+  font-size: 0.9em;  
+}
+
+// Reduce space between display equation
+
+.reveal p:has(> .math.display) {
+    margin-bottom: -0.5em;  
+}
+
+.reveal figcaption {
+  margin-top: -0.2em;
+  //margin-bottom: -0.2em;
+}
+
+.reveal aside {
+  position: absolute;
+  top: 650px;
+  left: 25px;
+}
+
+.reveal blockquote {
+  margin-bottom: -0.25em
+}
+
+.small-text {
+  font-size: 0.6em;
+  margin-top: -5px;
+}
+
+.cell-output-display p {
+  margin-bottom: 0px; 
+}
+
+.cell {
+  margin-bottom: 0;  /* Removes any bottom margin on the .cell, reducing space below it */
+}
+
+.cell-output-display p,
+.column > p:first-of-type {
+  margin-bottom: 0;  /* Remove the space below the <p> inside .cell-output-display and the first <p> in .column */
+}
+
+.column > p:not(:first-of-type) {
+  margin-top: 0;  /* Remove the space above all <p> elements in .column except the first one */
+}
+
+// Too much space after figures
+
+div.quarto-figure.quarto-figure-center {
+    margin: 0 !important;  /* '0' eliminates the margin, and '!important' ensures this rule takes precedence */
+}
+
+// Target the table class for the striped and hover effects, then enhance it for the booktabs style
+.table-ubd {
+  // Remove default borders to start with a clean slate
+  border-collapse: collapse;
+  border: none;
+
+  // Target the header row for the top and midline
+  thead {
+    tr.header {
+      th {
+        border-top: 2px solid black; // Top line above headers
+        border-bottom: 2px solid black; // Midline below headers
+        padding: 8px; // Adjust padding as needed
+        text-align: left; // Adjust text alignment as preferred
+      }
+    }
+  }
+
+  tbody tr td {
+    border: none;
+  }
+  
+  // Target the last row in the tbody to apply the bottom border
+  tbody tr:last-child {
+    td {
+      border-top: 2px solid black; // Apply a solid bottom border
+    }
+  }
+}
+
+// Callout blocks
+
+.callout {
+  &.callout-note {
+    .callout-body {
+      
+      .callout-title {
+        p {
+          font-size: 1.2em; 
+        }
+      }
+
+      // Adjust the font size for content inside the callout block
+      .callout-content {
+        font-size: 1.3em; 
+        .math.inline {
+          font-size: 1em; 
+        }
+        .math.display {
+          font-size: 1.1em; 
+        }
+      }
+    }
+  }
+}
+
+.r-stack .cell .cell-output-display img {
+  width: auto !important; /* Return to default width */
+  max-width: 100% !important; /* Ensure it can grow beyond 100% of its container */
+  // transform: scale(1.2) !important; /* Enforce scaling; adjust as needed */
+}
+
+// Nudge
+.nudge-up-xxl {
+  transform: translateY(-110px);
+}
+
+.nudge-up-xl {
+  transform: translateY(-75px);
+}
+
+.nudge-up-large {
+  transform: translateY(-50px);
+}
+
+.nudge-up-medium {
+  transform: translateY(-37.5px);
+}
+
+.nudge-up {
+  transform: translateY(-25px);
+}
+
+.nudge-up-small {
+  transform: translateY(-12.5px);
+}
+
+.nudge-down {
+  transform: translateY(25px);
+}
+
+.nudge-down-medium {
+  transform: translateY(37.5px);
+}

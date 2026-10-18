@@ -1,0 +1,211 @@
+---
+title: "Mock Ujian Tengah Semester"
+subtitle: "Metode Numerik – MTK0335"
+author: "Indira Puteri Kinasih, Ph.D."
+format:
+  pdf:
+    documentclass: article
+classoption:
+  - 10pt
+  - a4paper
+geometry:
+  - margin=3cm 
+---
+
+## 1. Konsep Akar Persamaan Nonlinear
+
+**10 poin**
+
+Diberikan persamaan
+
+$$
+f(x)=x^3-x-2.
+$$
+
+a. Jelaskan apa yang dimaksud dengan akar persamaan nonlinear.
+b. Jelaskan mengapa mencari akar dari $f(x)=0$ dapat dipandang sebagai masalah mencari titik potong grafik $y=f(x)$ dengan sumbu-$x$.
+
+c. Tunjukkan bahwa persamaan tersebut memiliki sedikitnya satu akar pada interval $[1,2]$.
+
+## 2. Metode Bisection
+
+**15 poin**
+
+Gunakan metode **Bisection** untuk mencari akar persamaan
+
+$$
+f(x)=x^3-x-2=0
+$$
+
+pada interval $[1,2]$. Lakukan **empat iterasi**. Gunakan tabel berikut sebagai format jawaban:
+
+| Iterasi | $a$ | $b$ | $c=(a+b)/2$ | $f(c)$ | Interval baru |
+| ------: | --------: | ---------: | ------------------: | --------------: | ------------------ |
+|       1 |       |       |               |          |               |
+|       2 |       |       |               |          |               |
+|       3 |       |       |               |          |               |
+|       4 |       |       |               |          |               |
+
+a. Tentukan pendekatan akar setelah empat iterasi.
+
+b. Jelaskan mengapa interval selalu dapat dipersempit pada metode Bisection.
+
+c. Apa kelebihan utama metode Bisection dibandingkan metode yang menggunakan turunan?
+
+
+## 3. Newton-Raphson
+
+**15 poin**
+
+Gunakan metode **Newton-Raphson** untuk mencari akar
+
+$$
+f(x)=x^2-5=0.
+$$
+
+Gunakan tebakan awal $x_0=2$.
+
+a. Turunkan rumus iterasi Newton-Raphson untuk persamaan tersebut.
+
+b. Lakukan tiga iterasi. Gunakan: $x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}$. Tampilkan hasil dalam tabel:
+
+| Iterasi | $x_n$ | $f(x_n)$ | $x_{n+1}$ |
+| ------: | -----------: | ------------: | -------------: |
+|       0 |         |            |             |
+|       1 |         |            |             |
+|       2 |         |            |             |
+
+c. Bandingkan hasil pendekatan terakhir dengan nilai sebenarnya $\sqrt{5}\approx 2.2361$. Hitung galat absolutnya.
+
+## 4. Analisis Metode Akar Persamaan
+
+**10 poin**
+
+Seorang mahasiswa ingin mencari akar suatu persamaan nonlinear menggunakan dua metode. Metode A membutuhkan interval awal $[a,b]$ dan selalu menghasilkan interval yang semakin sempit. Metode B menggunakan turunan fungsi dan sebuah tebakan awal $x_0$.
+
+a. Identifikasi metode A dan metode B.
+
+b. Jelaskan perbedaan prinsip kedua metode tersebut.
+
+c. Jika turunan fungsi sulit dihitung atau tidak tersedia, metode mana yang lebih sesuai? Jelaskan.
+
+d. Mengapa Newton-Raphson dapat menghasilkan konvergensi yang sangat cepat ketika tebakan awal berada cukup dekat dengan akar?
+
+
+## 5. Deret Taylor
+
+**15 poin**
+
+Gunakan deret Taylor Maclaurin untuk mendekati nilai $e^{0.2}$. Diketahui:
+
+$$
+e^x
+=
+1+x+\frac{x^2}{2!}
++\frac{x^3}{3!}
++\frac{x^4}{4!}
++\cdots.
+$$
+
+a. Gunakan empat suku pertama untuk memperoleh pendekatan $e^{0.2}$.
+
+b. Gunakan lima suku pertama untuk memperoleh pendekatan yang lebih baik.
+
+c. Bandingkan kedua pendekatan tersebut dengan nilai $e^{0.2}\approx1.2214028$
+
+Hitung galat absolut masing-masing pendekatan.
+
+d. Jelaskan mengapa penambahan suku pada deret Taylor dapat meningkatkan ketelitian pendekatan.
+
+
+# INTERPOLASI
+
+## 6. Interpolasi Lagrange
+
+**20 poin**
+
+Diberikan data:
+
+| $x$ |$f(x)$ |
+| ------: | -----------: |
+|     0 |        1 |
+|     1 |        2 |
+|     2 |        5 |
+|     3 |       10 |
+
+Diketahui bahwa data tersebut berasal dari fungsi $f(x)=x^2+1$.
+
+a. Gunakan seluruh titik data untuk membentuk polinom interpolasi Lagrange. Tuliskan bentuk: $P(x)=\sum_{i=0}^{3}y_iL_i(x)$
+
+b. Sederhanakan polinom interpolasi yang diperoleh.
+
+c. Gunakan polinom tersebut untuk menghitung pendekatan:
+
+$$
+P(0.5),\qquad
+P(1.5),\qquad
+P(2.5).
+$$
+
+d. Hitung nilai sebenarnya menggunakan $f(x)=x^2+1$
+
+e. Hitung galat absolut untuk masing-masing titik. Gunakan tabel:
+
+| $x$ | $P(x)$ | $f(x)$ | Galat absolut |
+| -------: | -------------: | -------------: | ---------------: |
+|   0.5 |          |          |               |
+|   1.5 |          |          |               |
+|   2.5 |          |          |               |
+
+f. Jelaskan mengapa pada kasus ini hasil interpolasi dapat sama dengan nilai sebenarnya.
+
+
+# BONUS: Implementasi R
+
+**Bonus 5 poin**
+
+Tuliskan kode R untuk menghitung interpolasi Lagrange pada soal 7.
+
+Kode minimal harus dapat menerima:
+
+```r
+x <- c(0, 1, 2, 3)
+y <- c(1, 2, 5, 10)
+```
+
+dan menghasilkan nilai interpolasi untuk suatu nilai $x_0$.
+
+
+<!-- # Kriteria Penilaian -->
+
+<!-- | Komponen                  |   Bobot | -->
+<!-- | ------------------------- | ------: | -->
+<!-- | Pemahaman konsep akar PNL |      10 | -->
+<!-- | Bisection                 |      15 | -->
+<!-- | Newton-Raphson            |      15 | -->
+<!-- | Analisis metode PNL       |      10 | -->
+<!-- | Deret                     |      15 | -->
+<!-- | Deret Taylor              |      15 | -->
+<!-- | Interpolasi Lagrange      |      20 | -->
+<!-- | **Total**                 | **100** | -->
+<!-- | Bonus R                   |      +5 | -->
+
+<!-- # Fokus Kemampuan yang Diukur -->
+
+<!-- UTS ini dirancang untuk mengukur beberapa kemampuan yang berbeda. -->
+
+<!-- **Level 1: Pemahaman konsep** -->
+
+<!-- Mahasiswa mampu menjelaskan apa yang dimaksud dengan akar persamaan nonlinear, deret, jumlah parsial, dan interpolasi. -->
+
+<!-- **Level 2: Penerapan algoritma** -->
+
+<!-- Mahasiswa mampu menerapkan Bisection, Newton-Raphson, deret, dan interpolasi Lagrange secara manual. -->
+
+<!-- **Level 3: Analisis** -->
+
+<!-- Mahasiswa mampu membandingkan metode, menghitung galat, serta menjelaskan mengapa suatu metode menghasilkan pendekatan yang lebih baik. -->
+
+<!-- **Level 4: Implementasi** -->
+
+<!-- Mahasiswa mampu menerjemahkan algoritma numerik sederhana ke dalam R. -->

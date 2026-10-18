@@ -1,0 +1,658 @@
+---
+title: "Modul Metode Numerik"
+subtitle: "Aproksimasi Fungsi dan Analisis Galat"
+author: "Dr. Indira Puteri Kinasih"
+lang: id
+documentclass: book
+classoption:
+  - openany
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    theme: cosmo
+    
+  pdf:
+    toc: true
+    toc-depth: 3
+    geometry:
+      - top=2.5cm
+      - bottom=2.5cm
+      - left=3cm
+      - right=2.5cm
+    number-sections: false
+    include-in-header:
+      text: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhf{}
+        \fancyfoot[C]{\thepage}
+        \renewcommand{\headrulewidth}{0pt}
+  
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+\newpage
+
+# Pendahuluan
+
+Dalam metode numerik, banyak fungsi matematika tidak selalu dapat dihitung secara langsung dengan operasi aritmetika sederhana. Sebagai contoh,
+
+$$
+e^x,\qquad \sin x,\qquad \cos x,\qquad \ln(x)
+$$
+
+merupakan fungsi yang dalam komputasi numerik perlu dievaluasi dengan algoritma tertentu.
+
+Salah satu pendekatan yang dapat digunakan adalah **deret Taylor**. Dengan deret Taylor, suatu fungsi dapat dinyatakan sebagai penjumlahan tak hingga dari suku-suku polinomial.
+
+Dalam praktik numerik, deret tersebut tidak digunakan sampai tak hingga. Deret dipotong setelah sejumlah suku tertentu sehingga diperoleh suatu **aproksimasi**.
+
+Sebagai contoh,
+
+$$
+e^x
+=
+1+x+\frac{x^2}{2!}
++\frac{x^3}{3!}
++\frac{x^4}{4!}+\cdots
+$$
+
+Jika hanya digunakan tiga suku pertama, maka
+
+$$
+e^x \approx
+1+x+\frac{x^2}{2!}.
+$$
+
+Pendekatan tersebut menghasilkan nilai yang tidak persis sama dengan nilai sebenarnya. Selisih inilah yang berkaitan dengan **galat pemotongan (truncation error)**.
+
+# Tujuan Pembelajaran
+
+Setelah mempelajari materi ini, mahasiswa diharapkan mampu:
+
+1. menjelaskan konsep deret yang digunakan dalam metode numerik;
+2. menjelaskan deret Taylor dan Maclaurin;
+3. menggunakan deret Taylor untuk mengaproksimasi nilai fungsi;
+4. menghitung galat aproksimasi;
+5. menjelaskan pengaruh jumlah suku terhadap ketelitian hasil;
+6. menentukan kriteria penghentian berdasarkan toleransi galat;
+7. mengimplementasikan aproksimasi deret menggunakan R.
+
+# Deret sebagai Aproksimasi
+
+Misalkan diberikan deret
+
+$$
+S = a_0+a_1+a_2+a_3+\cdots.
+$$
+
+Jumlah hingga suku ke-$n$ disebut **jumlah parsial**:
+
+$$
+S_n=\sum_{k=0}^{n}a_k.
+$$
+
+Jika
+
+$$
+\lim_{n\to\infty}S_n=S,
+$$
+
+maka deret dikatakan konvergen menuju $S$.
+
+Dalam metode numerik, kita tidak mungkin menghitung jumlah suku sampai tak hingga. Oleh karena itu, kita menggunakan jumlah parsial $S_n$ sebagai pendekatan terhadap $S$.
+
+$$
+S\approx S_n.
+$$
+
+Semakin baik nilai $S_n$ mendekati $S$, semakin baik pula aproksimasi yang diperoleh.
+
+## Contoh sederhana
+
+Perhatikan deret
+
+$$
+1+\frac12+\frac14+\frac18+\cdots.
+$$
+
+Jumlah beberapa suku pertama adalah
+
+$$
+S_1=1,
+$$
+
+$$
+S_2=1+\frac12=1.5,
+$$
+
+$$
+S_3=1+\frac12+\frac14=1.75,
+$$
+
+dan
+
+$$
+S_4=1+\frac12+\frac14+\frac18=1.875.
+$$
+
+Deret tersebut sebenarnya mempunyai nilai
+
+$$
+S=2.
+$$
+
+Terlihat bahwa jumlah parsial semakin mendekati nilai sebenarnya.
+
+# Deret Taylor
+
+Deret Taylor merupakan salah satu konsep penting dalam metode numerik karena memungkinkan suatu fungsi didekati menggunakan polinom.
+
+Untuk fungsi $f(x)$ yang memiliki turunan yang cukup, deret Taylor di sekitar titik $a$ diberikan oleh
+
+$$
+f(x)
+=
+f(a)
++f'(a)(x-a)
++\frac{f''(a)}{2!}(x-a)^2
++\frac{f^{(3)}(a)}{3!}(x-a)^3
++\cdots.
+$$
+
+Dalam bentuk sigma,
+
+$$
+f(x)
+=
+\sum_{k=0}^{\infty}
+\frac{f^{(k)}(a)}{k!}(x-a)^k.
+$$
+
+Dalam komputasi numerik, deret tersebut dipotong sampai suku tertentu:
+
+$$
+f(x)\approx
+\sum_{k=0}^{n}
+\frac{f^{(k)}(a)}{k!}(x-a)^k.
+$$
+
+Hasil pemotongan ini disebut **polinom Taylor berorde $n$**.
+
+# Deret Maclaurin
+
+Deret Maclaurin merupakan kasus khusus dari deret Taylor dengan
+
+$$
+a=0.
+$$
+
+Dengan demikian,
+
+$$
+f(x)
+=
+f(0)
++f'(0)x
++\frac{f''(0)}{2!}x^2
++\frac{f^{(3)}(0)}{3!}x^3+\cdots.
+$$
+
+atau
+
+$$
+f(x)
+=
+\sum_{k=0}^{\infty}
+\frac{f^{(k)}(0)}{k!}x^k.
+$$
+
+Beberapa deret Maclaurin yang sering digunakan dalam metode numerik adalah sebagai berikut.
+
+## Fungsi eksponensial
+
+$$
+e^x
+=
+1+x+\frac{x^2}{2!}
++\frac{x^3}{3!}
++\frac{x^4}{4!}+\cdots
+$$
+
+## Fungsi sinus
+
+$$
+\sin x
+=
+x-\frac{x^3}{3!}
++\frac{x^5}{5!}
+-\frac{x^7}{7!}+\cdots
+$$
+
+## Fungsi cosinus
+
+$$
+\cos x
+=
+1-\frac{x^2}{2!}
++\frac{x^4}{4!}
+-\frac{x^6}{6!}+\cdots
+$$
+
+# Aproksimasi Fungsi dengan Deret
+
+Misalkan kita ingin menghitung
+
+$$
+e^{0.5}.
+$$
+
+Deret Maclaurin untuk $e^x$ adalah
+
+$$
+e^x=
+1+x+\frac{x^2}{2!}
++\frac{x^3}{3!}
++\frac{x^4}{4!}+\cdots.
+$$
+
+Dengan $x=0.5$,
+
+$$
+e^{0.5}
+=
+1+0.5+\frac{0.5^2}{2!}
++\frac{0.5^3}{3!}
++\frac{0.5^4}{4!}+\cdots.
+$$
+
+Jika digunakan tiga suku pertama,
+
+$$
+e^{0.5}
+\approx
+1+0.5+\frac{0.5^2}{2}.
+$$
+
+Sehingga
+
+$$
+e^{0.5}\approx1.625.
+$$
+
+Nilai sebenarnya adalah sekitar
+
+$$
+e^{0.5}\approx1.648721.
+$$
+
+Dengan demikian, pendekatan menggunakan tiga suku belum menghasilkan nilai yang sangat dekat.
+
+Jika lebih banyak suku digunakan, hasilnya akan semakin mendekati nilai sebenarnya.
+
+## Mengapa Jumlah Suku Penting?
+
+Perhatikan pendekatan berikut:
+
+$$
+e^{0.5}\approx
+1+0.5+\frac{0.5^2}{2!}
++\frac{0.5^3}{3!}+\cdots.
+$$
+
+Setiap suku tambahan memberikan kontribusi terhadap nilai aproksimasi.
+
+Misalnya:
+
+| Jumlah suku | Aproksimasi |
+|---:|---:|
+| 1 | 1.000000 |
+| 2 | 1.500000 |
+| 3 | 1.625000 |
+| 4 | 1.645833 |
+| 5 | 1.648438 |
+| 6 | 1.648698 |
+
+Terlihat bahwa hasil semakin mendekati
+
+$$
+e^{0.5}=1.648721\ldots
+$$
+
+Hal ini merupakan ide dasar penggunaan deret dalam metode numerik:
+
+> Deret tak hingga digantikan oleh jumlah hingga yang memberikan aproksimasi dengan tingkat ketelitian yang dapat diterima.
+
+## Galat Pemotongan
+
+Ketika deret tak hingga dipotong menjadi sejumlah suku tertentu, muncul galat.
+
+Misalkan nilai sebenarnya adalah
+
+$$
+x_{\text{true}}
+$$
+
+dan nilai aproksimasi adalah
+
+$$
+x_{\text{approx}}.
+$$
+
+Galat absolut didefinisikan sebagai
+
+$$
+E_a=
+|x_{\text{true}}-x_{\text{approx}}|.
+$$
+
+Untuk contoh sebelumnya,
+
+$$
+x_{\text{true}}=e^{0.5}
+$$
+
+dan
+
+$$
+x_{\text{approx}}=1.625.
+$$
+
+Maka
+
+$$
+E_a
+=
+|1.648721-1.625|
+$$
+
+sehingga
+
+$$
+E_a\approx0.023721.
+$$
+
+## Galat Relatif (Relative Error)
+
+Selain galat absolut, kita dapat menggunakan galat relatif:
+
+$$
+E_r=
+\left|
+\frac{x_{\text{true}}-x_{\text{approx}}}
+{x_{\text{true}}}
+\right|.
+$$
+
+Dalam persen,
+
+$$
+E_r(\%)=
+\left|
+\frac{x_{\text{true}}-x_{\text{approx}}}
+{x_{\text{true}}}
+\right|\times100\%.
+$$
+
+Untuk contoh $e^{0.5}$ dengan tiga suku,
+
+$$
+E_r(\%)
+\approx
+1.439\%.
+$$
+
+Galat relatif berguna untuk mengetahui seberapa besar kesalahan dibandingkan dengan ukuran nilai sebenarnya.
+
+## Remainder Taylor
+
+Ketika deret Taylor dipotong setelah suku ke-$n$, terdapat sisa atau remainder:
+
+$$
+R_n=f(x)-P_n(x).
+$$
+
+Bentuk remainder Taylor yang umum digunakan adalah
+
+$$
+R_n=
+\frac{f^{(n+1)}(\xi)}
+{(n+1)!}(x-a)^{n+1},
+$$
+
+dengan $\xi$ berada di antara $a$ dan $x$.
+
+Dengan demikian,
+
+$$
+f(x)=P_n(x)+R_n.
+$$
+
+Dalam konteks metode numerik:
+
+$$
+\boxed{
+\text{nilai sebenarnya}
+=
+\text{aproksimasi}
++
+\text{galat pemotongan}
+}
+$$
+
+Semakin kecil $R_n$, semakin baik aproksimasi yang diperoleh.
+
+# Implementasi Deret $e^x$ Menggunakan R
+
+Kita dapat membuat fungsi sederhana untuk menghitung $e^x$ menggunakan deret Maclaurin.
+
+```{r}
+#| code-line-numbers: true
+
+exp_series <- function(x, n) {
+  
+  result <- 0
+  
+  for (k in 0:n) {
+    result <- result + x^k / factorial(k)
+  }
+  
+  return(result)
+}
+
+exp_series(0.5, 5)
+
+```
+
+## Konvergensi Aproksimasi
+
+Kita dapat melihat bagaimana hasil berubah ketika jumlah suku ditambah.
+
+```{r}
+#| code-line-numbers: true
+
+x <- 0.5
+
+n <- 0:10
+
+approximation <- sapply(
+  n,
+  function(k) exp_series(x, k)
+)
+
+data.frame(
+  n = n,
+  approximation = approximation
+)
+```
+
+Nilai tersebut dapat dibandingkan dengan nilai sebenarnya.
+
+```{r}
+#| code-line-numbers: true
+
+true_value <- exp(x)
+
+error <- abs(true_value - approximation)
+
+data.frame(
+  n = n,
+  approximation = approximation,
+  error = error
+)
+```
+
+```{r}
+#| code-line-numbers: true
+
+plot(
+  n,
+  error,
+  type = "b",
+  log = "y",
+  xlab = "Orde polinom",
+  ylab = "Galat absolut",
+  main = "Konvergensi Deret Maclaurin untuk exp(x)"
+)
+```
+
+## Kriteria Penghentian
+
+Dalam komputasi numerik, kita tidak perlu terus menambahkan suku sampai jumlah suku yang sangat besar.
+
+Sebaliknya, kita dapat menentukan toleransi.
+
+Misalnya:
+
+$$ E_a<10^{-6}. $$
+
+Artinya, proses perhitungan dihentikan ketika galat diperkirakan telah lebih kecil dari $10^{-6}$.
+
+Dalam implementasi sederhana, kita dapat menggunakan perubahan nilai aproksimasi sebagai indikator:
+
+$$ |S_n-S_{n-1}|<\varepsilon. $$
+
+Contoh dalam R:
+
+```{r}
+#| code-line-numbers: true
+
+exp_series_tol <- function(x, tol = 1e-10, max_iter = 100) {
+  
+  sum <- 1
+  term <- 1
+  
+  for (k in 1:max_iter) {
+    
+    term <- term * x / k
+    new_sum <- sum + term
+    
+    if (abs(new_sum - sum) < tol) {
+      return(list(
+        approximation = new_sum,
+        terms = k + 1
+      ))
+    }
+    
+    sum <- new_sum
+  }
+  
+  return(list(
+    approximation = sum,
+    terms = max_iter + 1
+  ))
+}
+
+exp_series_tol(0.5)
+```
+
+
+# Contoh Deret Sinus
+
+Deret Maclaurin untuk sinus adalah
+
+$$ \sin x = x-\frac{x^3}{3!} +\frac{x^5}{5!} -\frac{x^7}{7!}+\cdots. $$
+
+Untuk mengaproksimasi $\sin(0.5)$,
+
+$$ \sin(0.5) \approx 0.5-\frac{0.5^3}{3!} +\frac{0.5^5}{5!}. $$
+
+Implementasi R:
+
+```{r}
+#| code-line-numbers: true
+
+sin_series <- function(x, n) {
+  
+  result <- 0
+  
+  for (k in 0:n) {
+    power <- 2 * k + 1
+    result <- result +
+      (-1)^k * x^power / factorial(power)
+  }
+  
+  return(result)
+}
+sin_series(0.5, 3)
+sin(0.5)
+```
+
+## Latihan 1
+
+Gunakan deret Maclaurin
+
+$$ e^x= \sum_{k=0}^{\infty}\frac{x^k}{k!} $$
+
+untuk mengaproksimasi $e^{0.8}$ menggunakan:
+
+3 suku;
+5 suku;
+10 suku.
+
+Hitung galat absolut masing-masing hasil.
+
+## Latihan 2
+Gunakan deret
+
+$$ \sin x= x-\frac{x^3}{3!} +\frac{x^5}{5!}-\cdots $$
+
+untuk mengaproksimasi
+
+$$ \sin(0.7). $$
+
+Bandingkan hasil dengan fungsi sin() dalam R.
+
+## Latihan 3
+
+Gunakan deret Maclaurin cosinus untuk menghitung
+
+$$ \cos(0.5). $$
+
+Tentukan jumlah suku minimum yang diperlukan agar galat absolut kurang dari
+
+$$ 10^{-6}. $$
+
+## Latihan 4
+
+Buatlah fungsi R yang menghitung $e^x$ menggunakan deret Maclaurin dengan parameter:
+
+nilai $x$;
+toleransi galat;
+jumlah iterasi maksimum.
+
+Fungsi harus berhenti ketika toleransi tercapai.
+
+## Latihan 5
+
+Buat grafik hubungan antara jumlah suku dan galat absolut untuk aproksimasi:
+
+$$ e^{0.5}. $$
+
+Gunakan sumbu-$y$ dalam skala logaritmik.

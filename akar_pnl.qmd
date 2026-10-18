@@ -1,0 +1,1388 @@
+---
+title: "Pencarian Akar Persamaan Non Linear 1 variabel"
+author: Dr. Indira Puteri Kinasih
+lang: id
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    theme: cosmo
+    
+  pdf:
+    toc: true
+    toc-depth: 3
+    number-sections: false
+  
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+\newpage
+
+# Capaian Pembelajaran
+
+Setelah pembelajaran ini, mahasiswa diharapkan mampu:
+
+1. menjelaskan konsep akar persamaan nonlinear;
+2. menjelaskan prinsip dan algoritma metode Biseksi;
+3. menjelaskan prinsip dan algoritma Newton-Raphson;
+4. mengimplementasikan kedua metode menggunakan R;
+5. membandingkan hasil dan kecepatan konvergensi kedua metode; dan
+6. menerapkan metode pencarian akar pada masalah kontekstual pendidikan.
+
+# Pengantar
+
+Kita ingin mencari nilai $x$ yang memenuhi
+
+$$
+f(x)=0.
+$$
+
+Untuk persamaan nonlinear yang sulit diselesaikan secara analitik, metode numerik memberikan pendekatan untuk memperoleh akar dengan tingkat ketelitian tertentu.
+
+Pada pertemuan ini digunakan dua metode:
+
+- **Biseksi**, menggunakan interval yang mengapit akar.
+- **Newton-Raphson**, menggunakan garis singgung dan turunan fungsi.
+
+# Contoh Awal
+
+Pertimbangkan
+
+$$
+f(x)=x^3-x-2.
+$$
+
+```{r}
+f <- function(x) {
+  x^3 - x - 2
+}
+
+f(1)
+f(2)
+```
+
+Karena
+
+$$
+f(1)=-2,\qquad f(2)=4,
+$$
+
+maka terjadi perubahan tanda pada interval $[1,2]$. Kita dapat menggunakan Biseksi.
+
+```{r}
+curve(
+  f(x), from = 0, to = 2,
+  xlab = "x", ylab = "f(x)",
+  main = "f(x) = x^3 - x - 2"
+)
+abline(h = 0, lty = 2)
+```
+
+Akar yang akan kita cari adalah sekitar
+
+$$
+x^* \approx 1.52138.
+$$
+
+# Metode Biseksi
+
+## Prinsip
+
+Jika
+
+$$
+f(a)f(b)<0,
+$$
+
+maka terdapat setidaknya satu akar pada interval $[a,b]$, dengan asumsi fungsi kontinu.
+
+Titik tengah:
+
+$$
+c=\frac{a+b}{2}.
+$$
+
+Jika $f(a)f(c)<0$, interval berikutnya adalah $[a,c]$. Jika tidak, interval berikutnya adalah $[c,b]$.
+
+```{r, echo=FALSE}
+# Metode Biseksi
+# Ilustrasi satu langkah iterasi
+
+f <- function(x) {
+  x^3 - x - 2
+}
+
+# Interval awal
+a <- 0
+b <- 2
+
+# Titik tengah
+c <- (a + b) / 2
+
+# Domain grafik
+x <- seq(-0.5, 2.2, length.out = 500)
+y <- f(x)
+
+plot(x, y,
+     type = "l",
+     lwd = 3,
+     xlab = "x",
+     ylab = "f(x)",
+     main = "Metode Biseksi",
+     ylim = c(-3, 5))
+
+# Sumbu-x
+abline(h = 0,
+       lty = 2,
+       lwd = 1.5)
+
+# Garis vertikal a, c, b
+abline(v = a,
+       lty = 3,
+       col = "red")
+
+abline(v = c,
+       lty = 3,
+       col = "darkgreen")
+
+abline(v = b,
+       lty = 3,
+       col = "red")
+
+# Titik a dan b
+points(a, f(a),
+       pch = 19,
+       cex = 1.5,
+       col = "red")
+
+points(b, f(b),
+       pch = 19,
+       cex = 1.5,
+       col = "red")
+
+# Titik tengah c
+points(c, f(c),
+       pch = 19,
+       cex = 1.5,
+       col = "darkgreen")
+
+# Label titik
+text(a, f(a),
+     labels = "a",
+     pos = 2,
+     cex = 1.2)
+
+text(b, f(b),
+     labels = "b",
+     pos = 4,
+     cex = 1.2)
+
+text(c, f(c),
+     labels = "c",
+     pos = 4,
+     cex = 1.2)
+
+# Garis interval awal
+segments(a, -2.7, b, -2.7,
+         lwd = 4,
+         col = "gray50")
+
+# Titik pembagi
+segments(c, -2.9, c, -2.5,
+         lwd = 3,
+         col = "darkgreen")
+
+# Label interval
+text((a + c) / 2, -2.95,
+     "[a,c]",
+     cex = 1.1)
+
+text((c + b) / 2, -2.95,
+     "[c,b]",
+     cex = 1.1)
+
+# Keterangan interval yang dipertahankan
+text(1.5, -2.4,
+     "Akar berada pada [c,b]",
+     cex = 1.1,
+     font = 2)
+```
+
+Salah satu kriteria berhenti:
+
+$$
+|b-a|<\varepsilon.
+$$
+
+Kita juga dapat menggunakan
+
+$$
+|f(c)|<\varepsilon.
+$$
+
+## Implementasi R
+
+```{r}
+biseksi <- function(f, a, b, tol = 1e-6, max_iter = 100) {
+
+  if (f(a) * f(b) > 0) {
+    stop("Tidak ada perubahan tanda pada interval [a,b].")
+  }
+
+  hasil <- data.frame(
+    iterasi = integer(),
+    a = numeric(),
+    b = numeric(),
+    c = numeric(),
+    f_c = numeric(),
+    error = numeric()
+  )
+
+  for (i in 1:max_iter) {
+
+    c <- (a + b) / 2
+    fc <- f(c)
+    error <- abs(b - a)
+
+    hasil <- rbind(
+      hasil,
+      data.frame(
+        iterasi = i,
+        a = a,
+        b = b,
+        c = c,
+        f_c = fc,
+        error = error
+      )
+    )
+
+    if (abs(fc) < tol || error < tol) {
+      break
+    }
+
+    if (f(a) * fc < 0) {
+      b <- c
+    } else {
+      a <- c
+    }
+  }
+
+  list(
+    akar = c,
+    iterasi = i,
+    tabel = hasil
+  )
+}
+```
+
+Jalankan:
+
+```{r}
+hasil_biseksi <- biseksi(
+  f = f,
+  a = 1,
+  b = 2,
+  tol = 1e-6
+)
+
+hasil_biseksi$akar
+```
+
+Tabel iterasi:
+
+```{r}
+hasil_biseksi$tabel
+```
+
+## Visualisasi Konvergensi
+
+```{r}
+hasil <- hasil_biseksi$tabel
+
+plot(
+  hasil$iterasi,
+  hasil$c,
+  type = "b",
+  xlab = "Iterasi",
+  ylab = "Estimasi akar",
+  main = "Konvergensi Metode Biseksi"
+)
+
+abline(h = hasil_biseksi$akar, lty = 2)
+```
+
+# Metode Newton-Raphson
+
+## Prinsip
+
+Newton-Raphson menggunakan rumus
+
+$$
+x_{n+1}
+=
+x_n-\frac{f(x_n)}{f'(x_n)}.
+$$
+
+Untuk
+
+$$
+f(x)=x^3-x-2,
+$$
+
+diperoleh
+
+$$
+f'(x)=3x^2-1.
+$$
+
+Newton-Raphson memerlukan tebakan awal $x_0$.
+
+## Implementasi R
+
+```{r}
+f_prime <- function(x) {
+  3*x^2 - 1
+}
+
+newton_raphson <- function(f, f_prime, x0,
+                           tol = 1e-6,
+                           max_iter = 100) {
+
+  hasil <- data.frame(
+    iterasi = integer(),
+    x = numeric(),
+    f_x = numeric(),
+    error = numeric()
+  )
+
+  x <- x0
+
+  for (i in 1:max_iter) {
+
+    fx <- f(x)
+    dfx <- f_prime(x)
+
+    if (abs(dfx) < 1e-12) {
+      stop("Turunan terlalu dekat dengan nol.")
+    }
+
+    x_new <- x - fx / dfx
+    error <- abs(x_new - x)
+
+    hasil <- rbind(
+      hasil,
+      data.frame(
+        iterasi = i,
+        x = x_new,
+        f_x = f(x_new),
+        error = error
+      )
+    )
+
+    if (error < tol) {
+      x <- x_new
+      break
+    }
+
+    x <- x_new
+  }
+
+  list(
+    akar = x,
+    iterasi = i,
+    tabel = hasil
+  )
+}
+```
+
+Gunakan $x_0=1.5$:
+
+```{r}
+hasil_newton <- newton_raphson(
+  f = f,
+  f_prime = f_prime,
+  x0 = 1.5,
+  tol = 1e-6
+)
+
+hasil_newton$akar
+```
+
+Tabel iterasi:
+
+```{r}
+hasil_newton$tabel
+```
+
+# Perbandingan Kedua Metode
+
+```{r}
+perbandingan <- data.frame(
+  metode = c("Biseksi", "Newton-Raphson"),
+  iterasi = c(
+    hasil_biseksi$iterasi,
+    hasil_newton$iterasi
+  ),
+  akar = c(
+    hasil_biseksi$akar,
+    hasil_newton$akar
+  )
+)
+
+perbandingan
+```
+
+Pertanyaan diskusi:
+
+1. Metode mana yang membutuhkan lebih sedikit iterasi?
+2. Mengapa Newton-Raphson dapat lebih cepat?
+3. Apa informasi tambahan yang dibutuhkan Newton-Raphson?
+4. Mengapa Biseksi cenderung lebih stabil?
+5. Apa yang terjadi jika tebakan awal Newton-Raphson terlalu jauh dari akar?
+
+# Eksperimen Newton-Raphson
+
+Coba beberapa tebakan awal.
+
+```{r}
+for (x0 in c(0.5, 1, 1.5, 2, 3)) {
+
+  hasil <- newton_raphson(
+    f = f,
+    f_prime = f_prime,
+    x0 = x0
+  )
+
+  cat(
+    "x0 =", x0,
+    "| akar =", hasil$akar,
+    "| iterasi =", hasil$iterasi,
+    "\n"
+  )
+}
+```
+
+Diskusikan pengaruh nilai $x_0$ terhadap konvergensi.
+
+# Konteks Pendidikan: Target Nilai
+
+Sekarang kita gunakan konteks **EduNumData**.
+
+Misalkan suatu model sederhana menggambarkan hubungan jam belajar per minggu $x$ dengan nilai matematika:
+
+$$
+\hat y=55+5x-0.1x^2.
+$$
+
+Sekolah ingin mengetahui:
+
+> Berapa jam belajar yang diperlukan agar prediksi nilai mencapai 80?
+
+Kita mempunyai
+
+$$
+55+5x-0.1x^2=80.
+$$
+
+Ubah menjadi
+
+$$
+f(x)=55+5x-0.1x^2-80=0.
+$$
+
+## Membuat Fungsi
+
+```{r}
+f_belajar <- function(x) {
+  55 + 5*x - 0.1*x^2 - 80
+}
+
+curve(
+  f_belajar(x),
+  from = 0,
+  to = 20,
+  xlab = "Jam belajar per minggu",
+  ylab = "f(x)",
+  main = "Pencarian Jam Belajar untuk Target Nilai 80"
+)
+
+abline(h = 0, lty = 2)
+```
+
+Periksa interval:
+
+```{r}
+f_belajar(0)
+f_belajar(20)
+```
+
+## Biseksi
+
+```{r}
+hasil_belajar_biseksi <- biseksi(
+  f = f_belajar,
+  a = 0,
+  b = 20,
+  tol = 1e-6
+)
+
+hasil_belajar_biseksi$akar
+```
+
+## Newton-Raphson
+
+Turunannya:
+
+$$
+f'(x)=5-0.2x.
+$$
+
+```{r}
+f_belajar_prime <- function(x) {
+  5 - 0.2*x
+}
+
+hasil_belajar_newton <- newton_raphson(
+  f = f_belajar,
+  f_prime = f_belajar_prime,
+  x0 = 5,
+  tol = 1e-6
+)
+
+hasil_belajar_newton$akar
+```
+
+## Interpretasi
+
+Hasil numerik memberikan nilai $x$ yang memenuhi model dan menghasilkan prediksi nilai 80.
+
+Namun, mahasiswa perlu membedakan:
+
+> **hasil model bukan otomatis rekomendasi kausal.**
+
+Pencarian akar hanya menjawab pertanyaan matematis berdasarkan fungsi yang diberikan. Kita belum dapat menyimpulkan bahwa menambah jam belajar pasti menyebabkan peningkatan nilai sebesar tertentu.
+
+# Hubungan dengan EduNumData v1
+
+Jika file `EduNumData_v1.xlsx` tersedia di folder kerja, data siswa dapat dibaca menggunakan `readxl`.
+
+```{r}
+# install.packages("readxl")  # jalankan sekali jika belum terpasang
+
+library(readxl)
+
+student <- read_excel(
+  "data/EduNumData_lite.xlsx",
+  sheet = "student"
+)
+
+head(student)
+summary(student)
+```
+
+Eksplorasi awal:
+
+```{r}
+plot(
+  student$study_hours,
+  student$numeracy_pretest,
+  xlab = "Jam belajar per minggu",
+  ylab = "Nilai numerasi awal",
+  main = "Jam Belajar dan Nilai Numerasi Awal"
+)
+```
+
+Pada tahap ini, fokus mahasiswa tetap pada **algoritma pencarian akar**. Data pendidikan digunakan sebagai konteks, sedangkan pembentukan model regresi akan dibahas pada materi berikutnya.
+
+# Latihan
+
+## Latihan 1 — Biseksi
+
+Gunakan
+
+$$
+f(x)=x^3-4x-9.
+$$
+
+1. Tunjukkan bahwa terdapat perubahan tanda pada interval $[2,3]$.
+2. Cari akar dengan metode Biseksi.
+3. Gunakan toleransi $10^{-5}$.
+4. Tampilkan tabel iterasi.
+5. Tentukan jumlah iterasi.
+
+## Latihan 2 — Newton-Raphson
+
+Untuk fungsi yang sama,
+
+$$
+f(x)=x^3-4x-9,
+$$
+
+gunakan
+
+$$
+f'(x)=3x^2-4.
+$$
+
+1. Gunakan $x_0=2.5$.
+2. Gunakan toleransi $10^{-5}$.
+3. Tampilkan tabel iterasi.
+4. Bandingkan hasil dengan Biseksi.
+
+## Latihan 3 — Perbandingan
+
+Buat tabel:
+
+| Metode | Akar | Iterasi | Galat |
+|---|---:|---:|---:|
+| Biseksi | | | |
+| Newton-Raphson | | | |
+
+Tuliskan kesimpulan mengenai kelebihan dan kekurangan kedua metode.
+
+# Latihan Kontekstual EduNumData
+
+Misalkan sekolah menggunakan model
+
+$$
+\hat y=60+4x-0.05x^2,
+$$
+
+dengan $x$ = jam belajar per minggu.
+
+Target nilai adalah 85.
+
+Mahasiswa diminta:
+
+1. membentuk persamaan $f(x)=0$;
+2. menentukan interval untuk Biseksi;
+3. mencari solusi dengan Biseksi;
+4. mencari solusi dengan Newton-Raphson;
+5. membandingkan jumlah iterasi;
+6. memberikan interpretasi hasil dalam konteks pendidikan.
+
+# Refleksi
+
+Jawab secara singkat:
+
+1. Mengapa Biseksi membutuhkan interval?
+2. Mengapa Newton-Raphson membutuhkan tebakan awal?
+3. Mengapa Biseksi tidak membutuhkan turunan?
+4. Mengapa Newton-Raphson dapat gagal?
+5. Apa arti kriteria berhenti dalam metode numerik?
+6. Apakah hasil pencarian akar dapat langsung dianggap sebagai rekomendasi pendidikan? Jelaskan.
+
+# Ringkasan
+
+Metode pencarian akar digunakan untuk mencari nilai $x$ yang memenuhi
+
+$$
+f(x)=0.
+$$
+
+Biseksi menggunakan interval yang mengapit akar:
+
+$$
+c=\frac{a+b}{2}.
+$$
+
+Newton-Raphson menggunakan:
+
+$$
+x_{n+1}
+=
+x_n-\frac{f(x_n)}{f'(x_n)}.
+$$
+
+Biseksi relatif robust tetapi biasanya lebih lambat. Newton-Raphson biasanya lebih cepat ketika kondisi awal baik, tetapi lebih sensitif terhadap tebakan awal dan memerlukan turunan.
+
+Pada masalah pendidikan, metode tersebut dapat digunakan setelah suatu masalah dirumuskan dalam bentuk persamaan nonlinear.
+
+# Tugas
+
+Gunakan salah satu variabel pada **EduNumData v1** untuk membuat masalah pencarian akar.
+
+Laporan minimal memuat:
+
+1. perumusan masalah;
+2. fungsi $f(x)$;
+3. interval atau tebakan awal;
+4. implementasi Biseksi;
+5. implementasi Newton-Raphson;
+6. tabel iterasi;
+7. perbandingan jumlah iterasi;
+8. interpretasi hasil; dan
+9. kode R.
+
+**Ketentuan:** mahasiswa wajib menggunakan fungsi `biseksi()` dan `newton_raphson()` yang dibuat sendiri. Jangan hanya menggunakan `uniroot()` atau fungsi pencarian akar bawaan lainnya.
+
+# Metode Regula Falsi
+
+## Prinsip
+
+Metode Regula Falsi (*False Position*) juga menggunakan interval $[a,b]$ yang mengapit akar, dengan syarat:
+
+$f(a)f(b)<0$.
+
+Berbeda dengan metode Biseksi yang menggunakan titik tengah sebagai estimasi akar, metode Regula Falsi menggunakan titik potong garis secan dengan sumbu-$x$.
+
+Titik estimasi akar dihitung dengan:
+
+$$
+c = \frac{a f(b)-b f(a)}{f(b)-f(a)}.
+$$
+
+Secara geometris, kita membuat garis yang menghubungkan titik $(a,f(a))$ dan $(b,f(b))$.
+
+Titik ketika garis tersebut memotong sumbu-$x$ digunakan sebagai estimasi akar.
+
+## Implementasi Regula Falsi dalam R
+
+```{r}
+regula_falsi <- function(f, a, b,
+                         tol = 1e-6,
+                         max_iter = 100) {
+
+  if (f(a) * f(b) > 0) {
+    stop("Tidak ada perubahan tanda pada interval [a,b].")
+  }
+
+  hasil <- data.frame(
+    iterasi = integer(),
+    a = numeric(),
+    b = numeric(),
+    c = numeric(),
+    f_c = numeric(),
+    error = numeric()
+  )
+
+  c_old <- NA
+
+  for (i in 1:max_iter) {
+
+    fa <- f(a)
+    fb <- f(b)
+
+    c <- (a * fb - b * fa) / (fb - fa)
+    fc <- f(c)
+
+    if (is.na(c_old)) {
+      error <- NA
+    } else {
+      error <- abs(c - c_old)
+    }
+
+    hasil <- rbind(
+      hasil,
+      data.frame(
+        iterasi = i,
+        a = a,
+        b = b,
+        c = c,
+        f_c = fc,
+        error = error
+      )
+    )
+
+    if (abs(fc) < tol ||
+        (!is.na(error) && error < tol)) {
+      break
+    }
+
+    if (fa * fc < 0) {
+      b <- c
+    } else {
+      a <- c
+    }
+
+    c_old <- c
+  }
+
+  list(
+    akar = c,
+    iterasi = i,
+    tabel = hasil
+  )
+}
+```
+
+
+# Metode Fixed Point
+
+## Ide Dasar
+
+Metode *Fixed Point Iteration* merupakan salah satu metode iteratif untuk mencari akar persamaan
+
+$$
+f(x)=0.
+$$
+
+Ide utama metode ini adalah mengubah persamaan tersebut ke dalam bentuk
+
+$$
+x=g(x).
+$$
+
+Jika suatu nilai $x^*$ memenuhi
+
+$$
+x^*=g(x^*),
+$$
+
+maka $x^*$ disebut sebagai **fixed point** dari fungsi $g(x)$.
+
+Dengan demikian, mencari akar persamaan $f(x)=0$ dapat dilakukan dengan mencari *fixed point* dari fungsi $g(x)$.
+
+Proses iterasinya diberikan oleh
+
+$$
+\boxed{x_{n+1}=g(x_n)}
+$$
+
+Artinya, nilai hasil dari iterasi sebelumnya digunakan sebagai input untuk memperoleh nilai pada iterasi berikutnya.
+
+Secara sederhana:
+
+$$
+x_0
+\rightarrow
+g(x_0)=x_1
+\rightarrow
+g(x_1)=x_2
+\rightarrow
+g(x_2)=x_3
+\rightarrow \cdots
+$$
+
+Jika proses tersebut konvergen, maka
+
+$$
+x_n\rightarrow x^*
+$$
+
+dengan
+
+$$
+x^*=g(x^*).
+$$
+
+
+## Mengapa Disebut Fixed Point?
+
+Istilah *fixed point* berasal dari kondisi
+
+$$
+g(x^*)=x^*.
+$$
+
+Nilai $x^*$ tidak berubah setelah fungsi $g$ diterapkan.
+
+Secara geometris, kita dapat menggambarkan dua fungsi:
+
+$$
+y=g(x)
+$$
+
+dan
+
+$$
+y=x.
+$$
+
+Fixed point merupakan titik perpotongan antara kedua kurva tersebut.
+
+Dengan kata lain,
+
+$$
+g(x^*)=x^*
+$$
+
+terjadi ketika
+
+$$
+y=g(x)
+$$
+
+berpotongan dengan
+
+$$
+y=x.
+$$
+
+
+## Mengubah $f(x)=0$ Menjadi $x=g(x)$
+
+Langkah pertama dalam metode fixed point adalah menyusun kembali persamaan
+
+$$
+f(x)=0
+$$
+
+menjadi
+
+$$
+x=g(x).
+$$
+
+Sebagai contoh, misalkan diberikan
+
+$$
+f(x)=x^2+x-2.
+$$
+
+Kita ingin mencari akar dari
+
+$$
+x^2+x-2=0.
+$$
+
+Persamaan tersebut dapat ditulis sebagai
+
+$$
+x^2=2-x.
+$$
+
+Kemudian diperoleh
+
+$$
+x=\sqrt{2-x}.
+$$
+
+Dengan demikian, kita dapat mendefinisikan
+
+$$
+\boxed{g(x)=\sqrt{2-x}}.
+$$
+
+Proses iterasinya adalah
+
+$$
+\boxed{x_{n+1}=\sqrt{2-x_n}}.
+$$
+
+
+## Contoh Perhitungan
+
+Pertimbangkan persamaan
+
+$$
+x^2+x-2=0.
+$$
+
+Persamaan tersebut mempunyai dua akar:
+
+$$
+x=1
+$$
+
+dan
+
+$$
+x=-2.
+$$
+
+Kita akan mencari akar positif $x=1$ menggunakan metode fixed point dengan
+$x^2 = 2-x$ sehingga $x = \sqrt{2-x}$
+
+$$
+g(x)=\sqrt{2-x}.
+$$
+
+Misalkan digunakan tebakan awal
+
+$$
+x_0=0.
+$$
+
+Iterasi pertama:
+
+$$
+x_1=\sqrt{2-x_0}
+$$
+
+$$
+=\sqrt{2-0}
+$$
+
+$$
+=1.4142.
+$$
+
+Iterasi kedua:
+
+$$
+x_2=\sqrt{2-x_1}
+$$
+
+$$
+=\sqrt{2-1.4142}
+$$
+
+$$
+\approx0.7654.
+$$
+
+Iterasi ketiga:
+
+$$
+x_3=\sqrt{2-0.7654}
+\approx1.1111.
+$$
+
+Iterasi selanjutnya memberikan:
+
+| Iterasi | $x_n$ | $|x_n-x_{n-1}|$ |
+|---:|---:|---:|
+| 0 | 0.0000 | -- |
+| 1 | 1.4142 | 1.4142 |
+| 2 | 0.7654 | 0.6488 |
+| 3 | 1.1111 | 0.3457 |
+| 4 | 0.9428 | 0.1683 |
+| 5 | 1.0291 | 0.0863 |
+| 6 | 0.9854 | 0.0437 |
+| 7 | 1.0073 | 0.0219 |
+| 8 | 0.9963 | 0.0110 |
+| 9 | 1.0018 | 0.0055 |
+| 10 | 0.9991 | 0.0027 |
+
+Terlihat bahwa nilai $x_n$ bergerak semakin dekat ke
+
+$$
+\boxed{x^*=1}.
+$$
+
+Jadi,
+
+$$
+\lim_{n\rightarrow\infty}x_n=1.
+$$
+
+
+## Mengapa Iterasi Dapat Konvergen?
+
+Tidak semua bentuk $x=g(x)$ akan menghasilkan proses yang konvergen.
+
+Salah satu syarat penting untuk konvergensi adalah
+
+$$
+\boxed{|g'(x)|<1}
+$$
+
+di sekitar *fixed point*.
+
+Secara lebih umum, jika pada suatu interval $I$ berlaku
+
+$$
+g(x)\in I
+$$
+
+dan
+
+$$
+|g'(x)|\leq k<1,
+$$
+
+maka iterasi *fixed point* akan konvergen ke *fixed point* di dalam interval tersebut.
+
+Intuisinya adalah bahwa fungsi $g(x)$ harus cukup "landai". Jika kemiringannya terlalu besar, kesalahan dari satu iterasi ke iterasi berikutnya dapat semakin besar.
+
+
+## Hubungan dengan Error
+
+Misalkan $x^*$ adalah solusi sebenarnya dan
+
+$$
+e_n=x_n-x^*
+$$
+
+adalah error pada iterasi ke-$n$.
+
+Karena
+
+$$
+x_{n+1}=g(x_n)
+$$
+
+dan
+
+$$
+x^*=g(x^*),
+$$
+
+maka
+
+$$
+e_{n+1}
+=
+g(x_n)-g(x^*).
+$$
+
+Dengan pendekatan Taylor,
+
+$$
+e_{n+1}
+\approx
+g'(x^*)e_n.
+$$
+
+Dengan demikian,
+
+$$
+\boxed{e_{n+1}\approx g'(x^*)e_n}.
+$$
+
+Jika
+
+$$
+|g'(x^*)|<1,
+$$
+
+maka secara umum error semakin kecil.
+
+Sebagai contoh, jika
+
+$$
+g'(x^*)=0.2,
+$$
+
+maka kira-kira
+
+$$
+e_{n+1}\approx0.2e_n.
+$$
+
+Artinya, error berikutnya hanya sekitar 20% dari error sebelumnya.
+
+Sebaliknya, jika
+
+$$
+|g'(x^*)|>1,
+$$
+
+error cenderung membesar sehingga iterasi dapat divergen.
+
+
+## Tidak Semua Bentuk $g(x)$ Sama
+
+Persamaan yang sama dapat diubah menjadi beberapa bentuk *fixed point*.
+
+Untuk persamaan
+
+$$
+x^2+x-2=0,
+$$
+
+kita dapat menulis
+
+$$
+x=\sqrt{2-x}
+$$
+
+atau
+
+$$
+x(x+1)=2,
+$$
+
+sehingga
+
+$$
+x=\frac{2}{x+1}.
+$$
+
+Jadi terdapat dua kemungkinan fungsi:
+
+$$
+g_1(x)=\sqrt{2-x}
+$$
+
+dan
+
+$$
+g_2(x)=\frac{2}{x+1}.
+$$
+
+Keduanya secara aljabar menghasilkan persamaan yang sama, tetapi karakteristik iterasinya dapat berbeda.
+
+Hal ini menunjukkan bahwa dalam metode fixed point:
+
+> **Pemilihan bentuk $g(x)$ sangat penting karena menentukan apakah iterasi akan konvergen atau divergen.**
+
+
+## Kriteria Berhenti
+
+Dalam komputer, iterasi tidak dilakukan sampai
+
+$$
+x_{n+1}=x_n
+$$
+
+secara persis.
+
+Sebagai gantinya, digunakan toleransi tertentu, misalnya
+
+$$
+\varepsilon=10^{-6}.
+$$
+
+Salah satu kriteria berhenti yang umum adalah
+
+$$
+\boxed{|x_{n+1}-x_n|<\varepsilon}.
+$$
+
+Kriteria ini memeriksa apakah perubahan nilai $x$ sudah cukup kecil.
+
+Kita juga dapat menggunakan residual:
+
+$$
+\boxed{|f(x_n)|<\varepsilon}.
+$$
+
+Kedua kriteria tersebut memiliki interpretasi berbeda:
+
+- $|x_{n+1}-x_n|$ mengukur seberapa stabil nilai $x$.
+- $|f(x_n)|$ mengukur seberapa dekat $x_n$ terhadap akar persamaan.
+
+Dalam implementasi numerik, kedua kriteria dapat digunakan secara bersamaan.
+
+
+## Algoritma Fixed Point
+
+Secara umum, algoritma metode fixed point adalah sebagai berikut.
+
+**Input:**
+
+- Fungsi $g(x)$
+- Tebakan awal $x_0$
+- Toleransi $\varepsilon$
+- Maksimum iterasi $N_{\max}$
+
+**Langkah:**
+
+1. Tentukan tebakan awal $x_0$.
+2. Hitung
+
+   $$
+   x_{n+1}=g(x_n).
+   $$
+
+3. Hitung error
+
+   $$
+   e_n=|x_{n+1}-x_n|.
+   $$
+
+4. Jika
+
+   $$
+   e_n<\varepsilon,
+   $$
+
+   maka proses berhenti.
+5. Jika belum memenuhi kriteria berhenti, gunakan $x_{n+1}$ sebagai nilai baru dan ulangi langkah 2--4.
+6. Jika jumlah iterasi mencapai $N_{\max}$, hentikan proses dan nyatakan bahwa iterasi belum mencapai toleransi.
+
+
+
+## Implementasi Fixed Point dalam R
+
+```{r}
+fixed_point <- function(g, x0,
+                        tol = 1e-6,
+                        max_iter = 100) {
+
+  hasil <- data.frame(
+    iterasi = integer(),
+    x_n = numeric(),
+    x_next = numeric(),
+    error = numeric()
+  )
+
+  x <- x0
+
+  for (i in 1:max_iter) {
+
+    x_next <- g(x)
+
+    error <- abs(x_next - x)
+
+    hasil <- rbind(
+      hasil,
+      data.frame(
+        iterasi = i,
+        x_n = x,
+        x_next = x_next,
+        error = error
+      )
+    )
+
+    if (error < tol) {
+      break
+    }
+
+    x <- x_next
+  }
+
+  list(
+    akar = x_next,
+    iterasi = i,
+    tabel = hasil
+  )
+}
+```
+
+
+# Metode Secant
+
+## Ide Dasar
+
+Metode Secant adalah metode untuk mencari akar persamaan dengan cara **menggunakan garis yang menghubungkan dua titik pada kurva**, kemudian menggunakan titik potong garis tersebut dengan sumbu-$x$ sebagai pendekatan akar berikutnya.
+
+Secara sederhana:
+
+> Kita memiliki dua tebakan. Kita tarik garis yang menghubungkan kedua titik tersebut, kemudian titik potong garis dengan sumbu-$x$ menjadi tebakan baru.
+
+Rumus iterasinya adalah:
+
+$$
+x_{n+1}
+=
+x_n
+-
+f(x_n)
+\frac{x_n-x_{n-1}}
+{f(x_n)-f(x_{n-1})}.
+$$
+
+Pada setiap iterasi, dua tebakan sebelumnya, yaitu $x_{n-1}$ dan $x_n$, digunakan untuk menghasilkan tebakan baru $x_{n+1}$.
+
+## Perbedaan Secant dan Regula Falsi
+
+Metode Secant dan Regula Falsi memiliki ide geometris yang hampir sama, yaitu menggunakan **garis secan** yang menghubungkan dua titik pada kurva.
+
+Perbedaannya terletak pada cara memperbarui titik.
+
+Pada Regula Falsi, interval $[a,b]$ harus tetap mengapit akar sehingga memenuhi:
+
+$$
+f(a)f(b)<0.
+$$
+
+Setelah titik baru $c$ diperoleh, salah satu ujung interval diganti sehingga perubahan tanda tetap dipertahankan.
+
+Pada metode Secant, tidak ada keharusan untuk mempertahankan interval yang mengapit akar. Dua tebakan terakhir langsung digunakan untuk membentuk garis secan berikutnya.
+
+Dengan demikian:
+
+**Regula Falsi → menggunakan garis secan dengan interval yang tetap mengapit akar.**
+
+**Secant → menggunakan garis secan berdasarkan dua tebakan terakhir.**
+
+### Kata Kunci
+
+**Secant → dua tebakan, tarik garis, dapatkan tebakan baru.**

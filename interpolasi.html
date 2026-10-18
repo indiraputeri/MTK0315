@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dr.&nbsp;Indira Puteri Kinasih">
+
+<title>Modul Metode Numerik</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="interpolasi_files/libs/clipboard/clipboard.min.js"></script>
+<script src="interpolasi_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="interpolasi_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="interpolasi_files/libs/quarto-html/popper.min.js"></script>
+<script src="interpolasi_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="interpolasi_files/libs/quarto-html/anchor.min.js"></script>
+<link href="interpolasi_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="interpolasi_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="interpolasi_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="interpolasi_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="interpolasi_files/libs/bootstrap/bootstrap-c2e55264ed47ce3b2e0326a2269f9400.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Daftar Isi</h2>
+   
+  <ul>
+  <li><a href="#pendahuluan" id="toc-pendahuluan" class="nav-link active" data-scroll-target="#pendahuluan">Pendahuluan</a></li>
+  <li><a href="#tujuan-pembelajaran" id="toc-tujuan-pembelajaran" class="nav-link" data-scroll-target="#tujuan-pembelajaran">Tujuan Pembelajaran</a></li>
+  <li><a href="#konsep-dasar-interpolasi" id="toc-konsep-dasar-interpolasi" class="nav-link" data-scroll-target="#konsep-dasar-interpolasi">1. Konsep Dasar Interpolasi</a>
+  <ul class="collapse">
+  <li><a href="#contoh-sederhana" id="toc-contoh-sederhana" class="nav-link" data-scroll-target="#contoh-sederhana">Contoh sederhana</a></li>
+  </ul></li>
+  <li><a href="#interpolasi-dan-ekstrapolasi" id="toc-interpolasi-dan-ekstrapolasi" class="nav-link" data-scroll-target="#interpolasi-dan-ekstrapolasi">2. Interpolasi dan Ekstrapolasi</a>
+  <ul class="collapse">
+  <li><a href="#interpolasi" id="toc-interpolasi" class="nav-link" data-scroll-target="#interpolasi">Interpolasi</a></li>
+  <li><a href="#ekstrapolasi" id="toc-ekstrapolasi" class="nav-link" data-scroll-target="#ekstrapolasi">Ekstrapolasi</a></li>
+  </ul></li>
+  <li><a href="#interpolasi-linear" id="toc-interpolasi-linear" class="nav-link" data-scroll-target="#interpolasi-linear">3. Interpolasi Linear</a>
+  <ul class="collapse">
+  <li><a href="#contoh" id="toc-contoh" class="nav-link" data-scroll-target="#contoh">Contoh</a></li>
+  <li><a href="#implementasi-r" id="toc-implementasi-r" class="nav-link" data-scroll-target="#implementasi-r">Implementasi R</a></li>
+  </ul></li>
+  <li><a href="#implementasi-fungsi-interpolasi-linear" id="toc-implementasi-fungsi-interpolasi-linear" class="nav-link" data-scroll-target="#implementasi-fungsi-interpolasi-linear">4. Implementasi Fungsi Interpolasi Linear</a></li>
+  <li><a href="#mengapa-tidak-selalu-menggunakan-garis" id="toc-mengapa-tidak-selalu-menggunakan-garis" class="nav-link" data-scroll-target="#mengapa-tidak-selalu-menggunakan-garis">5. Mengapa Tidak Selalu Menggunakan Garis?</a></li>
+  <li><a href="#interpolasi-polinomial" id="toc-interpolasi-polinomial" class="nav-link" data-scroll-target="#interpolasi-polinomial">6. Interpolasi Polinomial</a></li>
+  <li><a href="#polinom-lagrange" id="toc-polinom-lagrange" class="nav-link" data-scroll-target="#polinom-lagrange">7. Polinom Lagrange</a></li>
+  <li><a href="#contoh-lagrange-dengan-tiga-titik" id="toc-contoh-lagrange-dengan-tiga-titik" class="nav-link" data-scroll-target="#contoh-lagrange-dengan-tiga-titik">8. Contoh Lagrange dengan Tiga Titik</a></li>
+  <li><a href="#implementasi-lagrange-dalam-r" id="toc-implementasi-lagrange-dalam-r" class="nav-link" data-scroll-target="#implementasi-lagrange-dalam-r">9. Implementasi Lagrange dalam R</a></li>
+  <li><a href="#visualisasi-interpolasi-lagrange" id="toc-visualisasi-interpolasi-lagrange" class="nav-link" data-scroll-target="#visualisasi-interpolasi-lagrange">10. Visualisasi Interpolasi Lagrange</a></li>
+  <li><a href="#polinom-newton" id="toc-polinom-newton" class="nav-link" data-scroll-target="#polinom-newton">11. Polinom Newton</a></li>
+  <li><a href="#divided-differences" id="toc-divided-differences" class="nav-link" data-scroll-target="#divided-differences">12. Divided Differences</a>
+  <ul class="collapse">
+  <li><a href="#contoh-1" id="toc-contoh-1" class="nav-link" data-scroll-target="#contoh-1">Contoh</a></li>
+  </ul></li>
+  <li><a href="#implementasi-newton-dalam-r" id="toc-implementasi-newton-dalam-r" class="nav-link" data-scroll-target="#implementasi-newton-dalam-r">13. Implementasi Newton dalam R</a></li>
+  <li><a href="#evaluasi-polinom-newton" id="toc-evaluasi-polinom-newton" class="nav-link" data-scroll-target="#evaluasi-polinom-newton">14. Evaluasi Polinom Newton</a></li>
+  <li><a href="#lagrange-vs-newton" id="toc-lagrange-vs-newton" class="nav-link" data-scroll-target="#lagrange-vs-newton">15. Lagrange vs Newton</a></li>
+  <li><a href="#galat-interpolasi" id="toc-galat-interpolasi" class="nav-link" data-scroll-target="#galat-interpolasi">16. Galat Interpolasi</a></li>
+  <li><a href="#contoh-galat" id="toc-contoh-galat" class="nav-link" data-scroll-target="#contoh-galat">17. Contoh Galat</a></li>
+  <li><a href="#mengapa-titik-data-penting" id="toc-mengapa-titik-data-penting" class="nav-link" data-scroll-target="#mengapa-titik-data-penting">18. Mengapa Titik Data Penting?</a></li>
+  <li><a href="#interpolasi-dengan-fungsi-approx-di-r" id="toc-interpolasi-dengan-fungsi-approx-di-r" class="nav-link" data-scroll-target="#interpolasi-dengan-fungsi-approx-di-r">19. Interpolasi dengan Fungsi <code>approx()</code> di R</a></li>
+  <li><a href="#contoh-aplikasi" id="toc-contoh-aplikasi" class="nav-link" data-scroll-target="#contoh-aplikasi">20. Contoh Aplikasi</a></li>
+  <li><a href="#latihan-terbimbing" id="toc-latihan-terbimbing" class="nav-link" data-scroll-target="#latihan-terbimbing">21. Latihan Terbimbing</a>
+  <ul class="collapse">
+  <li><a href="#soal-1" id="toc-soal-1" class="nav-link" data-scroll-target="#soal-1">Soal 1</a></li>
+  <li><a href="#soal-2" id="toc-soal-2" class="nav-link" data-scroll-target="#soal-2">Soal 2</a></li>
+  <li><a href="#soal-3" id="toc-soal-3" class="nav-link" data-scroll-target="#soal-3">Soal 3</a></li>
+  <li><a href="#soal-4" id="toc-soal-4" class="nav-link" data-scroll-target="#soal-4">Soal 4</a></li>
+  <li><a href="#soal-5" id="toc-soal-5" class="nav-link" data-scroll-target="#soal-5">Soal 5</a></li>
+  </ul></li>
+  <li><a href="#latihan-implementasi-r" id="toc-latihan-implementasi-r" class="nav-link" data-scroll-target="#latihan-implementasi-r">22. Latihan Implementasi R</a></li>
+  <li><a href="#ringkasan" id="toc-ringkasan" class="nav-link" data-scroll-target="#ringkasan">23. Ringkasan</a></li>
+  <li><a href="#pertanyaan-diskusi" id="toc-pertanyaan-diskusi" class="nav-link" data-scroll-target="#pertanyaan-diskusi">24. Pertanyaan Diskusi</a></li>
+  <li><a href="#tugas" id="toc-tugas" class="nav-link" data-scroll-target="#tugas">25. Tugas</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Format Lain</h2><ul><li><a href="interpolasi.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Modul Metode Numerik</h1>
+<p class="subtitle lead">Interpolasi</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Penulis</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dr.&nbsp;Indira Puteri Kinasih </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="pendahuluan" class="level1">
+<h1>Pendahuluan</h1>
+<p>Pada materi sebelumnya telah dibahas mengenai <strong>deret</strong>, khususnya bagaimana suatu fungsi dapat direpresentasikan atau didekati menggunakan penjumlahan suku-suku tertentu.</p>
+<p>Pada pertemuan ini dibahas pendekatan fungsi dengan cara yang berbeda, yaitu <strong>interpolasi</strong>.</p>
+<p>Dalam banyak permasalahan numerik, suatu fungsi tidak selalu diketahui secara eksplisit. Yang tersedia mungkin hanya beberapa pasangan nilai</p>
+<p><span class="math display">\[
+(x_0,y_0), (x_1,y_1), \ldots, (x_n,y_n).
+\]</span></p>
+<p>Sebagai contoh, diketahui data hasil pengukuran:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(y\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">7.0</td>
+</tr>
+</tbody>
+</table>
+<p>Bagaimana memperkirakan nilai <span class="math inline">\(y\)</span> ketika <span class="math inline">\(x=2.5\)</span>?</p>
+<p>Salah satu pendekatan yang dapat digunakan adalah <strong>interpolasi</strong>.</p>
+<p>Secara sederhana, interpolasi digunakan untuk memperkirakan nilai suatu fungsi <strong>di antara titik-titik data yang telah diketahui</strong>.</p>
+</section>
+<section id="tujuan-pembelajaran" class="level1">
+<h1>Tujuan Pembelajaran</h1>
+<p>Setelah mempelajari materi ini, mahasiswa diharapkan mampu:</p>
+<ol type="1">
+<li>menjelaskan konsep interpolasi;</li>
+<li>membedakan interpolasi dan ekstrapolasi;</li>
+<li>melakukan interpolasi linear;</li>
+<li>membentuk polinom interpolasi;</li>
+<li>menggunakan metode Lagrange untuk interpolasi;</li>
+<li>menggunakan metode Newton untuk interpolasi;</li>
+<li>menjelaskan sumber galat pada interpolasi;</li>
+<li>mengimplementasikan interpolasi menggunakan R;</li>
+<li>memvisualisasikan hasil interpolasi dan data pengamatan.</li>
+</ol>
+</section>
+<section id="konsep-dasar-interpolasi" class="level1">
+<h1>1. Konsep Dasar Interpolasi</h1>
+<p>Misalkan terdapat sejumlah titik data</p>
+<p><span class="math display">\[
+(x_0,y_0), (x_1,y_1), \ldots,(x_n,y_n).
+\]</span></p>
+<p>Nilai <span class="math inline">\(y_i\)</span> diketahui untuk setiap <span class="math inline">\(x_i\)</span>.</p>
+<p>Jika ingin mengetahui nilai fungsi pada suatu titik <span class="math inline">\(x\)</span> yang berada di antara titik-titik data tersebut, maka kita dapat menggunakan interpolasi.</p>
+<p>Secara umum:</p>
+<p><span class="math display">\[
+f(x) \approx P(x),
+\]</span></p>
+<p>dengan <span class="math inline">\(P(x)\)</span> merupakan fungsi pendekatan yang dibentuk berdasarkan data yang tersedia.</p>
+<section id="contoh-sederhana" class="level2">
+<h2 class="anchored" data-anchor-id="contoh-sederhana">Contoh sederhana</h2>
+<p>Misalkan diketahui:</p>
+<p><span class="math display">\[
+f(1)=2
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+f(3)=6.
+\]</span></p>
+<p>Jika ingin memperkirakan <span class="math inline">\(f(2)\)</span>, kita dapat menggunakan garis yang menghubungkan kedua titik tersebut.</p>
+<p>Secara geometris:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">6</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, y,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"x"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"f(x)"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Interpolasi Linear"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="at">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">"(1, 2)"</span>, <span class="at">pos =</span> <span class="dv">2</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">3</span>, <span class="dv">6</span>, <span class="st">"(3, 6)"</span>, <span class="at">pos =</span> <span class="dv">4</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="st">"(2, 4)"</span>, <span class="at">pos =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="interpolasi_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Dari garis tersebut diperoleh</p>
+<p><span class="math display">\[
+f(2)\approx 4.
+\]</span></p>
+</section>
+</section>
+<section id="interpolasi-dan-ekstrapolasi" class="level1">
+<h1>2. Interpolasi dan Ekstrapolasi</h1>
+<p>Hal penting yang perlu dibedakan adalah <strong>interpolasi</strong> dan <strong>ekstrapolasi</strong>.</p>
+<section id="interpolasi" class="level2">
+<h2 class="anchored" data-anchor-id="interpolasi">Interpolasi</h2>
+<p>Interpolasi dilakukan untuk memperkirakan nilai <strong>di dalam rentang data yang tersedia</strong>.</p>
+<p>Misalnya data tersedia pada</p>
+<p><span class="math display">\[
+1\leq x\leq5.
+\]</span></p>
+<p>Maka memperkirakan <span class="math inline">\(f(3)\)</span> merupakan interpolasi.</p>
+</section>
+<section id="ekstrapolasi" class="level2">
+<h2 class="anchored" data-anchor-id="ekstrapolasi">Ekstrapolasi</h2>
+<p>Ekstrapolasi dilakukan untuk memperkirakan nilai <strong>di luar rentang data yang tersedia</strong>.</p>
+<p>Jika data tersedia pada</p>
+<p><span class="math display">\[
+1\leq x\leq5,
+\]</span></p>
+<p>maka memperkirakan <span class="math inline">\(f(7)\)</span> merupakan ekstrapolasi.</p>
+<p>Secara umum, interpolasi lebih dapat dikendalikan karena estimasi dilakukan di antara titik-titik yang telah diketahui.</p>
+</section>
+</section>
+<section id="interpolasi-linear" class="level1">
+<h1>3. Interpolasi Linear</h1>
+<p>Metode interpolasi paling sederhana adalah <strong>interpolasi linear</strong>.</p>
+<p>Misalkan diketahui dua titik:</p>
+<p><span class="math display">\[
+(x_0,y_0)
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+(x_1,y_1).
+\]</span></p>
+<p>Kita ingin memperkirakan nilai <span class="math inline">\(y\)</span> pada <span class="math inline">\(x\)</span> di antara <span class="math inline">\(x_0\)</span> dan <span class="math inline">\(x_1\)</span>.</p>
+<p>Persamaan garis yang melalui kedua titik tersebut adalah</p>
+<p><span class="math display">\[
+y-y_0
+=
+\frac{y_1-y_0}{x_1-x_0}(x-x_0).
+\]</span></p>
+<p>Sehingga:</p>
+<p><span class="math display">\[
+\boxed{
+y =
+y_0+
+\frac{y_1-y_0}{x_1-x_0}(x-x_0)
+}
+\]</span></p>
+<section id="contoh" class="level2">
+<h2 class="anchored" data-anchor-id="contoh">Contoh</h2>
+<p>Diketahui:</p>
+<p><span class="math display">\[
+(1,2)
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+(3,6).
+\]</span></p>
+<p>Tentukan perkiraan <span class="math inline">\(f(2)\)</span>.</p>
+<p>Dengan rumus:</p>
+<p><span class="math display">\[
+f(2)
+=
+2+
+\frac{6-2}{3-1}(2-1).
+\]</span></p>
+<p>Maka:</p>
+<p><span class="math display">\[
+f(2)
+=
+2+
+\frac{4}{2}(1)
+=4.
+\]</span></p>
+<p>Jadi:</p>
+<p><span class="math display">\[
+\boxed{f(2)\approx4}
+\]</span></p>
+</section>
+<section id="implementasi-r" class="level2">
+<h2 class="anchored" data-anchor-id="implementasi-r">Implementasi R</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x0 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>y0 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>y1 <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> y0 <span class="sc">+</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  (y1 <span class="sc">-</span> y0)<span class="sc">/</span>(x1 <span class="sc">-</span> x0) <span class="sc">*</span> (x <span class="sc">-</span> x0)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>y</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="implementasi-fungsi-interpolasi-linear" class="level1">
+<h1>4. Implementasi Fungsi Interpolasi Linear</h1>
+<p>Kita dapat membuat fungsi R agar interpolasi dapat dilakukan untuk berbagai data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>interpolasi_linear <span class="ot">&lt;-</span> <span class="cf">function</span>(x0, y0, x1, y1, x) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> y0 <span class="sc">+</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    (y1 <span class="sc">-</span> y0)<span class="sc">/</span>(x1 <span class="sc">-</span> x0) <span class="sc">*</span> (x <span class="sc">-</span> x0)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(y)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Contoh:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interpolasi_linear</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x0 =</span> <span class="dv">1</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y0 =</span> <span class="dv">2</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="dv">3</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y1 =</span> <span class="dv">6</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">2</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+</section>
+<section id="mengapa-tidak-selalu-menggunakan-garis" class="level1">
+<h1>5. Mengapa Tidak Selalu Menggunakan Garis?</h1>
+<p>Interpolasi linear hanya menggunakan dua titik terdekat.</p>
+<p>Namun, jika tersedia lebih banyak titik data, kita dapat menggunakan <strong>polinom</strong> yang melewati lebih banyak titik.</p>
+<p>Misalnya tersedia tiga titik:</p>
+<p><span class="math display">\[
+(x_0,y_0),\quad
+(x_1,y_1),\quad
+(x_2,y_2).
+\]</span></p>
+<p>Kita dapat mencari polinom berderajat dua:</p>
+<p><span class="math display">\[
+P_2(x)=a_0+a_1x+a_2x^2.
+\]</span></p>
+<p>Polinom tersebut dipilih sehingga</p>
+<p><span class="math display">\[
+P_2(x_0)=y_0,
+\]</span></p>
+<p><span class="math display">\[
+P_2(x_1)=y_1,
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+P_2(x_2)=y_2.
+\]</span></p>
+<p>Secara umum, jika terdapat <span class="math inline">\(n+1\)</span> titik data yang berbeda, terdapat polinom berderajat paling tinggi <span class="math inline">\(n\)</span> yang melalui seluruh titik tersebut.</p>
+</section>
+<section id="interpolasi-polinomial" class="level1">
+<h1>6. Interpolasi Polinomial</h1>
+<p>Misalkan tersedia <span class="math inline">\(n+1\)</span> titik:</p>
+<p><span class="math display">\[
+(x_0,y_0),
+(x_1,y_1),
+\ldots,
+(x_n,y_n).
+\]</span></p>
+<p>Kita ingin membentuk polinom</p>
+<p><span class="math display">\[
+P_n(x)
+\]</span></p>
+<p>sedemikian sehingga</p>
+<p><span class="math display">\[
+P_n(x_i)=y_i,
+\qquad i=0,1,\ldots,n.
+\]</span></p>
+<p>Bentuk umum polinom adalah</p>
+<p><span class="math display">\[
+P_n(x)
+=
+a_0+a_1x+a_2x^2+\cdots+a_nx^n.
+\]</span></p>
+<p>Terdapat beberapa cara untuk membentuk polinom interpolasi.</p>
+<p>Dua metode yang penting adalah:</p>
+<ul>
+<li>metode Lagrange;</li>
+<li>metode Newton.</li>
+</ul>
+</section>
+<section id="polinom-lagrange" class="level1">
+<h1>7. Polinom Lagrange</h1>
+<p>Polinom interpolasi Lagrange ditulis sebagai</p>
+<p><span class="math display">\[
+P_n(x)
+=
+\sum_{i=0}^{n}
+y_iL_i(x),
+\]</span></p>
+<p>dengan</p>
+<p><span class="math display">\[
+L_i(x)
+=
+\prod_{\substack{j=0\\j\neq i}}^{n}
+\frac{x-x_j}{x_i-x_j}.
+\]</span></p>
+<p>Fungsi <span class="math inline">\(L_i(x)\)</span> disebut <strong>polinom basis Lagrange</strong>.</p>
+<p>Sifat pentingnya adalah:</p>
+<p><span class="math display">\[
+L_i(x_i)=1
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+L_i(x_j)=0,
+\qquad j\neq i.
+\]</span></p>
+<p>Karena sifat tersebut, pada setiap titik <span class="math inline">\(x_i\)</span> diperoleh</p>
+<p><span class="math display">\[
+P_n(x_i)=y_i.
+\]</span></p>
+</section>
+<section id="contoh-lagrange-dengan-tiga-titik" class="level1">
+<h1>8. Contoh Lagrange dengan Tiga Titik</h1>
+<p>Diketahui:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(f(x)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+</tr>
+</tbody>
+</table>
+<p>Tentukan nilai <span class="math inline">\(f(3)\)</span> menggunakan interpolasi Lagrange.</p>
+<p>Polinomnya adalah</p>
+<p><span class="math display">\[
+P_2(x)
+=
+y_0L_0(x)+y_1L_1(x)+y_2L_2(x).
+\]</span></p>
+<p>Dengan</p>
+<p><span class="math display">\[
+L_0(x)
+=
+\frac{(x-2)(x-4)}
+{(1-2)(1-4)},
+\]</span></p>
+<p><span class="math display">\[
+L_1(x)
+=
+\frac{(x-1)(x-4)}
+{(2-1)(2-4)},
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+L_2(x)
+=
+\frac{(x-1)(x-2)}
+{(4-1)(4-2)}.
+\]</span></p>
+<p>Untuk <span class="math inline">\(x=3\)</span>:</p>
+<p><span class="math display">\[
+L_0(3)
+=
+\frac{(3-2)(3-4)}
+{(1-2)(1-4)}
+=
+-\frac{1}{3},
+\]</span></p>
+<p><span class="math display">\[
+L_1(3)
+=
+\frac{(3-1)(3-4)}
+{(2-1)(2-4)}
+=
+1,
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+L_2(3)
+=
+\frac{(3-1)(3-2)}
+{(4-1)(4-2)}
+=
+\frac{1}{3}.
+\]</span></p>
+<p>Maka:</p>
+<p><span class="math display">\[
+P_2(3)
+=
+2\left(-\frac13\right)
++
+3(1)
++
+5\left(\frac13\right).
+\]</span></p>
+<p>Sehingga:</p>
+<p><span class="math display">\[
+P_2(3)
+=
+-\frac23+3+\frac53
+=
+4.
+\]</span></p>
+<p>Jadi:</p>
+<p><span class="math display">\[
+\boxed{f(3)\approx4}
+\]</span></p>
+</section>
+<section id="implementasi-lagrange-dalam-r" class="level1">
+<h1>9. Implementasi Lagrange dalam R</h1>
+<p>Fungsi berikut dapat digunakan untuk menghitung interpolasi Lagrange.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lagrange <span class="ot">&lt;-</span> <span class="cf">function</span>(x_data, y_data, x) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x_data)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (j <span class="sc">!=</span> i) {</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        L <span class="ot">&lt;-</span> L <span class="sc">*</span> </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>          (x <span class="sc">-</span> x_data[j]) <span class="sc">/</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>          (x_data[i] <span class="sc">-</span> x_data[j])</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    result <span class="ot">&lt;-</span> result <span class="sc">+</span> y_data[i] <span class="sc">*</span> L</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Gunakan fungsi tersebut:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x_data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>y_data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lagrange</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  x_data,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  y_data,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">3</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<p>Hasilnya adalah:</p>
+<pre class="text"><code>4</code></pre>
+</section>
+<section id="visualisasi-interpolasi-lagrange" class="level1">
+<h1>10. Visualisasi Interpolasi Lagrange</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x_data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>y_data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>x_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>(x_data),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">max</span>(x_data),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">length.out =</span> <span class="dv">300</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>y_grid <span class="ot">&lt;-</span> <span class="fu">sapply</span>(</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  x_grid,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(x) <span class="fu">lagrange</span>(x_data, y_data, x)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  x_grid,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  y_grid,</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>,</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"P(x)"</span>,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Interpolasi Polinomial Lagrange"</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  x_data,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  y_data,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>,</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lagrange</span>(x_data, y_data, <span class="dv">3</span>),</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="interpolasi_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Grafik menunjukkan bahwa polinom interpolasi melewati seluruh titik data.</p>
+</section>
+<section id="polinom-newton" class="level1">
+<h1>11. Polinom Newton</h1>
+<p>Metode lain untuk membentuk polinom interpolasi adalah <strong>interpolasi Newton</strong>.</p>
+<p>Bentuk umum polinom Newton adalah</p>
+<p><span class="math display">\[
+P_n(x)
+=
+f[x_0]
++
+f[x_0,x_1](x-x_0)
+\]</span></p>
+<p><span class="math display">\[
++
+f[x_0,x_1,x_2]
+(x-x_0)(x-x_1)
++\cdots
+\]</span></p>
+<p><span class="math display">\[
++
+f[x_0,x_1,\ldots,x_n]
+\prod_{j=0}^{n-1}(x-x_j).
+\]</span></p>
+<p>Koefisien polinom diperoleh melalui <strong>divided differences</strong>.</p>
+</section>
+<section id="divided-differences" class="level1">
+<h1>12. Divided Differences</h1>
+<p>Divided difference orde pertama:</p>
+<p><span class="math display">\[
+f[x_i,x_{i+1}]
+=
+\frac{f(x_{i+1})-f(x_i)}
+{x_{i+1}-x_i}.
+\]</span></p>
+<p>Divided difference orde kedua:</p>
+<p><span class="math display">\[
+f[x_i,x_{i+1},x_{i+2}]
+=
+\frac{
+f[x_{i+1},x_{i+2}]
+-
+f[x_i,x_{i+1}]
+}
+{x_{i+2}-x_i}.
+\]</span></p>
+<p>Proses ini dapat dilanjutkan hingga orde yang lebih tinggi.</p>
+<section id="contoh-1" class="level2">
+<h2 class="anchored" data-anchor-id="contoh-1">Contoh</h2>
+<p>Gunakan data:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(f(x)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+</tr>
+</tbody>
+</table>
+<p>Divided difference orde pertama:</p>
+<p><span class="math display">\[
+f[1,2]
+=
+\frac{3-2}{2-1}
+=1.
+\]</span></p>
+<p><span class="math display">\[
+f[2,4]
+=
+\frac{5-3}{4-2}
+=1.
+\]</span></p>
+<p>Divided difference orde kedua:</p>
+<p><span class="math display">\[
+f[1,2,4]
+=
+\frac{1-1}{4-1}
+=0.
+\]</span></p>
+<p>Maka polinom Newton:</p>
+<p><span class="math display">\[
+P_2(x)
+=
+2+1(x-1)+0(x-1)(x-2).
+\]</span></p>
+<p>Sehingga:</p>
+<p><span class="math display">\[
+P_2(x)=x+1.
+\]</span></p>
+<p>Untuk <span class="math inline">\(x=3\)</span>:</p>
+<p><span class="math display">\[
+P_2(3)=4.
+\]</span></p>
+</section>
+</section>
+<section id="implementasi-newton-dalam-r" class="level1">
+<h1>13. Implementasi Newton dalam R</h1>
+<p>Pertama, buat tabel divided differences.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>divided_difference <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  table <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">nrow =</span> n,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> n</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  table[, <span class="dv">1</span>] <span class="ot">&lt;-</span> y</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n<span class="sc">-</span>j<span class="sc">+</span><span class="dv">1</span>)) {</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>      table[i, j] <span class="ot">&lt;-</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>        (table[i<span class="sc">+</span><span class="dv">1</span>, j<span class="dv">-1</span>] <span class="sc">-</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>           table[i, j<span class="dv">-1</span>]) <span class="sc">/</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>        (x[i<span class="sc">+</span>j<span class="dv">-1</span>] <span class="sc">-</span> x[i])</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(table)</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Contoh:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x_data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">divided_difference</span>(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  x_data,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  y_data</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    2    1    0
+[2,]    3    1    0
+[3,]    5    0    0</code></pre>
+</div>
+</div>
+</section>
+<section id="evaluasi-polinom-newton" class="level1">
+<h1>14. Evaluasi Polinom Newton</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>newton <span class="ot">&lt;-</span> <span class="cf">function</span>(x_data, y_data, x) {</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x_data)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  dd <span class="ot">&lt;-</span> <span class="fu">divided_difference</span>(</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    x_data,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    y_data</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> dd[<span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  product <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">&gt;=</span> <span class="dv">2</span>) {</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n) {</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>      product <span class="ot">&lt;-</span> product <span class="sc">*</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>        (x <span class="sc">-</span> x_data[j<span class="dv">-1</span>])</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>      result <span class="ot">&lt;-</span> result <span class="sc">+</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>        dd[<span class="dv">1</span>, j] <span class="sc">*</span> product</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Contoh:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">newton</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x_data =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y_data =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">3</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+</section>
+<section id="lagrange-vs-newton" class="level1">
+<h1>15. Lagrange vs Newton</h1>
+<p>Kedua metode menghasilkan <strong>polinom interpolasi yang sama</strong> jika digunakan pada data yang sama.</p>
+<p>Perbedaannya terutama terletak pada cara polinom dibentuk.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 38%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aspek</th>
+<th>Lagrange</th>
+<th>Newton</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bentuk</td>
+<td>Menggunakan basis Lagrange</td>
+<td>Menggunakan divided differences</td>
+</tr>
+<tr class="even">
+<td>Perhitungan</td>
+<td>Relatif langsung</td>
+<td>Bertahap</td>
+</tr>
+<tr class="odd">
+<td>Penambahan titik</td>
+<td>Perlu menghitung ulang</td>
+<td>Lebih mudah diperbarui</td>
+</tr>
+<tr class="even">
+<td>Konsep utama</td>
+<td>Basis polinom</td>
+<td>Divided differences</td>
+</tr>
+<tr class="odd">
+<td>Implementasi</td>
+<td>Sederhana untuk sedikit titik</td>
+<td>Efisien untuk penambahan titik</td>
+</tr>
+</tbody>
+</table>
+<p>Untuk pembelajaran awal, Lagrange dapat digunakan untuk memahami konsep interpolasi polinomial, sedangkan Newton penting untuk memahami struktur perhitungan interpolasi secara bertahap.</p>
+</section>
+<section id="galat-interpolasi" class="level1">
+<h1>16. Galat Interpolasi</h1>
+<p>Interpolasi menghasilkan pendekatan:</p>
+<p><span class="math display">\[
+f(x)\approx P_n(x).
+\]</span></p>
+<p>Jika fungsi sebenarnya <span class="math inline">\(f(x)\)</span> diketahui, galat dapat ditulis sebagai</p>
+<p><span class="math display">\[
+E(x)=f(x)-P_n(x).
+\]</span></p>
+<p>Untuk interpolasi polinomial, bentuk galat teoritis adalah</p>
+<p><span class="math display">\[
+\boxed{
+E(x)
+=
+\frac{f^{(n+1)}(\xi)}
+{(n+1)!}
+\prod_{i=0}^{n}(x-x_i)
+}
+\]</span></p>
+<p>untuk suatu <span class="math inline">\(\xi\)</span> yang berada dalam interval yang memuat titik-titik interpolasi.</p>
+<p>Rumus tersebut menunjukkan bahwa galat dipengaruhi oleh:</p>
+<ol type="1">
+<li>turunan fungsi orde <span class="math inline">\(n+1\)</span>;</li>
+<li>jumlah titik interpolasi;</li>
+<li>posisi titik yang digunakan;</li>
+<li>posisi <span class="math inline">\(x\)</span> tempat interpolasi dilakukan.</li>
+</ol>
+</section>
+<section id="contoh-galat" class="level1">
+<h1>17. Contoh Galat</h1>
+<p>Misalkan</p>
+<p><span class="math display">\[
+f(x)=x^2.
+\]</span></p>
+<p>Gunakan titik:</p>
+<p><span class="math display">\[
+x_0=1,\qquad x_1=2.
+\]</span></p>
+<p>Karena fungsi sebenarnya adalah polinom derajat dua, interpolasi linear tidak menghasilkan fungsi yang sama persis.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>x_data <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>y_data <span class="ot">&lt;-</span> <span class="fu">f</span>(x_data)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>x_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="at">length.out =</span> <span class="dv">200</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>y_true <span class="ot">&lt;-</span> <span class="fu">f</span>(x_grid)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>y_interp <span class="ot">&lt;-</span> <span class="fu">sapply</span>(</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  x_grid,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(x)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">interpolasi_linear</span>(</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span>, <span class="dv">1</span>,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>      <span class="dv">2</span>, <span class="dv">4</span>,</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>      x</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>  x_grid,</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  y_true,</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"x"</span>,</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"y"</span>,</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Fungsi Sebenarnya dan Interpolasi Linear"</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>  x_grid,</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>  y_interp,</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="dv">2</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>  x_data,</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>  y_data,</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>  <span class="st">"topleft"</span>,</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="fu">c</span>(</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>    <span class="st">"f(x) = x²"</span>,</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Interpolasi linear"</span>,</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Data"</span></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>),</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>, <span class="dv">19</span>)</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="interpolasi_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="mengapa-titik-data-penting" class="level1">
+<h1>18. Mengapa Titik Data Penting?</h1>
+<p>Jumlah dan posisi titik data memengaruhi kualitas interpolasi.</p>
+<p>Jika titik terlalu sedikit, pendekatan mungkin kurang akurat.</p>
+<p>Namun, menggunakan polinom dengan derajat yang sangat tinggi juga tidak selalu menghasilkan pendekatan yang lebih baik.</p>
+<p>Pada interpolasi polinomial derajat tinggi dapat muncul osilasi, terutama jika titik data tersebar dengan cara yang kurang sesuai.</p>
+<p>Fenomena ini dikenal sebagai <strong>Runge’s phenomenon</strong>.</p>
+<p>Karena itu, dalam praktik numerik, pemilihan titik dan metode interpolasi perlu diperhatikan.</p>
+</section>
+<section id="interpolasi-dengan-fungsi-approx-di-r" class="level1">
+<h1>19. Interpolasi dengan Fungsi <code>approx()</code> di R</h1>
+<p>R menyediakan fungsi <code>approx()</code> untuk interpolasi linear.</p>
+<p>Contoh:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">approx</span>(</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  x,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  y,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xout =</span> <span class="dv">3</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$x
+[1] 3
+
+$y
+[1] 4</code></pre>
+</div>
+</div>
+<p>Untuk beberapa nilai sekaligus:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">approx</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  x,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  y,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xout =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="dv">3</span>, <span class="fl">3.5</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$x
+[1] 1.5 2.5 3.0 3.5
+
+$y
+[1] 2.5 3.5 4.0 4.5</code></pre>
+</div>
+</div>
+<p>Hasil <code>approx()</code> dapat digunakan untuk melihat nilai interpolasi pada beberapa titik.</p>
+</section>
+<section id="contoh-aplikasi" class="level1">
+<h1>20. Contoh Aplikasi</h1>
+<p>Misalkan seorang peneliti memperoleh data suhu pada beberapa waktu:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Waktu (jam)</th>
+<th style="text-align: right;">Suhu (°C)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">08.00</td>
+<td style="text-align: right;">24.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10.00</td>
+<td style="text-align: right;">27.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">12.00</td>
+<td style="text-align: right;">30.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">14.00</td>
+<td style="text-align: right;">32.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">16.00</td>
+<td style="text-align: right;">31.0</td>
+</tr>
+</tbody>
+</table>
+<p>Peneliti ingin memperkirakan suhu pada pukul 11.00.</p>
+<p>Data pada pukul 10.00 dan 12.00 dapat digunakan untuk interpolasi linear.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>waktu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">16</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>suhu <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fl">24.0</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fl">27.0</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fl">30.5</span>,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fl">32.0</span>,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fl">31.0</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="fu">approx</span>(</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  waktu,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  suhu,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">xout =</span> <span class="dv">11</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$x
+[1] 11
+
+$y
+[1] 28.75</code></pre>
+</div>
+</div>
+<p>Visualisasi:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  waktu,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  suhu,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Waktu"</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Suhu (°C)"</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Interpolasi Data Suhu"</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>x_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>(waktu),</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">max</span>(waktu),</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">length.out =</span> <span class="dv">300</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>y_grid <span class="ot">&lt;-</span> <span class="fu">approx</span>(</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>  waktu,</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  suhu,</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">xout =</span> x_grid</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>y</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>  x_grid,</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>  y_grid,</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>  <span class="dv">11</span>,</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">approx</span>(</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>    waktu,</span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>    suhu,</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">xout =</span> <span class="dv">11</span></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>y,</span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="interpolasi_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="latihan-terbimbing" class="level1">
+<h1>21. Latihan Terbimbing</h1>
+<p>Diberikan data berikut:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(f(x)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">10</td>
+</tr>
+</tbody>
+</table>
+<section id="soal-1" class="level2">
+<h2 class="anchored" data-anchor-id="soal-1">Soal 1</h2>
+<p>Gunakan interpolasi linear untuk memperkirakan</p>
+<p><span class="math display">\[
+f(1.5).
+\]</span></p>
+</section>
+<section id="soal-2" class="level2">
+<h2 class="anchored" data-anchor-id="soal-2">Soal 2</h2>
+<p>Gunakan interpolasi Lagrange dengan tiga titik terdekat untuk memperkirakan</p>
+<p><span class="math display">\[
+f(1.5).
+\]</span></p>
+</section>
+<section id="soal-3" class="level2">
+<h2 class="anchored" data-anchor-id="soal-3">Soal 3</h2>
+<p>Gunakan seluruh titik untuk membentuk polinom interpolasi Lagrange.</p>
+<p>Bandingkan hasilnya dengan nilai sebenarnya jika diketahui bahwa</p>
+<p><span class="math display">\[
+f(x)=x^2+1.
+\]</span></p>
+</section>
+<section id="soal-4" class="level2">
+<h2 class="anchored" data-anchor-id="soal-4">Soal 4</h2>
+<p>Visualisasikan data dan polinom interpolasi menggunakan R.</p>
+</section>
+<section id="soal-5" class="level2">
+<h2 class="anchored" data-anchor-id="soal-5">Soal 5</h2>
+<p>Hitung galat absolut:</p>
+<p><span class="math display">\[
+E_{\text{abs}}
+=
+|f(x)-P(x)|.
+\]</span></p>
+</section>
+</section>
+<section id="latihan-implementasi-r" class="level1">
+<h1>22. Latihan Implementasi R</h1>
+<p>Gunakan data:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1.0</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fl">2.1</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fl">4.0</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fl">7.2</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fl">10.9</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Lakukan hal berikut:</p>
+<ol type="1">
+<li>Hitung interpolasi linear pada <span class="math inline">\(x=2.5\)</span>.</li>
+<li>Hitung interpolasi Lagrange pada <span class="math inline">\(x=2.5\)</span>.</li>
+<li>Hitung interpolasi Newton pada <span class="math inline">\(x=2.5\)</span>.</li>
+<li>Bandingkan ketiga hasil tersebut.</li>
+<li>Buat grafik yang menunjukkan titik data dan hasil interpolasi.</li>
+<li>Diskusikan mengapa hasil interpolasi linear dan polinomial dapat berbeda.</li>
+</ol>
+</section>
+<section id="ringkasan" class="level1">
+<h1>23. Ringkasan</h1>
+<p>Interpolasi merupakan metode numerik untuk memperkirakan nilai fungsi berdasarkan sejumlah titik data yang diketahui.</p>
+<p>Interpolasi linear menggunakan dua titik dan menghasilkan pendekatan berupa garis.</p>
+<p>Interpolasi polinomial menggunakan lebih banyak titik dan menghasilkan polinom yang melewati titik-titik data tersebut.</p>
+<p>Dua metode penting dalam interpolasi polinomial adalah metode Lagrange dan Newton.</p>
+<p>Metode Lagrange menggunakan polinom basis</p>
+<p><span class="math display">\[
+L_i(x),
+\]</span></p>
+<p>sedangkan metode Newton menggunakan divided differences.</p>
+<p>Keduanya menghasilkan polinom interpolasi yang sama untuk sekumpulan titik data yang sama.</p>
+<p>Dalam penggunaan numerik, jumlah dan posisi titik interpolasi perlu diperhatikan karena penggunaan polinom berderajat tinggi dapat menyebabkan osilasi.</p>
+<p>Secara umum:</p>
+<p><span class="math display">\[
+\boxed{
+\text{Data}
+\longrightarrow
+\text{Interpolasi}
+\longrightarrow
+\text{Fungsi Pendekatan}
+\longrightarrow
+\text{Estimasi}
+}
+\]</span></p>
+</section>
+<section id="pertanyaan-diskusi" class="level1">
+<h1>24. Pertanyaan Diskusi</h1>
+<ol type="1">
+<li>Mengapa interpolasi tidak sama dengan ekstrapolasi?</li>
+<li>Apa keuntungan interpolasi linear?</li>
+<li>Apa kelemahan interpolasi linear?</li>
+<li>Mengapa polinom Lagrange dapat melewati semua titik data?</li>
+<li>Apa fungsi divided differences pada metode Newton?</li>
+<li>Apakah semakin banyak titik selalu menghasilkan interpolasi yang lebih baik?</li>
+<li>Mengapa interpolasi polinomial berderajat tinggi dapat menghasilkan osilasi?</li>
+<li>Dalam situasi seperti apa interpolasi lebih tepat digunakan dibandingkan regresi?</li>
+</ol>
+</section>
+<section id="tugas" class="level1">
+<h1>25. Tugas</h1>
+<p>Pilih satu dataset sederhana yang memiliki variabel numerik <span class="math inline">\(x\)</span> dan <span class="math inline">\(y\)</span>.</p>
+<p>Lakukan:</p>
+<ol type="1">
+<li>tampilkan data;</li>
+<li>buat scatter plot;</li>
+<li>pilih minimal 4 titik data;</li>
+<li>lakukan interpolasi linear;</li>
+<li>lakukan interpolasi Lagrange;</li>
+<li>lakukan interpolasi Newton;</li>
+<li>estimasikan minimal tiga nilai <span class="math inline">\(y\)</span> pada nilai <span class="math inline">\(x\)</span> yang berada di antara data;</li>
+<li>visualisasikan hasil interpolasi;</li>
+<li>bandingkan hasil ketiga metode;</li>
+<li>jelaskan metode mana yang digunakan dan mengapa.</li>
+</ol>
+<p>Laporan dikumpulkan dalam bentuk <strong>Quarto (<code>.qmd</code>)</strong> yang memuat penjelasan, perhitungan, kode R, dan grafik.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Disalin!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Disalin!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

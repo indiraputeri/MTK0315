@@ -1,0 +1,1422 @@
+---
+title: "Solusi Sistem Persamaan Nonlinear (SPNL)"
+subtitle: "Metode Numerik (MTK0315)"
+author:
+  - name: Dr. Indira Puteri Kinasih
+    orcid: 0009-0009-6959-6723
+    email: indiraputeri@uinmataram.ac.id
+    affiliations: Universitas Islam Negeri Mataram
+format:
+  ubd-revealjs:
+    output-file: spnl1.html
+    self-contained: true
+    chalkboard: false
+    toc: false
+    toc-depth: 1
+    transition: fade
+    auto-stretch: false
+    width: 1250  # 1050
+    height: 760  # 700
+execute:
+  echo: false
+---
+
+## Tujuan Pembelajaran
+
+Setelah mengikuti materi ini, mahasiswa mampu:
+
+- menjelaskan konsep SPNL;
+- menuliskan SPNL dalam bentuk vektor;
+- menentukan matriks Jacobian;
+- menjelaskan ide metode Newton untuk SPNL;
+- melakukan iterasi Newton;
+- mengimplementasikan metode Newton menggunakan R;
+- mengevaluasi konvergensi solusi.
+
+## Pernahkah kita tahu luas benda, tetapi tidak tahu ukurannya? {.scrollable}
+
+Bayangkan sebuah **karpet berbentuk persegi panjang**.
+
+Kita tidak mengetahui panjang dan lebarnya.
+
+Yang diketahui:
+
+- luas karpet = **48 m²**
+- diagonal karpet = **10 m**
+
+Kita ingin mengetahui:
+
+$$
+\text{panjang}=x
+\qquad
+\text{lebar}=y
+$$
+
+
+## Dari informasi ke persamaan {.scrollable}
+
+<div style="display: flex; align-items: center; gap: 50px;">
+
+<div style="width: 45%;">
+
+![](rectangle.png)
+</div>
+
+<div style="width: 50%;">
+
+Dari luas:
+
+$$
+xy=48
+$$
+
+Dari Teorema Pythagoras:
+
+$$
+x^2+y^2=10^2
+$$
+
+Sehingga:
+
+$$
+\boxed{
+\begin{cases}
+xy-48=0\\
+x^2+y^2-100=0
+\end{cases}}
+$$
+
+</div>
+
+</div>
+
+
+## Apa yang sebenarnya kita cari? {.scrollable}
+
+Kita mencari **satu pasangan $(x,y)$** yang memenuhi:
+
+$$
+xy-48=0
+$$
+
+dan
+
+$$
+x^2+y^2-100=0
+$$
+
+**secara bersamaan.**
+
+Coba tebak.
+
+$$
+x=6,\qquad y=8
+$$
+
+Apakah memenuhi kedua persamaan?
+
+$$
+6(8)=48
+$$
+
+dan
+
+$$
+6^2+8^2=100.
+$$
+
+Ya.
+
+
+## Tetapi bagaimana jika...
+
+Bagaimana jika persamaannya tidak sesederhana ini?
+
+Misalnya:
+
+$$
+\begin{cases}
+f_1(x,y)=0\\
+f_2(x,y)=0
+\end{cases}
+$$
+
+dan solusi **tidak dapat ditebak atau diperoleh dengan mudah secara aljabar**.
+
+Kita membutuhkan:
+
+$$
+\boxed{\text{metode numerik}}
+$$
+
+Salah satu metode yang akan kita pelajari:
+
+$$
+\boxed{\text{Newton untuk SPNL}}
+$$
+
+
+## Dari masalah nyata → model → metode numerik {.scrollable}
+
+<div style="font-size: 1.1em;">
+
+**Masalah nyata**
+
+> Berapa panjang dan lebar karpet?
+
+↓
+
+**Model matematika**
+
+$$
+\begin{cases}
+xy-48=0\\
+x^2+y^2-100=0
+\end{cases}
+$$
+
+↓
+
+**Bentuk umum**
+
+$$
+\mathbf F(\mathbf x)=\mathbf 0
+$$
+
+↓
+
+**Metode numerik**
+
+$$
+\boxed{\text{Newton}}
+$$
+
+</div>
+
+# Mengapa SPNL?
+
+## Dari satu persamaan...
+
+Sebelumnya kita menyelesaikan:
+
+$$
+f(x)=0
+$$
+
+Misalnya:
+
+$$
+x^2-4=0
+$$
+
+Solusinya:
+
+$$
+x=-2,\quad x=2
+$$
+
+Metode numerik membantu ketika solusi analitik sulit diperoleh.
+
+
+## ...menjadi beberapa persamaan {.scrollable}
+
+Sekarang kita memiliki:
+
+$$
+\begin{cases}
+x^2+y^2-4=0,\\
+x^2-y-1=0.
+\end{cases}
+$$
+
+Kita mencari **$x$ dan $y$ secara simultan**.
+
+Jadi, yang dicari bukan lagi satu angka:
+
+$$
+x
+$$
+
+tetapi sebuah vektor:
+
+$$
+\mathbf{x}
+=
+\begin{bmatrix}
+x\\y
+\end{bmatrix}.
+$$
+
+
+
+## Secara geometris
+
+Setiap persamaan membentuk sebuah kurva.
+
+Solusi SPNL adalah:
+
+> **titik perpotongan kurva-kurva tersebut.**
+
+$$
+\begin{cases}
+x^2+y^2=4,\\
+y=x^2-1.
+\end{cases}
+$$
+
+## Contoh visual
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 7
+#| fig-align: "center"
+
+x <- seq(-2.2, 2.2, length.out = 500)
+
+y1 <- sqrt(4 - x^2)
+y2 <- -sqrt(4 - x^2)
+y3 <- x^2 - 1
+
+plot(
+  x, y1,
+  type = "l",
+  lwd = 2,
+  xlab = "x",
+  ylab = "y",
+  ylim = c(-2.2, 2.2)
+)
+
+lines(x, y2, lwd = 2)
+lines(x, y3, lwd = 2, lty = 2)
+
+abline(h = 0, v = 0, lty = 3)
+
+legend(
+  "top",
+  legend = c("x² + y² = 4", "y = x² − 1"),
+  lty = c(1, 2),
+  bty = "n"
+)
+```
+
+
+<!-- ## Mencari Titik yang Memenuhi Beberapa Kondisi -->
+
+<!-- Bayangkan kita ingin menentukan posisi suatu titik: -->
+
+<!-- $$ -->
+<!-- P=(x,y,z) -->
+<!-- $$ -->
+
+<!-- yang harus memenuhi beberapa kondisi geometris sekaligus. -->
+
+<!-- Misalnya titik tersebut berada pada tiga permukaan: -->
+
+<!-- $$ -->
+<!-- \begin{cases} -->
+<!-- x^2+y^2+z^2=9,\\ -->
+<!-- x^2+y^2-z=3,\\ -->
+<!-- x+y+z=3. -->
+<!-- \end{cases} -->
+<!-- $$ -->
+
+<!-- Setiap persamaan mewakili satu kondisi. -->
+
+<!-- Kita mencari: -->
+
+<!-- $$ -->
+<!-- (x,y,z) -->
+<!-- $$ -->
+
+<!-- yang memenuhi **ketiga kondisi sekaligus**. -->
+
+
+<!-- ## Dari Masalah Geometris ke SPNL -->
+
+<!-- Tuliskan semua persamaan sebagai fungsi yang sama dengan nol: -->
+
+<!-- $$ -->
+<!-- \begin{cases} -->
+<!-- x^2+y^2+z^2-9=0,\\ -->
+<!-- x^2+y^2-z-3=0,\\ -->
+<!-- x+y+z-3=0. -->
+<!-- \end{cases} -->
+<!-- $$ -->
+
+<!-- atau: -->
+
+<!-- $$ -->
+<!-- \boxed{ -->
+<!-- \mathbf F(x,y,z)= -->
+<!-- \begin{bmatrix} -->
+<!-- x^2+y^2+z^2-9\\ -->
+<!-- x^2+y^2-z-3\\ -->
+<!-- x+y+z-3 -->
+<!-- \end{bmatrix} -->
+<!-- = -->
+<!-- \begin{bmatrix} -->
+<!-- 0\\0\\0 -->
+<!-- \end{bmatrix} -->
+<!-- } -->
+<!-- $$ -->
+
+<!-- Secara geometris: -->
+
+<!-- > **Solusi SPNL adalah titik yang berada pada semua permukaan tersebut.** -->
+
+<!-- Secara numerik: -->
+
+<!-- > **Kita mencari koordinat titik tersebut secara iteratif.** -->
+
+<!-- Dan salah satu metode yang akan kita gunakan adalah: -->
+
+<!-- $$ -->
+<!-- \boxed{\text{Newton untuk SPNL}} -->
+<!-- $$ -->
+
+# Bentuk Vektor
+
+## SPNL
+
+Secara umum:
+
+$$
+\begin{aligned}
+f_1(x_1,\ldots,x_n)&=0\\
+f_2(x_1,\ldots,x_n)&=0\\
+&\vdots\\
+f_n(x_1,\ldots,x_n)&=0
+\end{aligned}
+$$
+
+dapat ditulis:
+
+$$
+\boxed{\mathbf{F}(\mathbf{x})=\mathbf{0}}
+$$
+
+
+## Contoh {.scrollable}
+
+Untuk
+
+$$
+\begin{cases}
+x^2+y^2-4=0,\\
+x^2-y-1=0,
+\end{cases}
+$$
+
+definisikan:
+
+$$
+\mathbf{F}(x,y)
+=
+\begin{bmatrix}
+x^2+y^2-4\\
+x^2-y-1
+\end{bmatrix}.
+$$
+
+Sehingga:
+
+$$
+\boxed{
+\mathbf{F}(x,y)=
+\begin{bmatrix}
+0\\0
+\end{bmatrix}
+}
+$$
+
+
+# Dari Newton-Raphson ke SPNL
+
+## Newton satu variabel {.scrollable}
+
+Untuk
+
+$$
+f(x)=0,
+$$
+
+Newton-Raphson:
+
+$$
+\boxed{
+x_{k+1}
+=
+x_k-\frac{f(x_k)}{f'(x_k)}
+}
+$$
+
+Pertanyaannya:
+
+> Apa yang berubah ketika \(x\) menjadi vektor?
+
+
+## Satu variabel vs banyak variabel {.scrollable}
+
+| Satu variabel | SPNL |
+|---|---|
+| $x$ | $\mathbf{x}$ |
+| $f(x)$ | $\mathbf{F}(\mathbf{x})$ |
+| $f'(x)$ | $J(\mathbf{x})$ |
+| pembagian | sistem linear |
+| $x_{k+1}$ | $\mathbf{x}_{k+1}$ |
+
+Ide dasarnya **tetap sama**:
+
+$$
+\text{estimasi lokal}
+\rightarrow
+\text{koreksi}
+\rightarrow
+\text{update}
+$$
+
+
+# Jacobian
+
+## Apa itu Jacobian? {.scrollable}
+
+Jacobian adalah kumpulan seluruh turunan parsial:
+
+$$
+J(\mathbf{x})
+=
+\begin{bmatrix}
+\frac{\partial f_1}{\partial x_1}
+&
+\cdots
+&
+\frac{\partial f_1}{\partial x_n}
+\\
+\vdots
+&
+\ddots
+&
+\vdots
+\\
+\frac{\partial f_n}{\partial x_1}
+&
+\cdots
+&
+\frac{\partial f_n}{\partial x_n}
+\end{bmatrix}.
+$$
+
+Sederhananya:
+
+> **Jacobian = versi multivariat dari turunan pertama.**
+
+
+## Contoh Jacobian {.scrollable}
+
+Diberikan:
+
+$$
+f_1(x,y)=x^2+y^2-4
+$$
+
+$$
+f_2(x,y)=x^2-y-1
+$$
+
+Turunan parsial:
+
+$$
+\frac{\partial f_1}{\partial x}=2x,
+\qquad
+\frac{\partial f_1}{\partial y}=2y
+$$
+
+$$
+\frac{\partial f_2}{\partial x}=2x,
+\qquad
+\frac{\partial f_2}{\partial y}=-1
+$$
+
+
+## Maka Jacobian-nya {.scrollable}
+
+$$
+\boxed{
+J(x,y)
+=
+\begin{bmatrix}
+2x&2y\\
+2x&-1
+\end{bmatrix}
+}
+$$
+
+Perhatikan:
+
+$$
+\boxed{
+\text{turunan}
+\quad\longrightarrow\quad
+\text{turunan parsial}
+\quad\longrightarrow\quad
+\text{Jacobian}
+}
+$$
+
+
+# Ide Newton untuk SPNL
+
+## Aproksimasi linear {.scrollable}
+
+Di sekitar \(\mathbf{x}_k\):
+
+$$
+\mathbf{F}(\mathbf{x}_k+\Delta\mathbf{x})
+\approx
+\mathbf{F}(\mathbf{x}_k)
++
+J(\mathbf{x}_k)\Delta\mathbf{x}.
+$$
+
+Kita ingin:
+
+$$
+\mathbf{F}(\mathbf{x}_{k+1})\approx\mathbf{0}.
+$$
+
+Maka:
+
+$$
+\mathbf{F}(\mathbf{x}_k)
++
+J(\mathbf{x}_k)\Delta\mathbf{x}
+\approx
+\mathbf{0}.
+$$
+
+
+## Persamaan utama {.scrollable}
+
+Susun ulang:
+
+$$
+J(\mathbf{x}_k)\Delta\mathbf{x}
+=
+-\mathbf{F}(\mathbf{x}_k).
+$$
+
+Setelah \(\Delta\mathbf{x}\) diperoleh:
+
+$$
+\boxed{
+\mathbf{x}_{k+1}
+=
+\mathbf{x}_k+\Delta\mathbf{x}
+}
+$$
+
+Inilah **Newton untuk SPNL**.
+
+
+# Contoh Iterasi
+
+## Sistem {.scrollable}
+
+$$
+\begin{cases}
+x^2+y^2-4=0,\\
+x^2-y-1=0.
+\end{cases}
+$$
+
+Tebakan awal:
+
+$$
+\mathbf{x}_0=
+\begin{bmatrix}
+1\\1
+\end{bmatrix}
+$$
+
+
+## Evaluasi fungsi {.scrollable}
+
+$$
+\mathbf{F}(1,1)
+=
+\begin{bmatrix}
+-2\\
+-1
+\end{bmatrix}
+$$
+
+dan
+
+$$
+J(1,1)
+=
+\begin{bmatrix}
+2&2\\
+2&-1
+\end{bmatrix}.
+$$
+
+
+## Cari koreksi {.scrollable}
+
+Kita selesaikan:
+
+$$
+\begin{bmatrix}
+2&2\\
+2&-1
+\end{bmatrix}
+\begin{bmatrix}
+\Delta x\\
+\Delta y
+\end{bmatrix}
+=
+\begin{bmatrix}
+2\\
+1
+\end{bmatrix}.
+$$
+
+Diperoleh:
+
+$$
+\Delta x=0.5,
+\qquad
+\Delta y=0.5.
+$$
+
+
+## Update {.scrollable}
+
+$$
+\mathbf{x}_1
+=
+\begin{bmatrix}
+1\\1
+\end{bmatrix}
++
+\begin{bmatrix}
+0.5\\0.5
+\end{bmatrix}
+$$
+
+sehingga:
+
+$$
+\boxed{
+\mathbf{x}_1=
+\begin{bmatrix}
+1.5\\1.5
+\end{bmatrix}
+}
+$$
+
+Kemudian proses diulang.
+
+
+# Algoritma
+
+## Newton SPNL {.scrollable}
+
+```text
+Pilih x₀
+
+Untuk k = 0, 1, 2, ...
+
+    Hitung F(xₖ)
+
+    Hitung J(xₖ)
+
+    Selesaikan:
+        J(xₖ) Δx = −F(xₖ)
+
+    Update:
+        xₖ₊₁ = xₖ + Δx
+
+    Periksa konvergensi
+
+Berhenti jika memenuhi toleransi
+```
+
+
+## Hal yang perlu diingat {.scrollable}
+
+Pada setiap iterasi:
+
+$$
+\boxed{
+\text{1. Hitung fungsi}
+}
+$$
+
+$$
+\boxed{
+\text{2. Hitung Jacobian}
+}
+$$
+
+$$
+\boxed{
+\text{3. Cari koreksi}
+}
+$$
+
+$$
+\boxed{
+\text{4. Update solusi}
+}
+$$
+
+$$
+\boxed{
+\text{5. Cek konvergensi}
+}
+$$
+
+
+# Implementasi R
+
+## Definisikan fungsi {.scrollable}
+
+```{r, echo=TRUE}
+F <- function(x) {
+  c(
+    x[1]^2 + x[2]^2 - 4,
+    x[1]^2 - x[2] - 1
+  )
+}
+```
+
+
+## Definisikan Jacobian {.scrollable}
+
+```{r, echo=TRUE}
+J <- function(x) {
+  matrix(
+    c(
+      2*x[1], 2*x[2],
+      2*x[1], -1
+    ),
+    nrow = 2,
+    byrow = TRUE
+  )
+}
+```
+
+
+## Cek pada tebakan awal {.scrollable}
+ 
+```{r, echo=TRUE}
+x <- c(1, 1)
+
+F(x)
+J(x)
+```
+
+
+# Langkah Inti di R
+
+## Menyelesaikan sistem linear {.scrollable}
+
+Kita membutuhkan:
+
+$$
+J(x)\Delta x=-F(x)
+$$
+
+Dalam R:
+
+```{r, echo=TRUE}
+delta <- solve(
+  J(x),
+  -F(x)
+)
+
+delta
+```
+
+Kemudian:
+
+```{r, echo=TRUE}
+x_new <- x + delta
+
+x_new
+```
+
+Jadi inti Newton SPNL hanya membutuhkan:
+
+```r
+delta <- solve(J(x), -F(x))
+x_new <- x + delta
+```
+
+# Fungsi Newton
+
+## Implementasi {.scrollable}
+
+```{r, echo=TRUE}
+newton_spnl <- function(F, J, x0,
+                        tol = 1e-8,
+                        max_iter = 100) {
+
+  x <- x0
+
+  for (k in 1:max_iter) {
+
+    Fx <- F(x)
+    Jx <- J(x)
+
+    delta <- solve(Jx, -Fx)
+
+    x_new <- x + delta
+
+    if (sqrt(sum(F(x_new)^2)) < tol) {
+
+      return(list(
+        solution = x_new,
+        iterations = k,
+        converged = TRUE
+      ))
+
+    }
+
+    x <- x_new
+  }
+
+  list(
+    solution = x,
+    iterations = max_iter,
+    converged = FALSE
+  )
+}
+```
+
+
+# Menjalankan Metode
+
+## Tebakan awal {.scrollable}
+
+```{r, echo=TRUE}
+hasil <- newton_spnl(
+  F = F,
+  J = J,
+  x0 = c(1, 1)
+)
+```
+
+Solusi:
+
+```{r, echo=TRUE}
+hasil$solution
+```
+
+Jumlah iterasi:
+
+```{r, echo=TRUE}
+hasil$iterations
+```
+
+Konvergensi:
+
+```{r, echo=TRUE}
+hasil$converged
+```
+
+
+#  Memeriksa Solusi
+
+## Jangan hanya melihat hasil $x$ dan $y$ {.scrollable}
+
+Solusi harus dimasukkan kembali ke sistem.
+
+```{r}
+F(hasil$solution)
+```
+
+Idealnya:
+
+$$
+\mathbf{F}(\mathbf{x}^*)
+\approx
+\begin{bmatrix}
+0\\0
+\end{bmatrix}.
+$$
+
+
+## Residual {.scrollable}
+
+Gunakan norm:
+
+$$
+\boxed{
+\|\mathbf{F}(\mathbf{x}^*)\|
+}
+$$
+
+Dalam R:
+
+```{r, echo=TRUE}
+sqrt(sum(
+  F(hasil$solution)^2
+))
+```
+
+Semakin dekat ke nol, semakin baik solusi numeriknya.
+
+
+# Kriteria Konvergensi
+
+## Berdasarkan residual {.scrollable}
+
+$$
+\boxed{
+\|\mathbf{F}(\mathbf{x}_k)\|<\varepsilon
+}
+$$
+
+Artinya fungsi sudah mendekati nol.
+
+
+## Berdasarkan perubahan solusi {.scrollable}
+
+$$
+\boxed{
+\|\mathbf{x}_{k+1}-\mathbf{x}_k\|<\varepsilon
+}
+$$
+
+Artinya perubahan antariterasi sudah sangat kecil.
+
+
+## Praktik yang lebih aman {.scrollable}
+
+Periksa keduanya:
+
+$$
+\|\mathbf{F}(\mathbf{x}_k)\|<\varepsilon
+$$
+
+dan
+
+$$
+\|\mathbf{x}_{k+1}-\mathbf{x}_k\|<\varepsilon.
+$$
+
+Perubahan solusi yang kecil **tidak selalu berarti** residual sudah kecil.
+
+
+# Mengapa Tebakan Awal Penting?
+
+## Newton bukan metode bracketing {.scrollable}
+
+Pada metode bisection, kita mencari interval:
+
+$$
+f(a)f(b)<0.
+$$
+
+Newton tidak membutuhkan interval tersebut.
+
+Namun:
+
+> Newton sangat bergantung pada posisi tebakan awal.
+
+Tebakan awal yang berbeda dapat menghasilkan:
+
+- solusi yang berbeda;
+- jumlah iterasi yang berbeda;
+- atau kegagalan konvergensi.
+
+
+# Eksperimen Tebakan Awal {.scrollable}
+
+Coba:
+
+```{r}
+starts <- list(
+  c(1, 1),
+  c(-1, 1),
+  c(2, 1),
+  c(-2, 1)
+)
+
+lapply(
+  starts,
+  function(x0) {
+
+    hasil <- newton_spnl(F, J, x0)
+
+    c(
+      x = hasil$solution[1],
+      y = hasil$solution[2],
+      iterasi = hasil$iterations,
+      konvergen = hasil$converged
+    )
+  }
+)
+```
+
+Pertanyaan:
+
+> Apakah semua tebakan awal menghasilkan solusi yang sama?
+
+
+# Mengapa Bisa Ada Banyak Solusi? {.scrollable}
+
+Perhatikan:
+
+$$
+\begin{cases}
+x^2+y^2=4,\\
+y=x^2-1.
+\end{cases}
+$$
+
+Kurva dapat berpotongan di lebih dari satu titik.
+
+Maka:
+
+$$
+\boxed{
+\text{Satu SPNL tidak selalu memiliki satu solusi.}
+}
+$$
+
+Newton dapat menuju salah satu solusi bergantung pada tebakan awal.
+
+# Visualisasi Solusi {.scrollable}
+
+```{r}
+x <- seq(-2.2, 2.2, length.out = 500)
+
+y1 <- sqrt(4 - x^2)
+y2 <- -sqrt(4 - x^2)
+y3 <- x^2 - 1
+
+plot(
+  x, y1,
+  type = "l",
+  lwd = 2,
+  ylim = c(-2.2, 2.2),
+  xlab = "x",
+  ylab = "y"
+)
+
+lines(x, y2, lwd = 2)
+lines(x, y3, lwd = 2, lty = 2)
+
+abline(h = 0, v = 0, lty = 3)
+```
+
+Solusi SPNL dapat dipahami sebagai:
+
+$$
+\boxed{
+\text{titik perpotongan kurva}
+}
+$$
+
+
+# Bagaimana Newton Bergerak? {.scrollable}
+
+Secara konseptual:
+
+```text
+Tebakan awal
+     ↓
+Evaluasi F(x)
+     ↓
+Hitung Jacobian
+     ↓
+Cari arah koreksi
+     ↓
+Update x
+     ↓
+Lebih dekat ke solusi?
+     ↓
+   Ya → selesai
+   Tidak → ulangi
+```
+
+Metode Newton secara bertahap memperbaiki posisi solusi.
+
+
+# Masalah Jacobian Singular {.scrollable}
+
+Newton membutuhkan penyelesaian:
+
+$$
+J(\mathbf{x}_k)\Delta\mathbf{x}
+=
+-\mathbf{F}(\mathbf{x}_k).
+$$
+
+Jika Jacobian singular:
+
+$$
+\det J(\mathbf{x}_k)=0,
+$$
+
+sistem linear tidak memiliki solusi unik.
+
+Dalam R:
+
+```{r}
+det(J(c(1, 1)))
+```
+
+Kita juga dapat melihat kondisi matriks:
+
+```{r}
+kappa(J(c(1, 1)))
+```
+
+Nilai `kappa()` yang besar menunjukkan Jacobian dapat bersifat ill-conditioned.
+
+
+# Newton SPNL: Inti Konsep {.scrollable}
+
+$$
+\boxed{
+\mathbf{F}(\mathbf{x})=\mathbf{0}
+}
+$$
+
+↓
+
+$$
+\boxed{
+J(\mathbf{x}_k)\Delta\mathbf{x}
+=
+-\mathbf{F}(\mathbf{x}_k)
+}
+$$
+
+↓
+
+$$
+\boxed{
+\mathbf{x}_{k+1}
+=
+\mathbf{x}_k+\Delta\mathbf{x}
+}
+$$
+
+↓
+
+Ulangi sampai konvergen.
+
+
+# Perbandingan
+
+| | Newton 1D | Newton SPNL |
+|---|---|---|
+| Fungsi | $f(x)$ | $\mathbf F(\mathbf x)$ |
+| Turunan | $f'(x)$ | $J(\mathbf x)$ |
+| Koreksi | skalar | vektor |
+| Operasi | pembagian | sistem linear |
+| Solusi | $x$ | $\mathbf x$ |
+| Geometri | akar kurva | titik potong kurva |
+
+
+# Latihan 1 {.scrollable}
+
+Diberikan:
+
+$$
+\begin{cases}
+x^2+y^2-5=0,\\
+e^x+y-1=0.
+\end{cases}
+$$
+
+Tentukan:
+
+1. \(\mathbf F(x,y)\)
+2. \(J(x,y)\)
+
+
+# Latihan 2 {.scrollable}
+
+Gunakan:
+
+$$
+\begin{cases}
+x^2+y^2-5=0,\\
+x-y-1=0.
+\end{cases}
+$$
+
+Dengan tebakan awal:
+
+$$
+(x_0,y_0)=(1,1)
+$$
+
+Tentukan:
+
+- solusi;
+- jumlah iterasi;
+- residual;
+- status konvergensi.
+
+Gunakan:
+
+$$
+\varepsilon=10^{-8}.
+$$
+
+
+# Latihan 3 {.scrollable}
+
+Gunakan sistem:
+
+$$
+\begin{cases}
+x^2+y^2-4=0,\\
+x^2-y-1=0.
+\end{cases}
+$$
+
+Bandingkan tebakan awal:
+
+$$
+(1,1),\quad
+(-1,1),\quad
+(2,2),\quad
+(-2,2).
+$$
+
+Buat tabel:
+
+| Tebakan | Solusi | Iterasi | Konvergen |
+|---|---|---:|---|
+| $(1,1)$ | | | |
+| $(-1,1)$ | | | |
+| $(2,2)$ | | | |
+| $(-2,2)$ | | | |
+
+
+# Latihan 4 — Tiga Peubah {.scrollable}
+
+Diberikan:
+
+$$
+\begin{cases}
+x+y+z-3=0,\\
+x^2+y^2+z^2-5=0,\\
+e^x+y-z-1=0.
+\end{cases}
+$$
+
+Tentukan:
+
+1. \(\mathbf F(x,y,z)\);
+2. \(J(x,y,z)\);
+3. solusi numerik;
+4. residual;
+5. jumlah iterasi.
+
+Gunakan R.
+
+
+# Pertanyaan Diskusi {.scrollable}
+
+1. Mengapa Jacobian dapat dianggap sebagai generalisasi turunan?
+
+2. Mengapa Newton SPNL membutuhkan penyelesaian sistem linear?
+
+3. Mengapa invers Jacobian tidak perlu dihitung secara eksplisit?
+
+4. Mengapa tebakan awal penting?
+
+5. Mengapa satu SPNL dapat memiliki beberapa solusi?
+
+6. Apa yang dapat menyebabkan Newton gagal konvergen?
+
+7. Mengapa solusi numerik perlu diperiksa dengan residual?
+
+
+#  Ringkasan {.scrollable}
+
+SPNL:
+
+$$
+\boxed{\mathbf F(\mathbf x)=\mathbf 0}
+$$
+
+Jacobian:
+
+$$
+\boxed{J(\mathbf x)}
+$$
+
+Koreksi Newton:
+
+$$
+\boxed{
+J(\mathbf x_k)\Delta\mathbf x
+=
+-\mathbf F(\mathbf x_k)
+}
+$$
+
+Update:
+
+$$
+\boxed{
+\mathbf x_{k+1}
+=
+\mathbf x_k+\Delta\mathbf x
+}
+$$
+
+Kriteria:
+
+$$
+\boxed{
+\|\mathbf F(\mathbf x_k)\|<\varepsilon
+}
+$$
+
+
+# Pesan Utama {.scrollable}
+
+Metode Newton untuk SPNL pada dasarnya adalah:
+
+$$
+\boxed{
+\text{Newton-Raphson}
++
+\text{turunan parsial}
++
+\text{sistem linear}
+}
+$$
+
+atau secara konseptual:
+
+$$
+\boxed{
+\text{tebak}
+\rightarrow
+\text{evaluasi}
+\rightarrow
+\text{koreksi}
+\rightarrow
+\text{update}
+\rightarrow
+\text{periksa}
+}
+$$
+
+**Kunci pemahaman:**
+
+> Jacobian memberikan informasi lokal tentang bagaimana seluruh persamaan berubah terhadap seluruh peubah.

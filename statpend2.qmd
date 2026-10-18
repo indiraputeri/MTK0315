@@ -1,0 +1,44 @@
+```markdown
+---
+title: "Data, Variabel, Populasi, Sampel, dan Skala Pengukuran"
+subtitle: "Statistik Pendidikan"
+author: "Program Studi PIAUD — Semester 5"
+format:
+  revealjs:
+    theme: default
+    slide-number: true
+    transition: slide
+    center: false
+    footer: "Statistik Pendidikan | PIAUD"
+---
+
+# Capaian Pembelajaran
+
+Setelah mengikuti pembelajaran, mahasiswa mampu:
+
+- menjelaskan pengertian **data** dan **variabel**;
+- membedakan **populasi** dan **sampel**;
+- mengidentifikasi jenis data dalam penelitian pendidikan;
+- menentukan **skala pengukuran** suatu variabel;
+- membedakan skala **nominal, ordinal, interval, dan rasio**;
+- menerapkan konsep tersebut pada penelitian **PIAUD**.
+
+---
+
+# Mengapa Kita Perlu Memahami Data?
+
+Bayangkan kita ingin melakukan penelitian:
+
+> **"Apakah penggunaan media pembelajaran digital berhubungan dengan kemampuan bahasa anak usia dini?"**
+
+Sebelum melakukan analisis statistik, kita perlu mengetahui:
+
+- Siapa yang menjadi **objek penelitian**?
+- Data apa yang akan dikumpulkan?
+- Apa saja **variabel** yang diteliti?
+- Dari siapa data diperoleh?
+- Bagaimana variabel tersebut diukur?
+
+::: {.callout-warning}
+**Kesalahan memahami jenis data dan skala pengukuran dapat menyebabkan kesalahan dalam memilih analisis statistik.**
+```

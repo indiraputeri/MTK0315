@@ -1,0 +1,2517 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Program Studi Tadris Matematika">
+<meta name="dcterms.date" content="2026-09-06">
+
+<title>Modul Praktikum Metode Pencarian Akar Persamaan Nonlinear</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="praktikum1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="praktikum1_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="praktikum1_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="praktikum1_files/libs/quarto-html/popper.min.js"></script>
+<script src="praktikum1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="praktikum1_files/libs/quarto-html/anchor.min.js"></script>
+<link href="praktikum1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="praktikum1_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="praktikum1_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="praktikum1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="praktikum1_files/libs/bootstrap/bootstrap-c2e55264ed47ce3b2e0326a2269f9400.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Daftar Isi</h2>
+   
+  <ul class="collapse">
+  <li><a href="#pendahuluan" id="toc-pendahuluan" class="nav-link active" data-scroll-target="#pendahuluan">Pendahuluan</a></li>
+  <li><a href="#tujuan-praktikum" id="toc-tujuan-praktikum" class="nav-link" data-scroll-target="#tujuan-praktikum">Tujuan Praktikum</a></li>
+  <li><a href="#persiapan" id="toc-persiapan" class="nav-link" data-scroll-target="#persiapan">Persiapan</a>
+  <ul class="collapse">
+  <li><a href="#perangkat-lunak" id="toc-perangkat-lunak" class="nav-link" data-scroll-target="#perangkat-lunak">Perangkat Lunak</a></li>
+  <li><a href="#package" id="toc-package" class="nav-link" data-scroll-target="#package">Package</a></li>
+  </ul></li>
+  <li><a href="#konsep-dasar" id="toc-konsep-dasar" class="nav-link" data-scroll-target="#konsep-dasar">Konsep Dasar</a>
+  <ul class="collapse">
+  <li><a href="#contoh" id="toc-contoh" class="nav-link" data-scroll-target="#contoh">Contoh</a></li>
+  </ul></li>
+  <li><a href="#praktikum-1-metode-bisection" id="toc-praktikum-1-metode-bisection" class="nav-link" data-scroll-target="#praktikum-1-metode-bisection">Praktikum 1 — Metode Bisection</a>
+  <ul class="collapse">
+  <li><a href="#ide-dasar" id="toc-ide-dasar" class="nav-link" data-scroll-target="#ide-dasar">Ide Dasar</a></li>
+  <li><a href="#perhitungan-manual" id="toc-perhitungan-manual" class="nav-link" data-scroll-target="#perhitungan-manual">Perhitungan Manual</a></li>
+  <li><a href="#algoritma-bisection" id="toc-algoritma-bisection" class="nav-link" data-scroll-target="#algoritma-bisection">Algoritma Bisection</a></li>
+  <li><a href="#pertanyaan" id="toc-pertanyaan" class="nav-link" data-scroll-target="#pertanyaan">Pertanyaan</a></li>
+  </ul></li>
+  <li><a href="#praktikum-2-metode-regula-falsi" id="toc-praktikum-2-metode-regula-falsi" class="nav-link" data-scroll-target="#praktikum-2-metode-regula-falsi">Praktikum 2 — Metode Regula Falsi</a>
+  <ul class="collapse">
+  <li><a href="#ide-dasar-1" id="toc-ide-dasar-1" class="nav-link" data-scroll-target="#ide-dasar-1">Ide Dasar</a></li>
+  <li><a href="#perhitungan-manual-1" id="toc-perhitungan-manual-1" class="nav-link" data-scroll-target="#perhitungan-manual-1">Perhitungan Manual</a></li>
+  <li><a href="#algoritma" id="toc-algoritma" class="nav-link" data-scroll-target="#algoritma">Algoritma</a></li>
+  <li><a href="#pertanyaan-1" id="toc-pertanyaan-1" class="nav-link" data-scroll-target="#pertanyaan-1">Pertanyaan</a></li>
+  </ul></li>
+  <li><a href="#praktikum-3-metode-fixed-point" id="toc-praktikum-3-metode-fixed-point" class="nav-link" data-scroll-target="#praktikum-3-metode-fixed-point">Praktikum 3 — Metode Fixed Point</a>
+  <ul class="collapse">
+  <li><a href="#ide-dasar-2" id="toc-ide-dasar-2" class="nav-link" data-scroll-target="#ide-dasar-2">Ide Dasar</a></li>
+  <li><a href="#contoh-1" id="toc-contoh-1" class="nav-link" data-scroll-target="#contoh-1"><span class="header-section-number">0.1</span> 2. Contoh</a></li>
+  <li><a href="#perhitungan-manual-2" id="toc-perhitungan-manual-2" class="nav-link" data-scroll-target="#perhitungan-manual-2"><span class="header-section-number">0.2</span> 3. Perhitungan Manual</a></li>
+  <li><a href="#konvergensi-fixed-point" id="toc-konvergensi-fixed-point" class="nav-link" data-scroll-target="#konvergensi-fixed-point"><span class="header-section-number">0.3</span> 4. Konvergensi Fixed Point</a></li>
+  <li><a href="#implementasi-r-2" id="toc-implementasi-r-2" class="nav-link" data-scroll-target="#implementasi-r-2"><span class="header-section-number">0.4</span> 5. Implementasi R</a></li>
+  <li><a href="#latihan" id="toc-latihan" class="nav-link" data-scroll-target="#latihan"><span class="header-section-number">0.5</span> 6. Latihan</a></li>
+  </ul></li>
+  <li><a href="#praktikum-4-metode-newton-raphson" id="toc-praktikum-4-metode-newton-raphson" class="nav-link" data-scroll-target="#praktikum-4-metode-newton-raphson"><span class="header-section-number">1</span> Praktikum 4 — Metode Newton-Raphson</a>
+  <ul class="collapse">
+  <li><a href="#ide-dasar-3" id="toc-ide-dasar-3" class="nav-link" data-scroll-target="#ide-dasar-3"><span class="header-section-number">1.1</span> 1. Ide Dasar</a></li>
+  <li><a href="#perhitungan-manual-3" id="toc-perhitungan-manual-3" class="nav-link" data-scroll-target="#perhitungan-manual-3"><span class="header-section-number">1.2</span> 2. Perhitungan Manual</a></li>
+  <li><a href="#implementasi-r-3" id="toc-implementasi-r-3" class="nav-link" data-scroll-target="#implementasi-r-3"><span class="header-section-number">1.3</span> 3. Implementasi R</a></li>
+  <li><a href="#pertanyaan-2" id="toc-pertanyaan-2" class="nav-link" data-scroll-target="#pertanyaan-2"><span class="header-section-number">1.4</span> 4. Pertanyaan</a></li>
+  </ul></li>
+  <li><a href="#praktikum-5-metode-secant" id="toc-praktikum-5-metode-secant" class="nav-link" data-scroll-target="#praktikum-5-metode-secant"><span class="header-section-number">2</span> Praktikum 5 — Metode Secant</a>
+  <ul class="collapse">
+  <li><a href="#ide-dasar-4" id="toc-ide-dasar-4" class="nav-link" data-scroll-target="#ide-dasar-4"><span class="header-section-number">2.1</span> 1. Ide Dasar</a></li>
+  <li><a href="#perhitungan-manual-4" id="toc-perhitungan-manual-4" class="nav-link" data-scroll-target="#perhitungan-manual-4"><span class="header-section-number">2.2</span> 2. Perhitungan Manual</a></li>
+  <li><a href="#implementasi-r-4" id="toc-implementasi-r-4" class="nav-link" data-scroll-target="#implementasi-r-4"><span class="header-section-number">2.3</span> 3. Implementasi R</a></li>
+  </ul></li>
+  <li><a href="#praktikum-6-membandingkan-lima-metode" id="toc-praktikum-6-membandingkan-lima-metode" class="nav-link" data-scroll-target="#praktikum-6-membandingkan-lima-metode"><span class="header-section-number">3</span> Praktikum 6 — Membandingkan Lima Metode</a></li>
+  <li><a href="#praktikum-7-visualisasi-fungsi-dan-akar" id="toc-praktikum-7-visualisasi-fungsi-dan-akar" class="nav-link" data-scroll-target="#praktikum-7-visualisasi-fungsi-dan-akar"><span class="header-section-number">4</span> Praktikum 7 — Visualisasi Fungsi dan Akar</a></li>
+  <li><a href="#praktikum-8-menerapkan-metode-pada-berbagai-fungsi" id="toc-praktikum-8-menerapkan-metode-pada-berbagai-fungsi" class="nav-link" data-scroll-target="#praktikum-8-menerapkan-metode-pada-berbagai-fungsi"><span class="header-section-number">5</span> Praktikum 8 — Menerapkan Metode pada Berbagai Fungsi</a>
+  <ul class="collapse">
+  <li><a href="#fungsi-1-polinomial" id="toc-fungsi-1-polinomial" class="nav-link" data-scroll-target="#fungsi-1-polinomial"><span class="header-section-number">5.1</span> Fungsi 1 — Polinomial</a></li>
+  <li><a href="#fungsi-2-polinomial-kubik" id="toc-fungsi-2-polinomial-kubik" class="nav-link" data-scroll-target="#fungsi-2-polinomial-kubik"><span class="header-section-number">5.2</span> Fungsi 2 — Polinomial Kubik</a></li>
+  <li><a href="#fungsi-3-eksponensial" id="toc-fungsi-3-eksponensial" class="nav-link" data-scroll-target="#fungsi-3-eksponensial"><span class="header-section-number">5.3</span> Fungsi 3 — Eksponensial</a></li>
+  <li><a href="#fungsi-4-trigonometri" id="toc-fungsi-4-trigonometri" class="nav-link" data-scroll-target="#fungsi-4-trigonometri"><span class="header-section-number">5.4</span> Fungsi 4 — Trigonometri</a></li>
+  <li><a href="#fungsi-5-logaritmik" id="toc-fungsi-5-logaritmik" class="nav-link" data-scroll-target="#fungsi-5-logaritmik"><span class="header-section-number">5.5</span> Fungsi 5 — Logaritmik</a></li>
+  <li><a href="#fungsi-6-fungsi-campuran" id="toc-fungsi-6-fungsi-campuran" class="nav-link" data-scroll-target="#fungsi-6-fungsi-campuran"><span class="header-section-number">5.6</span> Fungsi 6 — Fungsi Campuran</a></li>
+  </ul></li>
+  <li><a href="#tugas-1-penerapan-terbimbing" id="toc-tugas-1-penerapan-terbimbing" class="nav-link" data-scroll-target="#tugas-1-penerapan-terbimbing"><span class="header-section-number">6</span> Tugas 1 — Penerapan Terbimbing</a></li>
+  <li><a href="#tugas-2-mengubah-fungsi" id="toc-tugas-2-mengubah-fungsi" class="nav-link" data-scroll-target="#tugas-2-mengubah-fungsi"><span class="header-section-number">7</span> Tugas 2 — Mengubah Fungsi</a></li>
+  <li><a href="#tugas-3-eksperimen-initial-guess" id="toc-tugas-3-eksperimen-initial-guess" class="nav-link" data-scroll-target="#tugas-3-eksperimen-initial-guess"><span class="header-section-number">8</span> Tugas 3 — Eksperimen Initial Guess</a></li>
+  <li><a href="#tugas-4-eksperimen-toleransi" id="toc-tugas-4-eksperimen-toleransi" class="nav-link" data-scroll-target="#tugas-4-eksperimen-toleransi"><span class="header-section-number">9</span> Tugas 4 — Eksperimen Toleransi</a></li>
+  <li><a href="#tugas-5-perbandingan-metode" id="toc-tugas-5-perbandingan-metode" class="nav-link" data-scroll-target="#tugas-5-perbandingan-metode"><span class="header-section-number">10</span> Tugas 5 — Perbandingan Metode</a></li>
+  <li><a href="#tugas-6-analisis-konvergensi" id="toc-tugas-6-analisis-konvergensi" class="nav-link" data-scroll-target="#tugas-6-analisis-konvergensi"><span class="header-section-number">11</span> Tugas 6 — Analisis Konvergensi</a></li>
+  <li><a href="#refleksi" id="toc-refleksi" class="nav-link" data-scroll-target="#refleksi"><span class="header-section-number">12</span> Refleksi</a></li>
+  <li><a href="#tugas-akhir-praktikum" id="toc-tugas-akhir-praktikum" class="nav-link" data-scroll-target="#tugas-akhir-praktikum"><span class="header-section-number">13</span> Tugas Akhir Praktikum</a>
+  <ul class="collapse">
+  <li><a href="#persamaan" id="toc-persamaan" class="nav-link" data-scroll-target="#persamaan"><span class="header-section-number">13.1</span> 1. Persamaan</a></li>
+  <li><a href="#grafik" id="toc-grafik" class="nav-link" data-scroll-target="#grafik"><span class="header-section-number">13.2</span> 2. Grafik</a></li>
+  <li><a href="#perhitungan-manual-5" id="toc-perhitungan-manual-5" class="nav-link" data-scroll-target="#perhitungan-manual-5"><span class="header-section-number">13.3</span> 3. Perhitungan Manual</a></li>
+  <li><a href="#algoritma-1" id="toc-algoritma-1" class="nav-link" data-scroll-target="#algoritma-1"><span class="header-section-number">13.4</span> 4. Algoritma</a></li>
+  <li><a href="#implementasi-r-5" id="toc-implementasi-r-5" class="nav-link" data-scroll-target="#implementasi-r-5"><span class="header-section-number">13.5</span> 5. Implementasi R</a></li>
+  <li><a href="#hasil" id="toc-hasil" class="nav-link" data-scroll-target="#hasil"><span class="header-section-number">13.6</span> 6. Hasil</a></li>
+  <li><a href="#perbandingan" id="toc-perbandingan" class="nav-link" data-scroll-target="#perbandingan"><span class="header-section-number">13.7</span> 7. Perbandingan</a></li>
+  <li><a href="#pembahasan" id="toc-pembahasan" class="nav-link" data-scroll-target="#pembahasan"><span class="header-section-number">13.8</span> 8. Pembahasan</a></li>
+  <li><a href="#kesimpulan" id="toc-kesimpulan" class="nav-link" data-scroll-target="#kesimpulan"><span class="header-section-number">13.9</span> 9. Kesimpulan</a></li>
+  </ul></li>
+  <li><a href="#ringkasan-lima-metode" id="toc-ringkasan-lima-metode" class="nav-link" data-scroll-target="#ringkasan-lima-metode"><span class="header-section-number">14</span> Ringkasan Lima Metode</a></li>
+  <li><a href="#penutup" id="toc-penutup" class="nav-link" data-scroll-target="#penutup"><span class="header-section-number">15</span> Penutup</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Format Lain</h2><ul><li><a href="praktikum1.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Modul Praktikum Metode Pencarian Akar Persamaan Nonlinear</h1>
+<p class="subtitle lead">Implementasi dan Eksperimen Menggunakan R</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Penulis</div>
+    <div class="quarto-title-meta-contents">
+             <p>Program Studi Tadris Matematika </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Diterbitkan</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">6 September 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="pendahuluan" class="level1 unnumbered">
+<h1 class="unnumbered">Pendahuluan</h1>
+<p>Dalam banyak permasalahan matematika, kita perlu menentukan nilai (x) yang memenuhi suatu persamaan nonlinear</p>
+<p><span class="math display">\[
+f(x)=0.
+\]</span></p>
+<p>Untuk beberapa persamaan sederhana, akar dapat diperoleh secara analitik. Namun, untuk persamaan nonlinear yang lebih kompleks, penyelesaian secara analitik sering kali tidak mudah atau bahkan tidak tersedia.</p>
+<p>Metode numerik memberikan pendekatan untuk memperoleh akar persamaan tersebut secara bertahap melalui proses iterasi.</p>
+<p>Pada praktikum ini akan dipelajari lima metode pencarian akar persamaan nonlinear satu variabel:</p>
+<ol type="1">
+<li>Metode Bisection</li>
+<li>Metode Regula Falsi</li>
+<li>Metode Fixed Point</li>
+<li>Metode Newton-Raphson</li>
+<li>Metode Secant</li>
+</ol>
+<p>Praktikum dilakukan menggunakan <strong>R</strong> sebagai alat bantu komputasi.</p>
+<p>Namun, penggunaan R bukan tujuan utama praktikum. Hal yang lebih penting adalah memahami bagaimana setiap metode bekerja.</p>
+<p>Oleh karena itu, setiap metode akan dipelajari dengan urutan:</p>
+<blockquote class="blockquote">
+<p><strong>Ide dasar → Perhitungan manual → Algoritma → Implementasi R → Penerapan → Eksperimen → Analisis</strong></p>
+</blockquote>
+<hr>
+</section>
+<section id="tujuan-praktikum" class="level1 unnumbered">
+<h1 class="unnumbered">Tujuan Praktikum</h1>
+<p>Setelah mengikuti praktikum ini, mahasiswa diharapkan mampu:</p>
+<ol type="1">
+<li>Menjelaskan konsep dasar pencarian akar persamaan nonlinear.</li>
+<li>Menjelaskan ide dasar lima metode pencarian akar.</li>
+<li>Melakukan beberapa iterasi secara manual.</li>
+<li>Menuliskan langkah algoritmik suatu metode.</li>
+<li>Mengimplementasikan metode menggunakan R.</li>
+<li>Mengubah fungsi dan parameter pada kode R.</li>
+<li>Menentukan akar persamaan nonlinear secara numerik.</li>
+<li>Membandingkan kecepatan dan karakteristik beberapa metode.</li>
+<li>Menjelaskan kondisi ketika suatu metode dapat mengalami kegagalan atau tidak konvergen.</li>
+<li>Menginterpretasikan hasil komputasi numerik.</li>
+</ol>
+<hr>
+</section>
+<section id="persiapan" class="level1 unnumbered">
+<h1 class="unnumbered">Persiapan</h1>
+<section id="perangkat-lunak" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="perangkat-lunak">Perangkat Lunak</h2>
+<p>Praktikum menggunakan:</p>
+<ul>
+<li>R</li>
+<li>RStudio</li>
+<li>Quarto</li>
+</ul>
+<p>Pastikan R dan RStudio telah terpasang sebelum praktikum dimulai.</p>
+</section>
+<section id="package" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="package">Package</h2>
+<p>Sebagian besar praktikum hanya menggunakan fungsi dasar R.</p>
+<p>Untuk membuat grafik, digunakan <code>ggplot2</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<hr>
+</section>
+</section>
+<section id="konsep-dasar" class="level1 unnumbered">
+<h1 class="unnumbered">Konsep Dasar</h1>
+<blockquote class="blockquote">
+<p><strong>apa itu akar persamaan</strong> <span class="math inline">\(f(x)=0\)</span> ?</p>
+</blockquote>
+<p>akar persamaan adalah nilai <span class="math inline">\(x=x^*\)</span> yang memenuhi</p>
+<p><span class="math display">\[
+f(x^*)=0.
+\]</span></p>
+<p>Secara geometris, akar merupakan titik ketika grafik <span class="math inline">\(y=f(x)\)</span> memotong sumbu-<span class="math inline">\(x\)</span>.</p>
+<p>Sebagai contoh,</p>
+<p><span class="math display">\[
+f(x)=x^2-4.
+\]</span></p>
+<p>Persamaan</p>
+<p><span class="math display">\[
+x^2-4=0
+\]</span></p>
+<p>memiliki dua akar:</p>
+<p><span class="math display">\[
+x=-2
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+x=2.
+\]</span></p>
+<p>Dalam praktikum ini kita akan menggunakan pendekatan numerik untuk menemukan akar tersebut.</p>
+<hr>
+<section id="contoh" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="contoh">Contoh</h2>
+<p>Agar karakteristik kelima metode dapat dibandingkan, pada bagian awal praktikum kita menggunakan persamaan yang sama:</p>
+<p><span class="math display">\[
+f(x)=x^3-x-2.
+\]</span></p>
+<p>Kita ingin mencari (x) yang memenuhi</p>
+<p><span class="math display">\[
+x^3-x-2=0.
+\]</span></p>
+<p>Perhatikan bahwa</p>
+<p><span class="math display">\[
+f(1)=1^3-1-2=-2
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+f(2)=2^3-2-2=4.
+\]</span></p>
+<p>Karena</p>
+<p><span class="math display">\[
+f(1)&lt;0
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+f(2)&gt;0,
+\]</span></p>
+<p>terdapat perubahan tanda pada interval <span class="math inline">\([1,2]\)</span>.</p>
+<p>Akar persamaan tersebut adalah sekitar</p>
+<p><span class="math display">\[
+x^*\approx1.52138.
+\]</span></p>
+<p>Nilai tersebut akan digunakan sebagai pembanding hasil metode numerik.</p>
+<hr>
+</section>
+</section>
+<section id="praktikum-1-metode-bisection" class="level1 unnumbered">
+<h1 class="unnumbered">Praktikum 1 — Metode Bisection</h1>
+<section id="ide-dasar" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="ide-dasar">Ide Dasar</h2>
+<p>Ide utama metode Bisection adalah:</p>
+<blockquote class="blockquote">
+<p><strong>mencari akar dengan cara mempersempit interval yang mengandung akar.</strong></p>
+</blockquote>
+<p>Jika pada suatu interval ([a,b]) berlaku</p>
+<p><span class="math display">\[
+f(a)f(b)&lt;0,
+\]</span></p>
+<p>maka terdapat setidaknya satu akar di antara (a) dan (b), dengan asumsi (f) kontinu.</p>
+<p>Titik tengah interval dihitung dengan</p>
+<p><span class="math display">\[
+c=\frac{a+b}{2}.
+\]</span></p>
+<p>Kemudian diperiksa tanda (f(c)).</p>
+<p>Jika</p>
+<p><span class="math display">\[
+f(a)f(c)&lt;0,
+\]</span></p>
+<p>maka akar berada pada interval</p>
+<p><span class="math display">\[
+[a,c].
+\]</span></p>
+<p>Jika</p>
+<p><span class="math display">\[
+f(c)f(b)&lt;0,
+\]</span></p>
+<p>maka akar berada pada interval</p>
+<p><span class="math display">\[
+[c,b].
+\]</span></p>
+<p>Proses tersebut diulang sampai diperoleh ketelitian yang diinginkan.</p>
+<hr>
+</section>
+<section id="perhitungan-manual" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="perhitungan-manual">Perhitungan Manual</h2>
+<p>Gunakan</p>
+<p><span class="math display">\[
+f(x)=x^3-x-2
+\]</span></p>
+<p>dengan interval awal</p>
+<p><span class="math display">\[
+[a,b]=[1,2].
+\]</span></p>
+<section id="iterasi-1" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="iterasi-1">Iterasi 1</h3>
+<p>Titik tengah:</p>
+<p><span class="math display">\[
+c_1=\frac{1+2}{2}=1.5.
+\]</span></p>
+<p>Hitung:</p>
+<p><span class="math display">\[
+f(1.5)=1.5^3-1.5-2=-0.125.
+\]</span></p>
+<p>Karena</p>
+<p><span class="math display">\[
+f(1)&lt;0
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+f(1.5)&lt;0,
+\]</span></p>
+<p>akar belum berada pada interval <span class="math inline">\([1,1.5]\)</span>.</p>
+<p>Karena</p>
+<p><span class="math display">\[
+f(1.5)&lt;0
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+f(2)&gt;0,
+\]</span></p>
+<p>interval baru adalah</p>
+<p><span class="math display">\[
+[1.5,2].
+\]</span></p>
+</section>
+<section id="iterasi-2" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="iterasi-2">Iterasi 2</h3>
+<p><span class="math display">\[
+c_2=\frac{1.5+2}{2}=1.75.
+\]</span></p>
+<p>Hitung:</p>
+<p><span class="math display">\[
+f(1.75)=1.75^3-1.75-2=1.609375.
+\]</span></p>
+<p>Karena</p>
+<p><span class="math display">\[
+f(1.5)&lt;0
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+f(1.75)&gt;0,
+\]</span></p>
+<p>interval baru adalah</p>
+<p><span class="math display">\[
+[1.5,1.75].
+\]</span></p>
+</section>
+<section id="iterasi-3" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="iterasi-3">Iterasi 3</h3>
+<p><span class="math display">\[
+c_3=\frac{1.5+1.75}{2}=1.625.
+\]</span></p>
+<p>Hitung:</p>
+<p><span class="math display">\[
+f(1.625)=1.625^3-1.625-2.
+\]</span></p>
+<p>Mahasiswa melanjutkan perhitungan.</p>
+</section>
+<section id="latihan-perhitungan-manual" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="latihan-perhitungan-manual">Latihan Perhitungan Manual</h3>
+<p>Lengkapi minimal 5 iterasi berikut.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Iterasi</th>
+<th style="text-align: right;">(a)</th>
+<th style="text-align: right;">(b)</th>
+<th style="text-align: right;">(c)</th>
+<th style="text-align: right;">(f(c))</th>
+<th>Interval Baru</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">-0.125</td>
+<td>[1.5, 2]</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.75</td>
+<td style="text-align: right;">1.609375</td>
+<td>[1.5, 1.75]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="algoritma-bisection" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="algoritma-bisection">Algoritma Bisection</h2>
+<p>Secara umum:</p>
+<ol type="1">
+<li><p>Tentukan (a) dan (b).</p></li>
+<li><p>Pastikan (f(a)f(b)&lt;0).</p></li>
+<li><p>Hitung titik tengah</p>
+<p><span class="math display">\[
+c=\frac{a+b}{2}.
+\]</span></p></li>
+<li><p>Hitung (f(c)).</p></li>
+<li><p>Tentukan interval baru berdasarkan perubahan tanda.</p></li>
+<li><p>Ulangi proses.</p></li>
+<li><p>Berhenti ketika interval atau error telah memenuhi toleransi.</p></li>
+</ol>
+<hr>
+<section id="implementasi-r" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="implementasi-r">Implementasi R</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>bisection <span class="ot">&lt;-</span> <span class="cf">function</span>(f, a, b, <span class="at">tol =</span> <span class="fl">1e-6</span>, <span class="at">max_iter =</span> <span class="dv">100</span>) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">f</span>(a) <span class="sc">*</span> <span class="fu">f</span>(b) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Interval tidak mengandung perubahan tanda."</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  hasil <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>max_iter) {</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    c <span class="ot">&lt;-</span> (a <span class="sc">+</span> b) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    fc <span class="ot">&lt;-</span> <span class="fu">f</span>(c)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    hasil <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      hasil,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">iterasi =</span> i,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">a =</span> a,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">b =</span> b,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">c =</span> c,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">f_c =</span> fc,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">error =</span> <span class="fu">abs</span>(b <span class="sc">-</span> a)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">abs</span>(b <span class="sc">-</span> a) <span class="sc">&lt;</span> tol <span class="sc">||</span> <span class="fu">abs</span>(fc) <span class="sc">&lt;</span> tol) {</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">f</span>(a) <span class="sc">*</span> fc <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>      b <span class="ot">&lt;-</span> c</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>      a <span class="ot">&lt;-</span> c</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">akar =</span> c,</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">iterasi =</span> hasil</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<hr>
+</section>
+<section id="eksekusi-program" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="eksekusi-program">Eksekusi Program</h3>
+<p>Definisikan fungsi:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  x<span class="sc">^</span><span class="dv">3</span> <span class="sc">-</span> x <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Jalankan:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>hasil_bisection <span class="ot">&lt;-</span> <span class="fu">bisection</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> f,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">a =</span> <span class="dv">1</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">b =</span> <span class="dv">2</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>hasil_bisection<span class="sc">$</span>akar</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.52138</code></pre>
+</div>
+</div>
+<p>Tampilkan tabel iterasi:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>hasil_bisection<span class="sc">$</span>iterasi</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   iterasi        a        b        c           f_c        error
+1        1 1.000000 2.000000 1.500000 -1.250000e-01 1.000000e+00
+2        2 1.500000 2.000000 1.750000  1.609375e+00 5.000000e-01
+3        3 1.500000 1.750000 1.625000  6.660156e-01 2.500000e-01
+4        4 1.500000 1.625000 1.562500  2.521973e-01 1.250000e-01
+5        5 1.500000 1.562500 1.531250  5.911255e-02 6.250000e-02
+6        6 1.500000 1.531250 1.515625 -3.405380e-02 3.125000e-02
+7        7 1.515625 1.531250 1.523438  1.225042e-02 1.562500e-02
+8        8 1.515625 1.523438 1.519531 -1.097125e-02 7.812500e-03
+9        9 1.519531 1.523438 1.521484  6.221756e-04 3.906250e-03
+10      10 1.519531 1.521484 1.520508 -5.178886e-03 1.953125e-03
+11      11 1.520508 1.521484 1.520996 -2.279443e-03 9.765625e-04
+12      12 1.520996 1.521484 1.521240 -8.289059e-04 4.882812e-04
+13      13 1.521240 1.521484 1.521362 -1.034331e-04 2.441406e-04
+14      14 1.521362 1.521484 1.521423  2.593543e-04 1.220703e-04
+15      15 1.521362 1.521423 1.521393  7.795631e-05 6.103516e-05
+16      16 1.521362 1.521393 1.521378 -1.273947e-05 3.051758e-05
+17      17 1.521378 1.521393 1.521385  3.260816e-05 1.525879e-05
+18      18 1.521378 1.521385 1.521381  9.934278e-06 7.629395e-06
+19      19 1.521378 1.521381 1.521379 -1.402611e-06 3.814697e-06
+20      20 1.521379 1.521381 1.521380  4.265829e-06 1.907349e-06
+21      21 1.521379 1.521380 1.521380  1.431608e-06 9.536743e-07</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="pertanyaan" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="pertanyaan">Pertanyaan</h2>
+<ol type="1">
+<li>Apakah hasil R sama dengan hasil perhitungan manual?</li>
+<li>Berapa iterasi yang diperlukan?</li>
+<li>Berapa nilai akar yang diperoleh?</li>
+<li>Apa yang terjadi pada panjang interval dari satu iterasi ke iterasi berikutnya?</li>
+<li>Mengapa Bisection disebut sebagai metode yang stabil?</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="praktikum-2-metode-regula-falsi" class="level1 unnumbered">
+<h1 class="unnumbered">Praktikum 2 — Metode Regula Falsi</h1>
+<section id="ide-dasar-1" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="ide-dasar-1">Ide Dasar</h2>
+<p>Regula Falsi memiliki prinsip yang mirip dengan Bisection, yaitu mempertahankan interval yang memiliki perubahan tanda.</p>
+<p>Perbedaannya adalah titik baru tidak diperoleh dari titik tengah.</p>
+<p>Regula Falsi menggunakan <strong>garis lurus yang menghubungkan dua titik</strong> pada grafik fungsi.</p>
+<p>Jika terdapat dua titik</p>
+<p><span class="math display">\[
+(a,f(a))
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+(b,f(b)),
+\]</span></p>
+<p>maka titik potong garis tersebut dengan sumbu-(x) diberikan oleh</p>
+<p><span class="math display">\[
+c=
+\frac{a f(b)-b f(a)}
+{f(b)-f(a)}.
+\]</span></p>
+<p>Jadi ide dasarnya adalah:</p>
+<blockquote class="blockquote">
+<p><strong>menggunakan garis lurus untuk memperkirakan lokasi akar.</strong></p>
+</blockquote>
+</section>
+<section id="perhitungan-manual-1" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="perhitungan-manual-1">Perhitungan Manual</h2>
+<p>Gunakan</p>
+<p><span class="math display">\[
+f(x)=x^3-x-2
+\]</span></p>
+<p>dengan</p>
+<p><span class="math display">\[
+a=1,\qquad b=2.
+\]</span></p>
+<p>Diketahui:</p>
+<p><span class="math display">\[
+f(1)=-2
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+f(2)=4.
+\]</span></p>
+<p>Maka:</p>
+<p><span class="math display">\[
+c=
+\frac{1(4)-2(-2)}
+{4-(-2)}
+\]</span></p>
+<p>sehingga</p>
+<p><span class="math display">\[
+c=\frac{8}{6}=1.3333.
+\]</span></p>
+<p>Hitung:</p>
+<p><span class="math display">\[
+f(1.3333)\approx-0.9629.
+\]</span></p>
+<p>Karena <span class="math inline">\(f(c)&lt;0\)</span>, sedangkan <span class="math inline">\(f(b)&gt;0\)</span>, interval baru menjadi</p>
+<p><span class="math display">\[
+[1.3333,2].
+\]</span></p>
+<p>Mahasiswa melanjutkan minimal 4 iterasi.</p>
+</section>
+<section id="algoritma" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="algoritma">Algoritma</h2>
+<ol type="1">
+<li>Tentukan <span class="math inline">\(a\)</span> dan <span class="math inline">\(b\)</span>.</li>
+<li>Pastikan <span class="math inline">\(f(a)f(b)&lt;0\)</span>.</li>
+<li>Hitung</li>
+</ol>
+<p><span class="math display">\[
+c=
+\frac{a f(b)-b f(a)}
+{f(b)-f(a)}.
+\]</span></p>
+<ol start="4" type="1">
+<li>Hitung <span class="math inline">\(f(c)\)</span>.</li>
+<li>Perbarui interval berdasarkan perubahan tanda.</li>
+<li>Ulangi.</li>
+<li>Berhenti ketika kriteria toleransi terpenuhi.</li>
+</ol>
+<section id="implementasi-r-1" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="implementasi-r-1">Implementasi R</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>regula_falsi <span class="ot">&lt;-</span> <span class="cf">function</span>(f, a, b, <span class="at">tol =</span> <span class="fl">1e-6</span>, <span class="at">max_iter =</span> <span class="dv">100</span>) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">f</span>(a) <span class="sc">*</span> <span class="fu">f</span>(b) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Interval tidak mengandung perubahan tanda."</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  hasil <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>max_iter) {</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    c <span class="ot">&lt;-</span> (a <span class="sc">*</span> <span class="fu">f</span>(b) <span class="sc">-</span> b <span class="sc">*</span> <span class="fu">f</span>(a)) <span class="sc">/</span> (<span class="fu">f</span>(b) <span class="sc">-</span> <span class="fu">f</span>(a))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    fc <span class="ot">&lt;-</span> <span class="fu">f</span>(c)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    hasil <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      hasil,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">iterasi =</span> i,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">a =</span> a,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">b =</span> b,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">c =</span> c,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">f_c =</span> fc</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">abs</span>(fc) <span class="sc">&lt;</span> tol) {</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">f</span>(a) <span class="sc">*</span> fc <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>      b <span class="ot">&lt;-</span> c</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>      a <span class="ot">&lt;-</span> c</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">akar =</span> c,</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">iterasi =</span> hasil</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Jalankan:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>hasil_rf <span class="ot">&lt;-</span> <span class="fu">regula_falsi</span>(f, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>hasil_rf<span class="sc">$</span>akar</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.52138</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>hasil_rf<span class="sc">$</span>iterasi</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   iterasi        a b        c           f_c
+1        1 1.000000 2 1.333333 -9.629630e-01
+2        2 1.333333 2 1.462687 -3.333389e-01
+3        3 1.462687 2 1.504019 -1.018180e-01
+4        4 1.504019 2 1.516331 -2.989480e-02
+5        5 1.516331 2 1.519919 -8.675066e-03
+6        6 1.519919 2 1.520957 -2.508805e-03
+7        7 1.520957 2 1.521258 -7.248228e-04
+8        8 1.521258 2 1.521344 -2.093499e-04
+9        9 1.521344 2 1.521370 -6.046133e-05
+10      10 1.521370 2 1.521377 -1.746113e-05
+11      11 1.521377 2 1.521379 -5.042711e-06
+12      12 1.521379 2 1.521379 -1.456314e-06
+13      13 1.521379 2 1.521380 -4.205770e-07</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="pertanyaan-1" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="pertanyaan-1">Pertanyaan</h2>
+<ol type="1">
+<li>Apa perbedaan utama Bisection dan Regula Falsi?</li>
+<li>Mengapa Regula Falsi tidak menggunakan titik tengah?</li>
+<li>Bandingkan jumlah iterasi Regula Falsi dan Bisection.</li>
+<li>Apakah Regula Falsi selalu lebih cepat?</li>
+</ol>
+</section>
+</section>
+<section id="praktikum-3-metode-fixed-point" class="level1 unnumbered">
+<h1 class="unnumbered">Praktikum 3 — Metode Fixed Point</h1>
+<section id="ide-dasar-2" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="ide-dasar-2">Ide Dasar</h2>
+<p>Metode Fixed Point mengubah persamaan</p>
+<p><span class="math display">\[
+f(x)=0
+\]</span></p>
+<p>menjadi bentuk</p>
+<p><span class="math display">\[
+x=g(x).
+\]</span></p>
+<p>Kemudian digunakan proses iterasi:</p>
+<p><span class="math display">\[
+x_{n+1}=g(x_n).
+\]</span></p>
+<p>Ide dasarnya:</p>
+<blockquote class="blockquote">
+<p><strong>gunakan nilai sebelumnya untuk menghasilkan nilai berikutnya.</strong></p>
+</blockquote>
+<p>Berbeda dengan Bisection dan Regula Falsi, metode Fixed Point tidak secara langsung mempertahankan interval yang mengandung perubahan tanda.</p>
+<hr>
+</section>
+<section id="contoh-1" class="level2" data-number="0.1">
+<h2 data-number="0.1" class="anchored" data-anchor-id="contoh-1"><span class="header-section-number">0.1</span> 2. Contoh</h2>
+<p>Gunakan persamaan</p>
+<p><span class="math display">\[
+x^2+x-2=0.
+\]</span></p>
+<p>Persamaan tersebut dapat ditulis menjadi</p>
+<p><span class="math display">\[
+x^2=2-x.
+\]</span></p>
+<p>Sehingga</p>
+<p><span class="math display">\[
+x=\sqrt{2-x}.
+\]</span></p>
+<p>Dengan demikian:</p>
+<p><span class="math display">\[
+g(x)=\sqrt{2-x}.
+\]</span></p>
+<p>Gunakan tebakan awal:</p>
+<p><span class="math display">\[
+x_0=0.
+\]</span></p>
+<hr>
+</section>
+<section id="perhitungan-manual-2" class="level2" data-number="0.2">
+<h2 data-number="0.2" class="anchored" data-anchor-id="perhitungan-manual-2"><span class="header-section-number">0.2</span> 3. Perhitungan Manual</h2>
+<p>Iterasi pertama:</p>
+<p><span class="math display">\[
+x_1=g(x_0)
+\]</span></p>
+<p><span class="math display">\[
+x_1=\sqrt{2-0}=\sqrt{2}=1.4142.
+\]</span></p>
+<p>Iterasi kedua:</p>
+<p><span class="math display">\[
+x_2=\sqrt{2-1.4142}
+\]</span></p>
+<p><span class="math display">\[
+x_2\approx0.7654.
+\]</span></p>
+<p>Iterasi berikutnya:</p>
+<p><span class="math display">\[
+x_3=\sqrt{2-0.7654}.
+\]</span></p>
+<p>Mahasiswa melanjutkan sampai minimal 5 iterasi.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Iterasi</th>
+<th style="text-align: right;">(x_n)</th>
+<th style="text-align: right;">(g(x_n))</th>
+<th style="text-align: right;">(</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.4142</td>
+<td style="text-align: right;">1.4142</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.4142</td>
+<td style="text-align: right;">0.7654</td>
+<td style="text-align: right;">0.6488</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.7654</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="konvergensi-fixed-point" class="level2" data-number="0.3">
+<h2 data-number="0.3" class="anchored" data-anchor-id="konvergensi-fixed-point"><span class="header-section-number">0.3</span> 4. Konvergensi Fixed Point</h2>
+<p>Tidak semua bentuk</p>
+<p><span class="math display">\[
+x=g(x)
+\]</span></p>
+<p>akan menghasilkan metode yang konvergen.</p>
+<p>Salah satu kondisi yang umum digunakan adalah</p>
+<p><span class="math display">\[
+|g'(x^*)|&lt;1
+\]</span></p>
+<p>di sekitar fixed point (x^*).</p>
+<p>Hal ini menunjukkan bahwa pemilihan bentuk (g(x)) sangat penting.</p>
+<hr>
+</section>
+<section id="implementasi-r-2" class="level2" data-number="0.4">
+<h2 data-number="0.4" class="anchored" data-anchor-id="implementasi-r-2"><span class="header-section-number">0.4</span> 5. Implementasi R</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fixed_point <span class="ot">&lt;-</span> <span class="cf">function</span>(g, x0, <span class="at">tol =</span> <span class="fl">1e-6</span>, <span class="at">max_iter =</span> <span class="dv">100</span>) {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  hasil <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x0</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>max_iter) {</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    x_new <span class="ot">&lt;-</span> <span class="fu">g</span>(x)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    error <span class="ot">&lt;-</span> <span class="fu">abs</span>(x_new <span class="sc">-</span> x)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    hasil <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>      hasil,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">iterasi =</span> i,</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">x_lama =</span> x,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">x_baru =</span> x_new,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">error =</span> error</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (error <span class="sc">&lt;</span> tol) {</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>      x <span class="ot">&lt;-</span> x_new</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x_new</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">akar =</span> x,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">iterasi =</span> hasil</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Jalankan:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">-</span> x)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>hasil_fp <span class="ot">&lt;-</span> <span class="fu">fixed_point</span>(</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">g =</span> g,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">x0 =</span> <span class="dv">0</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>hasil_fp<span class="sc">$</span>akar</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9999998</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>hasil_fp<span class="sc">$</span>iterasi</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   iterasi    x_lama    x_baru        error
+1        1 0.0000000 1.4142136 1.414214e+00
+2        2 1.4142136 0.7653669 6.488467e-01
+3        3 0.7653669 1.1111405 3.457736e-01
+4        4 1.1111405 0.9427935 1.683470e-01
+5        5 0.9427935 1.0282055 8.541201e-02
+6        6 1.0282055 0.9857964 4.240910e-02
+7        7 0.9857964 1.0070768 2.128038e-02
+8        8 1.0070768 0.9964553 1.062143e-02
+9        9 0.9964553 1.0017708 5.315431e-03
+10      10 1.0017708 0.9991142 2.656540e-03
+11      11 0.9991142 1.0004428 1.328564e-03
+12      12 1.0004428 0.9997786 6.642086e-04
+13      13 0.9997786 1.0001107 3.321227e-04
+14      14 1.0001107 0.9999446 1.660568e-04
+15      15 0.9999446 1.0000277 8.302953e-05
+16      16 1.0000277 0.9999862 4.151448e-05
+17      17 0.9999862 1.0000069 2.075731e-05
+18      18 1.0000069 0.9999965 1.037864e-05
+19      19 0.9999965 1.0000017 5.189323e-06
+20      20 1.0000017 0.9999991 2.594660e-06
+21      21 0.9999991 1.0000004 1.297330e-06
+22      22 1.0000004 0.9999998 6.486652e-07</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="latihan" class="level2" data-number="0.5">
+<h2 data-number="0.5" class="anchored" data-anchor-id="latihan"><span class="header-section-number">0.5</span> 6. Latihan</h2>
+<p>Gunakan persamaan</p>
+<p><span class="math display">\[
+x^3+x-1=0.
+\]</span></p>
+<p>Ubah persamaan tersebut menjadi bentuk</p>
+<p><span class="math display">\[
+x=g(x).
+\]</span></p>
+<p>Kemudian:</p>
+<ol type="1">
+<li>Tentukan (g(x)).</li>
+<li>Tentukan tebakan awal.</li>
+<li>Lakukan 5 iterasi manual.</li>
+<li>Implementasikan menggunakan R.</li>
+<li>Bandingkan hasil manual dan R.</li>
+<li>Periksa apakah metode konvergen.</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="praktikum-4-metode-newton-raphson" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Praktikum 4 — Metode Newton-Raphson</h1>
+<section id="ide-dasar-3" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="ide-dasar-3"><span class="header-section-number">1.1</span> 1. Ide Dasar</h2>
+<p>Newton-Raphson menggunakan <strong>garis singgung</strong> untuk memperkirakan lokasi akar.</p>
+<p>Jika kita berada pada titik (x_n), garis singgung grafik (f(x)) digunakan untuk memperkirakan titik potong dengan sumbu-(x).</p>
+<p>Rumus iterasinya adalah</p>
+<p><span class="math display">\[
+x_{n+1}
+=
+x_n-
+\frac{f(x_n)}
+{f'(x_n)}.
+\]</span></p>
+<p>Ide dasarnya:</p>
+<blockquote class="blockquote">
+<p><strong>bergerak dari satu titik ke titik berikutnya menggunakan kemiringan garis singgung.</strong></p>
+</blockquote>
+<hr>
+</section>
+<section id="perhitungan-manual-3" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="perhitungan-manual-3"><span class="header-section-number">1.2</span> 2. Perhitungan Manual</h2>
+<p>Gunakan</p>
+<p><span class="math display">\[
+f(x)=x^3-x-2.
+\]</span></p>
+<p>Turunannya:</p>
+<p><span class="math display">\[
+f'(x)=3x^2-1.
+\]</span></p>
+<p>Gunakan</p>
+<p><span class="math display">\[
+x_0=1.5.
+\]</span></p>
+<p>Maka:</p>
+<p><span class="math display">\[
+f(1.5)=-0.125
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+f'(1.5)=3(1.5)^2-1=5.75.
+\]</span></p>
+<p>Sehingga</p>
+<p><span class="math display">\[
+x_1=
+1.5-\frac{-0.125}{5.75}.
+\]</span></p>
+<p>Maka:</p>
+<p><span class="math display">\[
+x_1\approx1.52174.
+\]</span></p>
+<p>Lakukan beberapa iterasi berikutnya secara manual.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Iterasi</th>
+<th style="text-align: right;">(x_n)</th>
+<th style="text-align: right;">(f(x_n))</th>
+<th style="text-align: right;">(f’(x_n))</th>
+<th style="text-align: right;">(x_{n+1})</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.50000</td>
+<td style="text-align: right;">-0.12500</td>
+<td style="text-align: right;">5.75000</td>
+<td style="text-align: right;">1.52174</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.52174</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="implementasi-r-3" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="implementasi-r-3"><span class="header-section-number">1.3</span> 3. Implementasi R</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>newton_raphson <span class="ot">&lt;-</span> <span class="cf">function</span>(f, df, x0, <span class="at">tol =</span> <span class="fl">1e-6</span>, <span class="at">max_iter =</span> <span class="dv">100</span>) {</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  hasil <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x0</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>max_iter) {</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    fx <span class="ot">&lt;-</span> <span class="fu">f</span>(x)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    dfx <span class="ot">&lt;-</span> <span class="fu">df</span>(x)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (dfx <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stop</span>(<span class="st">"Turunan bernilai nol."</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    x_new <span class="ot">&lt;-</span> x <span class="sc">-</span> fx <span class="sc">/</span> dfx</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    error <span class="ot">&lt;-</span> <span class="fu">abs</span>(x_new <span class="sc">-</span> x)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    hasil <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>      hasil,</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">iterasi =</span> i,</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">x_lama =</span> x,</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">f_x =</span> fx,</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">df_x =</span> dfx,</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">x_baru =</span> x_new,</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">error =</span> error</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (error <span class="sc">&lt;</span> tol) {</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>      x <span class="ot">&lt;-</span> x_new</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x_new</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">akar =</span> x,</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">iterasi =</span> hasil</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Definisikan fungsi dan turunannya:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  x<span class="sc">^</span><span class="dv">3</span> <span class="sc">-</span> x <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Jalankan:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>hasil_newton <span class="ot">&lt;-</span> <span class="fu">newton_raphson</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> f,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">df =</span> df,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x0 =</span> <span class="fl">1.5</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>hasil_newton<span class="sc">$</span>akar</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.52138</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>hasil_newton<span class="sc">$</span>iterasi</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  iterasi   x_lama           f_x    df_x   x_baru        error
+1       1 1.500000 -1.250000e-01 5.75000 1.521739 2.173913e-02
+2       2 1.521739  2.136928e-03 5.94707 1.521380 3.593245e-04
+3       3 1.521380  5.893874e-07 5.94379 1.521380 9.916021e-08</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="pertanyaan-2" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="pertanyaan-2"><span class="header-section-number">1.4</span> 4. Pertanyaan</h2>
+<ol type="1">
+<li>Mengapa Newton-Raphson membutuhkan turunan?</li>
+<li>Apa yang terjadi jika (f’(x_n)=0)?</li>
+<li>Mengapa Newton-Raphson dapat mencapai akar dengan sedikit iterasi?</li>
+<li>Apakah Newton-Raphson selalu konvergen?</li>
+<li>Bagaimana pengaruh pemilihan (x_0)?</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="praktikum-5-metode-secant" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Praktikum 5 — Metode Secant</h1>
+<section id="ide-dasar-4" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="ide-dasar-4"><span class="header-section-number">2.1</span> 1. Ide Dasar</h2>
+<p>Metode Secant memiliki ide yang mirip dengan Newton-Raphson.</p>
+<p>Perbedaannya:</p>
+<blockquote class="blockquote">
+<p>Newton-Raphson menggunakan turunan, sedangkan Secant memperkirakan kemiringan menggunakan dua titik.</p>
+</blockquote>
+<p>Kemiringan garis secant antara (x_{n-1}) dan (x_n) digunakan untuk menentukan titik berikutnya.</p>
+<p>Rumusnya:</p>
+<p><span class="math display">\[
+x_{n+1}
+=
+x_n-
+f(x_n)
+\frac{x_n-x_{n-1}}
+{f(x_n)-f(x_{n-1})}.
+\]</span></p>
+<hr>
+</section>
+<section id="perhitungan-manual-4" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="perhitungan-manual-4"><span class="header-section-number">2.2</span> 2. Perhitungan Manual</h2>
+<p>Gunakan</p>
+<p><span class="math display">\[
+f(x)=x^3-x-2.
+\]</span></p>
+<p>Gunakan dua tebakan awal:</p>
+<p><span class="math display">\[
+x_0=1,\qquad x_1=2.
+\]</span></p>
+<p>Maka:</p>
+<p><span class="math display">\[
+f(x_0)=-2
+\]</span></p>
+<p>dan</p>
+<p><span class="math display">\[
+f(x_1)=4.
+\]</span></p>
+<p>Hitung:</p>
+<p><span class="math display">\[
+x_2=
+2-
+4
+\frac{2-1}{4-(-2)}.
+\]</span></p>
+<p>Sehingga:</p>
+<p><span class="math display">\[
+x_2
+=
+2-\frac{4}{6}
+=
+1.3333.
+\]</span></p>
+<p>Lanjutkan perhitungan secara manual.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 18%">
+<col style="width: 11%">
+<col style="width: 23%">
+<col style="width: 16%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Iterasi</th>
+<th style="text-align: right;">(x_{n-1})</th>
+<th style="text-align: right;">(x_n)</th>
+<th style="text-align: right;">(f(x_{n-1}))</th>
+<th style="text-align: right;">(f(x_n))</th>
+<th style="text-align: right;">(x_{n+1})</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">-2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.3333</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.3333</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-0.9629</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="implementasi-r-4" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="implementasi-r-4"><span class="header-section-number">2.3</span> 3. Implementasi R</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>secant <span class="ot">&lt;-</span> <span class="cf">function</span>(f, x0, x1, <span class="at">tol =</span> <span class="fl">1e-6</span>, <span class="at">max_iter =</span> <span class="dv">100</span>) {</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  hasil <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>max_iter) {</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    f0 <span class="ot">&lt;-</span> <span class="fu">f</span>(x0)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    f1 <span class="ot">&lt;-</span> <span class="fu">f</span>(x1)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (f1 <span class="sc">-</span> f0 <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stop</span>(<span class="st">"Penyebut bernilai nol."</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    x2 <span class="ot">&lt;-</span> x1 <span class="sc">-</span> f1 <span class="sc">*</span> (x1 <span class="sc">-</span> x0) <span class="sc">/</span> (f1 <span class="sc">-</span> f0)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    error <span class="ot">&lt;-</span> <span class="fu">abs</span>(x2 <span class="sc">-</span> x1)</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    hasil <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>      hasil,</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">iterasi =</span> i,</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">x_sebelumnya =</span> x0,</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">x_sekarang =</span> x1,</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">x_baru =</span> x2,</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">error =</span> error</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (error <span class="sc">&lt;</span> tol) {</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>      x1 <span class="ot">&lt;-</span> x2</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>    x0 <span class="ot">&lt;-</span> x1</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>    x1 <span class="ot">&lt;-</span> x2</span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">akar =</span> x1,</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">iterasi =</span> hasil</span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Jalankan:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>hasil_secant <span class="ot">&lt;-</span> <span class="fu">secant</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> f,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x0 =</span> <span class="dv">1</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> <span class="dv">2</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>hasil_secant<span class="sc">$</span>akar</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.52138</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>hasil_secant<span class="sc">$</span>iterasi</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  iterasi x_sebelumnya x_sekarang   x_baru        error
+1       1     1.000000   2.000000 1.333333 6.666667e-01
+2       2     2.000000   1.333333 1.462687 1.293532e-01
+3       3     1.333333   1.462687 1.531169 6.848286e-02
+4       4     1.462687   1.531169 1.520926 1.024301e-02
+5       5     1.531169   1.520926 1.521376 4.498962e-04
+6       6     1.520926   1.521376 1.521380 3.391315e-06
+7       7     1.521376   1.521380 1.521380 1.180307e-09</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="praktikum-6-membandingkan-lima-metode" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Praktikum 6 — Membandingkan Lima Metode</h1>
+<p>Sekarang gunakan fungsi yang sama:</p>
+<p><span class="math display">\[
+f(x)=x^3-x-2.
+\]</span></p>
+<p>Bandingkan kelima metode.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>hasil_bisection<span class="sc">$</span>akar</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.52138</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>hasil_rf<span class="sc">$</span>akar</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.52138</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>hasil_fp<span class="sc">$</span>akar</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9999998</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>hasil_newton<span class="sc">$</span>akar</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.52138</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>hasil_secant<span class="sc">$</span>akar</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.52138</code></pre>
+</div>
+</div>
+<p>Buat tabel perbandingan:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>perbandingan <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Metode =</span> <span class="fu">c</span>(</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Bisection"</span>,</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Regula Falsi"</span>,</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Fixed Point"</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Newton-Raphson"</span>,</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Secant"</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Akar =</span> <span class="fu">c</span>(</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>    hasil_bisection<span class="sc">$</span>akar,</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>    hasil_rf<span class="sc">$</span>akar,</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>    hasil_fp<span class="sc">$</span>akar,</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>    hasil_newton<span class="sc">$</span>akar,</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>    hasil_secant<span class="sc">$</span>akar</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Iterasi =</span> <span class="fu">c</span>(</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(hasil_bisection<span class="sc">$</span>iterasi),</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(hasil_rf<span class="sc">$</span>iterasi),</span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(hasil_fp<span class="sc">$</span>iterasi),</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(hasil_newton<span class="sc">$</span>iterasi),</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(hasil_secant<span class="sc">$</span>iterasi)</span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>perbandingan</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Metode      Akar Iterasi
+1      Bisection 1.5213799      21
+2   Regula Falsi 1.5213796      13
+3    Fixed Point 0.9999998      22
+4 Newton-Raphson 1.5213797       3
+5         Secant 1.5213797       7</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="praktikum-7-visualisasi-fungsi-dan-akar" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Praktikum 7 — Visualisasi Fungsi dan Akar</h1>
+<p>Visualisasikan fungsi:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.5</span>, <span class="dv">2</span>, <span class="at">length.out =</span> <span class="dv">500</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>data_plot <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> x,</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">f</span>(x)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_plot, <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Grafik f(x) = x³ - x - 2"</span>,</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"x"</span>,</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"f(x)"</span></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="praktikum1_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Perhatikan hubungan antara grafik fungsi dan akar.</p>
+<p>Pertanyaan:</p>
+<ol type="1">
+<li>Mengapa akar berada pada titik ketika grafik memotong sumbu-(x)?</li>
+<li>Bagaimana interval awal dapat ditentukan dari grafik?</li>
+<li>Apa yang terjadi jika interval awal tidak mengandung perubahan tanda?</li>
+</ol>
+<hr>
+</section>
+<section id="praktikum-8-menerapkan-metode-pada-berbagai-fungsi" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Praktikum 8 — Menerapkan Metode pada Berbagai Fungsi</h1>
+<p>Sampai tahap ini, mahasiswa menggunakan fungsi yang sama.</p>
+<p>Selanjutnya, gunakan fungsi yang berbeda.</p>
+<p>Tujuannya adalah menunjukkan bahwa metode pencarian akar dapat digunakan pada berbagai bentuk persamaan nonlinear.</p>
+<section id="fungsi-1-polinomial" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="fungsi-1-polinomial"><span class="header-section-number">5.1</span> Fungsi 1 — Polinomial</h2>
+<p><span class="math display">\[
+f_1(x)=x^2-5.
+\]</span></p>
+<p>Akar positifnya adalah</p>
+<p><span class="math display">\[
+x=\sqrt{5}\approx2.23607.
+\]</span></p>
+<hr>
+</section>
+<section id="fungsi-2-polinomial-kubik" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="fungsi-2-polinomial-kubik"><span class="header-section-number">5.2</span> Fungsi 2 — Polinomial Kubik</h2>
+<p><span class="math display">\[
+f_2(x)=x^3-4x-1.
+\]</span></p>
+<p>Cari salah satu akar pada interval yang sesuai.</p>
+<hr>
+</section>
+<section id="fungsi-3-eksponensial" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="fungsi-3-eksponensial"><span class="header-section-number">5.3</span> Fungsi 3 — Eksponensial</h2>
+<p><span class="math display">\[
+f_3(x)=e^{-x}-x.
+\]</span></p>
+<p>Persamaan ini memiliki akar sekitar</p>
+<p><span class="math display">\[
+x\approx0.567143.
+\]</span></p>
+<hr>
+</section>
+<section id="fungsi-4-trigonometri" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="fungsi-4-trigonometri"><span class="header-section-number">5.4</span> Fungsi 4 — Trigonometri</h2>
+<p><span class="math display">\[
+f_4(x)=\cos(x)-x.
+\]</span></p>
+<p>Akar positifnya sekitar</p>
+<p><span class="math display">\[
+x\approx0.739085.
+\]</span></p>
+<p>Perhatikan bahwa R menggunakan satuan <strong>radian</strong> untuk fungsi trigonometri.</p>
+<hr>
+</section>
+<section id="fungsi-5-logaritmik" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="fungsi-5-logaritmik"><span class="header-section-number">5.5</span> Fungsi 5 — Logaritmik</h2>
+<p><span class="math display">\[
+f_5(x)=\ln(x)-2.
+\]</span></p>
+<p>Perhatikan bahwa domain fungsi adalah</p>
+<p><span class="math display">\[
+x&gt;0.
+\]</span></p>
+<hr>
+</section>
+<section id="fungsi-6-fungsi-campuran" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="fungsi-6-fungsi-campuran"><span class="header-section-number">5.6</span> Fungsi 6 — Fungsi Campuran</h2>
+<p><span class="math display">\[
+f_6(x)=xe^{-x}-0.2.
+\]</span></p>
+<p>Fungsi ini memberikan contoh persamaan nonlinear yang tidak berbentuk polinomial sederhana.</p>
+<hr>
+</section>
+</section>
+<section id="tugas-1-penerapan-terbimbing" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Tugas 1 — Penerapan Terbimbing</h1>
+<p>Pilih tiga fungsi dari bagian sebelumnya.</p>
+<p>Untuk setiap fungsi:</p>
+<ol type="1">
+<li>Tentukan interval atau tebakan awal.</li>
+<li>Jalankan metode Bisection.</li>
+<li>Jalankan Regula Falsi.</li>
+<li>Jalankan Fixed Point jika memungkinkan.</li>
+<li>Jalankan Newton-Raphson.</li>
+<li>Jalankan Secant.</li>
+<li>Catat hasil akar.</li>
+<li>Catat jumlah iterasi.</li>
+<li>Catat error.</li>
+<li>Tentukan apakah metode konvergen.</li>
+</ol>
+<p>Gunakan tabel berikut.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 6%">
+<col style="width: 11%">
+<col style="width: 8%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Fungsi</th>
+<th>Metode</th>
+<th>Tebakan/Interval</th>
+<th style="text-align: right;">Akar</th>
+<th style="text-align: right;">Iterasi</th>
+<th style="text-align: right;">Error</th>
+<th>Konvergen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(f_1)</td>
+<td>Bisection</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>(f_1)</td>
+<td>Regula Falsi</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>(f_1)</td>
+<td>Newton</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>(f_1)</td>
+<td>Secant</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="tugas-2-mengubah-fungsi" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Tugas 2 — Mengubah Fungsi</h1>
+<p>Jangan mengubah algoritma metode yang sudah diberikan.</p>
+<p>Ubahlah hanya fungsi yang digunakan.</p>
+<p>Misalnya:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>f_baru <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cos</span>(x) <span class="sc">-</span> x</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Kemudian gunakan fungsi tersebut pada metode yang sesuai.</p>
+<p>Contoh:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>hasil <span class="ot">&lt;-</span> <span class="fu">bisection</span>(</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">f =</span> f_baru,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">a =</span> <span class="dv">0</span>,</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">b =</span> <span class="dv">1</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>hasil<span class="sc">$</span>akar</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7390852</code></pre>
+</div>
+</div>
+<p>Lakukan hal yang sama untuk fungsi nonlinear lainnya.</p>
+<hr>
+</section>
+<section id="tugas-3-eksperimen-initial-guess" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Tugas 3 — Eksperimen Initial Guess</h1>
+<p>Gunakan fungsi</p>
+<p><span class="math display">\[
+f(x)=\cos(x)-x.
+\]</span></p>
+<p>Gunakan Newton-Raphson dengan beberapa nilai awal:</p>
+<p><span class="math display">\[
+x_0=0,\quad
+x_0=0.5,\quad
+x_0=1,\quad
+x_0=2.
+\]</span></p>
+<p>Bandingkan hasilnya.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">(x_0)</th>
+<th style="text-align: right;">Akar</th>
+<th style="text-align: right;">Iterasi</th>
+<th>Konvergen?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Jawab:</p>
+<ol type="1">
+<li>Apakah semua initial guess menghasilkan akar yang sama?</li>
+<li>Apakah jumlah iterasi sama?</li>
+<li>Apa yang dapat disimpulkan mengenai pengaruh initial guess?</li>
+</ol>
+<hr>
+</section>
+<section id="tugas-4-eksperimen-toleransi" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Tugas 4 — Eksperimen Toleransi</h1>
+<p>Gunakan salah satu metode dan fungsi</p>
+<p><span class="math display">\[
+f(x)=x^3-x-2.
+\]</span></p>
+<p>Gunakan beberapa nilai toleransi:</p>
+<pre class="text"><code>10^-2
+10^-4
+10^-6
+10^-8</code></pre>
+<p>Bandingkan:</p>
+<ul>
+<li>nilai akar,</li>
+<li>jumlah iterasi,</li>
+<li>error.</li>
+</ul>
+<p>Buat tabel:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Toleransi</th>
+<th style="text-align: right;">Akar</th>
+<th style="text-align: right;">Iterasi</th>
+<th style="text-align: right;">Error</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">(10^{-2})</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">(10^{-4})</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">(10^{-6})</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">(10^{-8})</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>Pertanyaan:</p>
+<ol type="1">
+<li>Apa yang terjadi ketika toleransi semakin kecil?</li>
+<li>Apakah jumlah iterasi bertambah?</li>
+<li>Apakah hasil akar menjadi lebih presisi?</li>
+</ol>
+<hr>
+</section>
+<section id="tugas-5-perbandingan-metode" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Tugas 5 — Perbandingan Metode</h1>
+<p>Gunakan minimal tiga fungsi nonlinear yang berbeda.</p>
+<p>Bandingkan kelima metode berdasarkan:</p>
+<ol type="1">
+<li>jumlah iterasi,</li>
+<li>nilai akar,</li>
+<li>error,</li>
+<li>kebutuhan turunan,</li>
+<li>kebutuhan interval awal,</li>
+<li>kestabilan,</li>
+<li>kemudahan implementasi.</li>
+</ol>
+<p>Lengkapi tabel:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 13%">
+<col style="width: 17%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Karakteristik</th>
+<th>Bisection</th>
+<th>Regula Falsi</th>
+<th>Fixed Point</th>
+<th>Newton-Raphson</th>
+<th>Secant</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Membutuhkan interval</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Membutuhkan turunan</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Membutuhkan dua tebakan awal</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Menggunakan (g(x))</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Relatif stabil</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Cepat konvergen</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="tugas-6-analisis-konvergensi" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Tugas 6 — Analisis Konvergensi</h1>
+<p>Tidak semua metode akan berhasil pada semua kondisi.</p>
+<p>Carilah contoh fungsi atau kondisi initial guess yang menyebabkan salah satu metode:</p>
+<ul>
+<li>konvergensinya lambat,</li>
+<li>tidak konvergen,</li>
+<li>menghasilkan error,</li>
+<li>atau gagal dijalankan.</li>
+</ul>
+<p>Kemudian jelaskan penyebabnya.</p>
+<p>Perhatikan khusus:</p>
+<section id="bisection" class="level3" data-number="11.0.1">
+<h3 data-number="11.0.1" class="anchored" data-anchor-id="bisection"><span class="header-section-number">11.0.1</span> Bisection</h3>
+<p>Apakah interval awal memiliki perubahan tanda?</p>
+</section>
+<section id="regula-falsi" class="level3" data-number="11.0.2">
+<h3 data-number="11.0.2" class="anchored" data-anchor-id="regula-falsi"><span class="header-section-number">11.0.2</span> Regula Falsi</h3>
+<p>Apakah interval awal memiliki perubahan tanda?</p>
+</section>
+<section id="fixed-point" class="level3" data-number="11.0.3">
+<h3 data-number="11.0.3" class="anchored" data-anchor-id="fixed-point"><span class="header-section-number">11.0.3</span> Fixed Point</h3>
+<p>Apakah bentuk (g(x)) menghasilkan konvergensi?</p>
+</section>
+<section id="newton-raphson" class="level3" data-number="11.0.4">
+<h3 data-number="11.0.4" class="anchored" data-anchor-id="newton-raphson"><span class="header-section-number">11.0.4</span> Newton-Raphson</h3>
+<p>Apakah turunan mendekati nol?</p>
+</section>
+<section id="secant" class="level3" data-number="11.0.5">
+<h3 data-number="11.0.5" class="anchored" data-anchor-id="secant"><span class="header-section-number">11.0.5</span> Secant</h3>
+<p>Apakah nilai</p>
+<p><span class="math display">\[
+f(x_n)-f(x_{n-1})
+\]</span></p>
+<p>mendekati nol?</p>
+<hr>
+</section>
+</section>
+<section id="refleksi" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> Refleksi</h1>
+<p>Jawab pertanyaan berikut dengan kalimat sendiri.</p>
+<ol type="1">
+<li>Apa perbedaan ide dasar kelima metode?</li>
+<li>Mengapa Bisection disebut sebagai metode yang menjamin penyempitan interval?</li>
+<li>Apa perbedaan Bisection dan Regula Falsi?</li>
+<li>Mengapa Newton-Raphson dapat lebih cepat daripada Bisection?</li>
+<li>Apa kelemahan Newton-Raphson?</li>
+<li>Mengapa Secant tidak membutuhkan turunan?</li>
+<li>Mengapa Fixed Point membutuhkan pemilihan (g(x)) yang tepat?</li>
+<li>Apakah metode yang paling cepat selalu merupakan metode yang paling baik?</li>
+<li>Apa peran R dalam penyelesaian masalah numerik?</li>
+<li>Mengapa mahasiswa tetap perlu melakukan beberapa iterasi secara manual sebelum menggunakan R?</li>
+</ol>
+<hr>
+</section>
+<section id="tugas-akhir-praktikum" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> Tugas Akhir Praktikum</h1>
+<p>Pilih <strong>satu persamaan nonlinear</strong> yang berbeda dari contoh utama.</p>
+<p>Persamaan dapat berupa:</p>
+<ul>
+<li>polinomial,</li>
+<li>eksponensial,</li>
+<li>logaritmik,</li>
+<li>trigonometri,</li>
+<li>atau kombinasi beberapa fungsi.</li>
+</ul>
+<p>Contoh:</p>
+<p><span class="math display">\[
+f(x)=x e^{-x}-0.2.
+\]</span></p>
+<p>Lakukan analisis menggunakan minimal <strong>tiga metode</strong>.</p>
+<p>Laporan harus memuat:</p>
+<section id="persamaan" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="persamaan"><span class="header-section-number">13.1</span> 1. Persamaan</h2>
+<p>Tuliskan persamaan yang digunakan.</p>
+</section>
+<section id="grafik" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="grafik"><span class="header-section-number">13.2</span> 2. Grafik</h2>
+<p>Buat grafik fungsi dan identifikasi perkiraan lokasi akar.</p>
+</section>
+<section id="perhitungan-manual-5" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="perhitungan-manual-5"><span class="header-section-number">13.3</span> 3. Perhitungan Manual</h2>
+<p>Tunjukkan minimal 3 iterasi untuk setiap metode.</p>
+</section>
+<section id="algoritma-1" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="algoritma-1"><span class="header-section-number">13.4</span> 4. Algoritma</h2>
+<p>Tuliskan langkah-langkah metode dengan bahasa sendiri.</p>
+</section>
+<section id="implementasi-r-5" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="implementasi-r-5"><span class="header-section-number">13.5</span> 5. Implementasi R</h2>
+<p>Tampilkan kode R yang digunakan.</p>
+</section>
+<section id="hasil" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="hasil"><span class="header-section-number">13.6</span> 6. Hasil</h2>
+<p>Tampilkan:</p>
+<ul>
+<li>akar,</li>
+<li>jumlah iterasi,</li>
+<li>error,</li>
+<li>dan kriteria berhenti.</li>
+</ul>
+</section>
+<section id="perbandingan" class="level2" data-number="13.7">
+<h2 data-number="13.7" class="anchored" data-anchor-id="perbandingan"><span class="header-section-number">13.7</span> 7. Perbandingan</h2>
+<p>Bandingkan hasil dari metode yang digunakan.</p>
+</section>
+<section id="pembahasan" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="pembahasan"><span class="header-section-number">13.8</span> 8. Pembahasan</h2>
+<p>Jelaskan:</p>
+<ul>
+<li>metode mana yang paling cepat,</li>
+<li>metode mana yang paling stabil,</li>
+<li>pengaruh initial guess atau interval,</li>
+<li>dan kemungkinan kegagalan metode.</li>
+</ul>
+</section>
+<section id="kesimpulan" class="level2" data-number="13.9">
+<h2 data-number="13.9" class="anchored" data-anchor-id="kesimpulan"><span class="header-section-number">13.9</span> 9. Kesimpulan</h2>
+<p>Tuliskan kesimpulan berdasarkan hasil eksperimen.</p>
+<hr>
+</section>
+</section>
+<section id="ringkasan-lima-metode" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> Ringkasan Lima Metode</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 48%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metode</th>
+<th>Ide Utama</th>
+<th>Informasi yang Dibutuhkan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bisection</td>
+<td>Mempersempit interval</td>
+<td>(a,b)</td>
+</tr>
+<tr class="even">
+<td>Regula Falsi</td>
+<td>Menggunakan garis lurus</td>
+<td>(a,b)</td>
+</tr>
+<tr class="odd">
+<td>Fixed Point</td>
+<td>Menghasilkan (x) baru dari (g(x))</td>
+<td>(x_0,g(x))</td>
+</tr>
+<tr class="even">
+<td>Newton-Raphson</td>
+<td>Menggunakan garis singgung</td>
+<td>(x_0,f’(x))</td>
+</tr>
+<tr class="odd">
+<td>Secant</td>
+<td>Menggunakan garis melalui dua titik</td>
+<td>(x_0,x_1)</td>
+</tr>
+</tbody>
+</table>
+<p>Secara konseptual:</p>
+<p><span class="math display">\[
+\boxed{
+\text{Persamaan}
+\rightarrow
+\text{Perhitungan Manual}
+\rightarrow
+\text{Algoritma}
+\rightarrow
+\text{R}
+\rightarrow
+\text{Eksperimen}
+\rightarrow
+\text{Analisis}
+}
+\]</span></p>
+<p>Inilah alur utama praktikum metode numerik.</p>
+</section>
+<section id="penutup" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> Penutup</h1>
+<p>Metode pencarian akar persamaan nonlinear memiliki prinsip yang berbeda-beda. Tidak ada satu metode yang selalu menjadi pilihan terbaik untuk semua permasalahan.</p>
+<p>Bisection menekankan kestabilan melalui penyempitan interval. Regula Falsi menggunakan pendekatan garis lurus. Fixed Point mengubah persamaan menjadi bentuk iteratif. Newton-Raphson menggunakan garis singgung dan biasanya memiliki konvergensi yang cepat ketika kondisi awal sesuai. Secant menggunakan pendekatan kemiringan tanpa menghitung turunan secara eksplisit.</p>
+<p>Penggunaan R memungkinkan proses iterasi dilakukan dengan cepat sehingga perhatian dapat dialihkan dari perhitungan aritmetika yang berulang menuju analisis perilaku metode.</p>
+<p>Dengan demikian, tujuan praktikum bukan sekadar memperoleh nilai akar, tetapi memahami <strong>mengapa suatu metode bekerja, bagaimana metode tersebut melakukan iterasi, dan kapan metode tersebut dapat berhasil atau gagal.</strong></p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Disalin!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Disalin!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
