@@ -606,7 +606,7 @@ J(\mathbf{x}_k)\Delta\mathbf{x}
 -\mathbf{F}(\mathbf{x}_k).
 $$
 
-Setelah \(\Delta\mathbf{x}\) diperoleh:
+Setelah $\Delta\mathbf{x}$ diperoleh:
 
 $$
 \boxed{
@@ -971,9 +971,9 @@ sqrt(sum(
 Semakin dekat ke nol, semakin baik solusi numeriknya.
 
 
-# Kriteria Konvergensi
+## Kriteria Konvergensi {.scrollable}
 
-## Berdasarkan residual {.scrollable}
+### Berdasarkan residual 
 
 $$
 \boxed{
@@ -984,7 +984,7 @@ $$
 Artinya fungsi sudah mendekati nol.
 
 
-## Berdasarkan perubahan solusi {.scrollable}
+### Berdasarkan perubahan solusi
 
 $$
 \boxed{
@@ -1035,7 +1035,7 @@ Tebakan awal yang berbeda dapat menghasilkan:
 - atau kegagalan konvergensi.
 
 
-# Eksperimen Tebakan Awal {.scrollable}
+## Eksperimen Tebakan Awal {.scrollable}
 
 Coba:
 
@@ -1068,7 +1068,7 @@ Pertanyaan:
 > Apakah semua tebakan awal menghasilkan solusi yang sama?
 
 
-# Mengapa Bisa Ada Banyak Solusi? {.scrollable}
+## Mengapa Bisa Ada Banyak Solusi? {.scrollable}
 
 Perhatikan:
 
@@ -1091,7 +1091,7 @@ $$
 
 Newton dapat menuju salah satu solusi bergantung pada tebakan awal.
 
-# Visualisasi Solusi {.scrollable}
+## Visualisasi Solusi {.scrollable}
 
 ```{r}
 x <- seq(-2.2, 2.2, length.out = 500)
@@ -1124,7 +1124,7 @@ $$
 $$
 
 
-# Bagaimana Newton Bergerak? {.scrollable}
+## Bagaimana Newton Bergerak? {.scrollable}
 
 Secara konseptual:
 
@@ -1148,7 +1148,7 @@ Lebih dekat ke solusi?
 Metode Newton secara bertahap memperbaiki posisi solusi.
 
 
-# Masalah Jacobian Singular {.scrollable}
+## Masalah Jacobian Singular {.scrollable}
 
 Newton membutuhkan penyelesaian:
 
@@ -1181,7 +1181,7 @@ kappa(J(c(1, 1)))
 Nilai `kappa()` yang besar menunjukkan Jacobian dapat bersifat ill-conditioned.
 
 
-# Newton SPNL: Inti Konsep {.scrollable}
+## Newton SPNL: Inti Konsep {.scrollable}
 
 $$
 \boxed{
@@ -1214,7 +1214,7 @@ $$
 Ulangi sampai konvergen.
 
 
-# Perbandingan
+## Perbandingan
 
 | | Newton 1D | Newton SPNL |
 |---|---|---|
@@ -1226,7 +1226,7 @@ Ulangi sampai konvergen.
 | Geometri | akar kurva | titik potong kurva |
 
 
-# Latihan 1 {.scrollable}
+## Latihan 1 {.scrollable}
 
 Diberikan:
 
@@ -1239,11 +1239,11 @@ $$
 
 Tentukan:
 
-1. \(\mathbf F(x,y)\)
-2. \(J(x,y)\)
+1. $\mathbf F(x,y)$
+2. $J(x,y)$
 
 
-# Latihan 2 {.scrollable}
+## Latihan 2 {.scrollable}
 
 Gunakan:
 
@@ -1274,7 +1274,7 @@ $$
 $$
 
 
-# Latihan 3 {.scrollable}
+## Latihan 3 {.scrollable}
 
 Gunakan sistem:
 
@@ -1304,7 +1304,7 @@ Buat tabel:
 | $(-2,2)$ | | | |
 
 
-# Latihan 4 — Tiga Peubah {.scrollable}
+## Latihan 4 — Tiga Peubah {.scrollable}
 
 Diberikan:
 
@@ -1318,8 +1318,8 @@ $$
 
 Tentukan:
 
-1. \(\mathbf F(x,y,z)\);
-2. \(J(x,y,z)\);
+1. $\mathbf F(x,y,z)$;
+2. $J(x,y,z)$;
 3. solusi numerik;
 4. residual;
 5. jumlah iterasi.
@@ -1327,7 +1327,7 @@ Tentukan:
 Gunakan R.
 
 
-# Pertanyaan Diskusi {.scrollable}
+## Pertanyaan Diskusi {.scrollable}
 
 1. Mengapa Jacobian dapat dianggap sebagai generalisasi turunan?
 
@@ -1344,7 +1344,7 @@ Gunakan R.
 7. Mengapa solusi numerik perlu diperiksa dengan residual?
 
 
-#  Ringkasan {.scrollable}
+##  Ringkasan {.scrollable}
 
 SPNL:
 
@@ -1387,7 +1387,7 @@ $$
 $$
 
 
-# Pesan Utama {.scrollable}
+## Pesan Utama {.scrollable}
 
 Metode Newton untuk SPNL pada dasarnya adalah:
 
