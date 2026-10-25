@@ -1,0 +1,979 @@
+---
+title: "Praktikum 2:  GitHub untuk Repository R Code"
+subtitle: "Metode Numerik (MTK0315)"
+author: "Dr. Indira Puteri Kinasih"
+lang: id
+documentclass: book
+classoption:
+  - openany
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    theme: cosmo
+    
+  pdf:
+    toc: true
+    toc-depth: 3
+    geometry:
+      - top=2.5cm
+      - bottom=2.5cm
+      - left=3cm
+      - right=2.5cm
+    number-sections: false
+    include-in-header:
+      text: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhf{}
+        \fancyfoot[C]{\thepage}
+        \renewcommand{\headrulewidth}{0pt}
+  
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## Tujuan
+
+Setelah mengikuti panduan ini, kalian (mahasiswa) diharapkan dapat:
+
+1. Membuat akun GitHub.
+2. Menginstal dan menghubungkan GitHub Desktop dengan akun GitHub.
+3. Membuat repository untuk menyimpan R code.
+4. Menghubungkan repository GitHub dengan folder proyek di komputer.
+5. Melakukan **commit, push, dan pull** menggunakan GitHub Desktop.
+6. Menggunakan GitHub sebagai tempat penyimpanan dan dokumentasi R code selama perkuliahan Metode Numerik.
+
+
+# Memahami Git, GitHub, dan GitHub Desktop
+
+Sebelum mulai, bedakan tiga istilah berikut.
+
+**Git** adalah sistem untuk mencatat perubahan pada file.
+
+**GitHub** adalah layanan online tempat repository Git dapat disimpan dan dibagikan.
+
+**GitHub Desktop** adalah aplikasi dengan antarmuka grafis yang memudahkan penggunaan Git tanpa harus mengetik perintah Git di Terminal.
+
+Secara sederhana:
+
+```text
+RStudio
+   │
+   │ mengubah / membuat R code
+   ▼
+Folder di komputer
+   │
+   │ GitHub Desktop
+   │ commit + push
+   ▼
+GitHub
+   │
+   │ pull
+   ▼
+Folder di komputer
+```
+
+Anggap saja:
+
+- **RStudio** = tempat mengerjakan kode.
+- **GitHub Desktop** = penghubung dan pencatat perubahan.
+- **GitHub** = tempat menyimpan repository secara online.
+
+
+# Membuat Akun GitHub
+
+Buka:
+
+[GitHub](https://github.com/?utm_source=chatgpt.com)
+
+Kemudian pilih **Sign up**.
+
+Ikuti langkah pendaftaran:
+
+1. Masukkan email.
+2. Buat password.
+3. Tentukan username.
+4. Lakukan verifikasi email.
+5. Selesaikan proses pendaftaran.
+
+GitHub menyarankan penggunaan password yang kuat dan unik serta verifikasi email setelah membuat akun.
+
+### Tips memilih username
+
+Gunakan username yang cukup profesional karena akun ini dapat menjadi bagian dari portofolio akademik.
+
+Contoh:
+
+```text
+indira-puteri
+ahmadfauzan
+sitinur123
+```
+
+Hindari username seperti:
+
+```text
+alay_gaming_2005
+akucinta123456
+```
+
+jika akun tersebut nantinya akan digunakan untuk portofolio akademik atau pekerjaan.
+
+### Tugas 1
+
+Pastikan kalian sudah memiliki:
+
+- akun GitHub
+- username GitHub
+- email yang sudah diverifikasi
+
+
+# Menginstal GitHub Desktop
+
+Download GitHub Desktop dari:
+
+[GitHub Desktop](https://desktop.github.com/?utm_source=chatgpt.com)
+
+GitHub Desktop saat ini tersedia untuk Windows dan macOS.
+
+Setelah selesai mengunduh:
+
+### Windows
+
+1. Buka file installer.
+2. Ikuti proses instalasi.
+3. Jalankan GitHub Desktop.
+
+### macOS
+
+1. Buka file `.zip`.
+2. Jalankan aplikasi GitHub Desktop.
+3. Jika diminta, izinkan aplikasi untuk dibuka.
+
+
+# Menghubungkan GitHub Desktop dengan GitHub
+
+Ketika GitHub Desktop pertama kali dibuka:
+
+1. Pilih **Sign in to GitHub.com**.
+2. Browser akan terbuka.
+3. Login ke akun GitHub.
+4. Berikan izin yang diperlukan.
+5. Kembali ke GitHub Desktop.
+
+GitHub Desktop menggunakan autentikasi GitHub untuk mengakses repository ketika melakukan clone, push, dan pull.
+
+Setelah berhasil, akun GitHub seharusnya terlihat di pengaturan GitHub Desktop.
+
+
+
+# Membuat Repository untuk Metode Numerik
+
+Misalnya anda membuat satu repository untuk seluruh *R code* selama satu semester.
+
+Nama *repository* yang disarankan:
+
+```text
+metode-numerik-r
+```
+
+atau
+
+```text
+metnum-2026
+```
+
+Contoh struktur repository:
+
+```text
+metode-numerik-r/
+│
+├── README.md
+│
+├── pertemuan-01/
+│   └── deret.R
+│
+├── pertemuan-02/
+│   └── akar-persamaan.R
+│
+├── pertemuan-03/
+│   └── interpolasi.R
+│
+├── pertemuan-04/
+│   └── sistem-persamaan.R
+│
+└── pertemuan-05/
+    └── ...
+```
+
+Struktur seperti ini akan lebih mudah dibaca daripada menyimpan semua file dalam satu folder.
+
+# Membuat Repository dari GitHub
+
+Login ke GitHub.
+
+Pilih:
+
+**New repository**
+
+Isi:
+
+**Repository name**
+
+```text
+metode-numerik-r
+```
+
+Berikan deskripsi, misalnya:
+
+```text
+R code and exercises for Numerical Methods course.
+```
+
+Pilih:
+
+```text
+Public
+```
+
+jika repository memang diperbolehkan untuk dilihat publik.
+
+Kemudian pilih:
+
+**Create repository**
+
+Repository sekarang berada di GitHub.
+
+Repository tersebut disebut **remote repository**, karena berada secara online di GitHub.
+
+
+# Menghubungkan Repository dengan Komputer
+
+Ada dua konsep penting:
+
+```text
+GitHub
+(remote repository)
+        │
+        │ clone
+        ▼
+Komputer
+(local repository)
+```
+
+**Clone** berarti membuat salinan repository GitHub ke komputer. Setelah di-clone, repository lokal dan repository GitHub dapat disinkronkan.
+
+Di GitHub:
+
+1. Buka repository `metode-numerik-r`.
+2. Pilih **Code**.
+3. Pilih **Open with GitHub Desktop**.
+
+GitHub Desktop akan terbuka.
+
+Pilih lokasi penyimpanan di komputer, misalnya:
+
+```text
+Documents/
+```
+
+Kemudian klik:
+
+**Clone**
+
+Sekarang akan terbentuk folder:
+
+```text
+Documents/
+└── metode-numerik-r/
+```
+
+# Membuka Repository dengan RStudio
+
+Buka RStudio.
+
+Pilih:
+
+**File → New Project → Existing Directory**
+
+Kemudian pilih folder:
+
+```text
+metode-numerik-r
+```
+
+Klik:
+
+**Create Project**
+
+RStudio sekarang bekerja di dalam repository tersebut.
+
+Hal ini penting.
+
+Jangan membuat R project di satu folder lalu menyimpan repository GitHub di folder lain.
+
+Gunakan satu folder yang sama:
+
+```text
+metode-numerik-r/
+```
+
+Folder inilah yang dikelola oleh GitHub Desktop.
+
+RStudio sendiri mendukung penggunaan Git untuk version control, dan penggunaan RStudio Project merupakan bagian penting dari workflow tersebut.
+
+
+# Membuat R Code
+
+Misalnya pada pertemuan tentang interpolasi, maka anda dapat membuat:
+
+```text
+interpolasi.R
+```
+
+Contoh kode:
+
+```r
+# Metode Numerik
+# Interpolasi Lagrange
+
+x <- c(1, 2, 4, 5)
+y <- c(2, 5, 8, 10)
+
+lagrange <- function(x, y, xp) {
+  
+  n <- length(x)
+  yp <- 0
+  
+  for (i in 1:n) {
+    
+    L <- 1
+    
+    for (j in 1:n) {
+      if (i != j) {
+        L <- L * (xp - x[j]) / (x[i] - x[j])
+      }
+    }
+    
+    yp <- yp + y[i] * L
+  }
+  
+  return(yp)
+}
+
+lagrange(x, y, 3)
+```
+
+Simpan file tersebut di:
+
+```text
+metode-numerik-r/
+└── pertemuan-03/
+    └── interpolasi.R
+```
+
+
+# Melihat Perubahan di GitHub Desktop
+
+Kembali ke GitHub Desktop.
+
+Repository:
+
+```text
+metode-numerik-r
+```
+
+akan menunjukkan bahwa terdapat perubahan.
+
+Misalnya:
+
+```text
+Changes
+
+☑ pertemuan-03/interpolasi.R
+```
+
+GitHub Desktop membandingkan kondisi repository sebelumnya dengan kondisi file saat ini.
+
+Ini disebut **Changes**.
+
+
+# *Commit*: Mencatat Perubahan
+
+Setelah selesai mengerjakan suatu bagian, jangan langsung berpikir:
+
+> "Saya sudah save, berarti sudah masuk GitHub."
+
+Belum.
+
+Ada dua tahap:
+
+```text
+Save file
+   ↓
+Commit
+   ↓
+Push
+   ↓
+GitHub
+```
+
+Di GitHub Desktop, tuliskan ringkasan perubahan pada bagian:
+
+**Summary**
+
+Misalnya:
+
+```text
+Add Lagrange interpolation code
+```
+
+Kemudian pilih:
+
+**Commit to main**
+
+### Apa itu commit?
+
+Commit adalah catatan resmi bahwa suatu perubahan telah dilakukan.
+
+Contoh riwayat commit:
+
+```text
+Add Taylor series code
+Add bisection method
+Add Newton-Raphson method
+Add Lagrange interpolation
+Fix interpolation function
+```
+
+Commit sebaiknya dibuat setelah satu bagian pekerjaan selesai.
+
+
+# Push: Mengirim Perubahan ke GitHub
+
+Setelah melakukan commit, perubahan masih berada di komputer.
+
+Untuk mengirimkannya ke GitHub, pilih:
+
+**Push origin**
+
+Alurnya:
+
+```text
+RStudio
+   ↓
+Save
+   ↓
+GitHub Desktop
+   ↓
+Commit
+   ↓
+Push
+   ↓
+GitHub
+```
+
+Setelah push selesai, buka repository di browser.
+
+File:
+
+```text
+pertemuan-03/interpolasi.R
+```
+
+seharusnya sudah terlihat di GitHub.
+
+
+# Pull: Mengambil Perubahan dari GitHub
+
+Kebalikan dari push adalah **pull**.
+
+Misalnya repository di GitHub telah berubah.
+
+Atau kalian membuka repository tersebut dari komputer lain.
+
+Sebelum mulai bekerja, lakukan:
+
+**Pull origin**
+
+Alurnya:
+
+```text
+GitHub
+   ↓
+Pull
+   ↓
+GitHub Desktop
+   ↓
+Folder komputer
+   ↓
+RStudio
+```
+
+### Ingat
+
+**Push**
+
+```text
+Komputer → GitHub
+```
+
+**Pull**
+
+```text
+GitHub → Komputer
+```
+
+Ini adalah dua konsep yang harus benar-benar dipahami.
+
+
+# Workflow yang Digunakan Setiap Pertemuan
+
+Gunakan workflow sederhana berikut.
+
+### Sebelum mulai mengerjakan
+
+Buka GitHub Desktop:
+
+```text
+Pull origin
+```
+
+Kemudian buka RStudio.
+
+### Saat mengerjakan
+
+Edit atau buat R code.
+
+```text
+RStudio
+   ↓
+Save
+```
+
+### Setelah selesai
+
+Kembali ke GitHub Desktop:
+
+```text
+Changes
+   ↓
+Write commit message
+   ↓
+Commit
+   ↓
+Push origin
+```
+
+Sehingga workflow lengkapnya:
+
+```text
+        MULAI
+          │
+          ▼
+     Pull origin
+          │
+          ▼
+       RStudio
+          │
+          ▼
+    Kerjakan kode
+          │
+          ▼
+        Save
+          │
+          ▼
+    GitHub Desktop
+          │
+          ▼
+       Commit
+          │
+          ▼
+        Push
+          │
+          ▼
+        GitHub
+          │
+          ▼
+        SELESAI
+```
+
+
+# Contoh Lengkap: Pertemuan tentang Metode Akar
+
+Misalnya pada minggu ke-2 kalian belajar metode Newton-Raphson.
+
+Folder:
+
+```text
+metode-numerik-r/
+│
+├── README.md
+│
+├── pertemuan-01/
+│   └── deret-taylor.R
+│
+└── pertemuan-02/
+    └── newton-raphson.R
+```
+
+Kalian membuka RStudio dan membuat:
+
+```r
+f <- function(x) {
+  x^2 - 2
+}
+
+df <- function(x) {
+  2 * x
+}
+
+newton <- function(x0, tol = 1e-6, max_iter = 100) {
+  
+  x <- x0
+  
+  for (i in 1:max_iter) {
+    
+    x_new <- x - f(x) / df(x)
+    
+    if (abs(x_new - x) < tol) {
+      return(x_new)
+    }
+    
+    x <- x_new
+  }
+  
+  return(x)
+}
+
+newton(1)
+```
+
+Simpan sebagai:
+
+```text
+pertemuan-02/newton-raphson.R
+```
+
+Kemudian:
+
+```text
+RStudio
+   ↓
+Save
+   ↓
+GitHub Desktop
+   ↓
+Changes:
+newton-raphson.R
+   ↓
+Commit:
+Add Newton-Raphson method
+   ↓
+Push origin
+   ↓
+GitHub
+```
+
+Repository GitHub sekarang menyimpan kode tersebut.
+
+
+# Contoh Perubahan pada Kode
+
+Misalnya minggu berikutnya kalian menemukan kesalahan pada kode.
+
+Awalnya:
+
+```r
+newton <- function(x0) {
+```
+
+kemudian diperbaiki menjadi:
+
+```r
+newton <- function(x0, tol = 1e-6, max_iter = 100) {
+```
+
+Setelah disimpan, GitHub Desktop akan menunjukkan perubahan.
+
+Secara konseptual:
+
+```text
+Versi lama
+     │
+     ├── newton(x0)
+     │
+     ▼
+Commit 1
+     │
+     │
+     ▼
+Versi baru
+     │
+     ├── newton(x0, tol, max_iter)
+     │
+     ▼
+Commit 2
+```
+
+Dengan demikian, perubahan kode dapat dilacak.
+
+Inilah salah satu manfaat utama version control: perubahan dapat dibandingkan dan riwayat pekerjaan dapat ditelusuri.
+
+
+# Apa yang Sebaiknya Disimpan di Repository?
+
+Untuk mata kuliah Metode Numerik, repository dapat berisi:
+
+```text
+metode-numerik-r/
+│
+├── README.md
+│
+├── pertemuan-01/
+│   └── deret-taylor.R
+│
+├── pertemuan-02/
+│   └── akar-persamaan.R
+│
+├── pertemuan-03/
+│   └── interpolasi.R
+│
+├── pertemuan-04/
+│   └── splines.R
+│
+├── pertemuan-05/
+│   └── spnl.R
+│
+└── tugas/
+    ├── tugas-01.R
+    ├── tugas-02.R
+    └── tugas-03.R
+```
+
+Jika menggunakan data:
+
+```text
+data/
+```
+
+dapat digunakan untuk data latihan yang memang boleh dibagikan.
+
+
+# Apa yang Jangan Disimpan?
+
+Jangan memasukkan informasi rahasia atau file yang tidak diperlukan.
+
+Contohnya:
+
+```text
+password
+API keys
+token
+data pribadi
+data mahasiswa
+file dengan informasi sensitif
+```
+
+Jangan mengunggah data penelitian yang tidak memiliki izin untuk dibagikan.
+
+Untuk tugas kuliah, gunakan data yang memang diberikan untuk latihan atau data publik.
+
+
+# README.md
+
+Setiap repository sebaiknya memiliki `README.md`.
+
+Contoh sederhana:
+
+```markdown
+# Metode Numerik
+
+Repository R code untuk mata kuliah Metode Numerik.
+
+## Materi
+
+- Pertemuan 01: Deret Taylor
+- Pertemuan 02: Metode Akar Persamaan
+- Pertemuan 03: Interpolasi
+- Pertemuan 04: Sistem Persamaan Nonlinier
+
+## Author
+
+Nama Mahasiswa
+Program Studi Tadris Matematika
+UIN Mataram
+```
+
+README akan menjadi halaman utama repository ketika orang membuka repository di GitHub.
+
+
+# Ringkasan: Push vs Pull
+
+| Aktivitas | Arah | Kapan digunakan? |
+|---|---|---|
+| Commit | Komputer → riwayat Git lokal | Setelah perubahan selesai |
+| Push | Komputer → GitHub | Setelah commit |
+| Pull | GitHub → komputer | Sebelum mulai bekerja / mengambil perubahan terbaru |
+| Clone | GitHub → komputer | Pertama kali mengambil repository |
+
+Yang paling penting:
+
+```text
+COMMIT ≠ PUSH
+```
+
+Commit hanya mencatat perubahan pada repository lokal.
+
+Agar perubahan muncul di GitHub:
+
+```text
+COMMIT → PUSH
+```
+
+
+# Checklist Mahasiswa
+
+Sebelum praktikum selesai, pastikan semua langkah berikut sudah dilakukan.
+
+### Akun
+
+- [ ] Memiliki akun GitHub
+- [ ] Email GitHub sudah diverifikasi
+- [ ] Mengetahui username GitHub
+
+### Software
+
+- [ ] R sudah terinstal
+- [ ] RStudio sudah terinstal
+- [ ] GitHub Desktop sudah terinstal
+- [ ] GitHub Desktop sudah terhubung dengan akun GitHub
+
+### Repository
+
+- [ ] Memiliki repository `metode-numerik-r`
+- [ ] Repository sudah di-clone ke komputer
+- [ ] Repository sudah dibuka sebagai RStudio Project
+- [ ] Memiliki `README.md`
+
+### Workflow
+
+- [ ] Dapat melakukan Pull
+- [ ] Dapat membuat/mengubah R code
+- [ ] Dapat melihat Changes
+- [ ] Dapat melakukan Commit
+- [ ] Dapat melakukan Push
+- [ ] Dapat melihat hasil Push di GitHub
+
+
+# Latihan Praktikum
+
+Buat repository dengan nama:
+
+```text
+metode-numerik-r
+```
+
+Kemudian buat struktur:
+
+```text
+metode-numerik-r/
+├── README.md
+└── pertemuan-01/
+    └── deret-taylor.R
+```
+
+Isi `deret-taylor.R` dengan program untuk menghitung pendekatan:
+
+$$
+\sin(x)
+=
+x-\frac{x^3}{3!}
++\frac{x^5}{5!}
+-\frac{x^7}{7!}.
+$$
+
+Lakukan workflow:
+
+```text
+1. Buat R code
+2. Save
+3. Buka GitHub Desktop
+4. Periksa Changes
+5. Commit
+6. Push
+7. Buka GitHub melalui browser
+8. Pastikan file muncul
+```
+
+Kemudian ubah kode tersebut.
+
+Misalnya tambahkan:
+
+```r
+x <- 0.5
+```
+
+Lakukan kembali:
+
+```text
+Save
+  ↓
+Commit
+  ↓
+Push
+```
+
+Repository GitHub sekarang memiliki riwayat perubahan.
+
+
+# Tantangan: Membuktikan Fungsi Pull
+
+Setelah berhasil melakukan Push:
+
+1. Buka repository di GitHub.
+2. Edit `README.md` langsung melalui GitHub.
+3. Tambahkan satu baris, misalnya:
+
+```text
+Repository ini digunakan untuk latihan Metode Numerik.
+```
+
+4. Simpan perubahan di GitHub.
+5. Kembali ke GitHub Desktop.
+6. Pilih **Pull origin**.
+7. Buka `README.md` di komputer.
+
+Perubahan yang dibuat melalui GitHub sekarang seharusnya sudah muncul di komputer.
+
+Dengan latihan ini, kalian akan melihat secara langsung perbedaan:
+
+```text
+PUSH
+Komputer → GitHub
+
+PULL
+GitHub → Komputer
+```
+
+
+# Prinsip yang Perlu Diingat
+
+Gunakan empat kata kunci berikut:
+
+```text
+PULL → WORK → COMMIT → PUSH
+```
+
+atau:
+
+**Ambil versi terbaru → kerjakan → catat perubahan → kirim ke GitHub.**
+
+Jika bekerja hanya pada satu komputer, workflow sederhana ini sudah cukup untuk mengenalkan version control dalam perkuliahan Metode Numerik.
+
+GitHub Desktop dapat menangani sebagian besar operasi Git yang diperlukan dalam workflow ini melalui antarmuka grafis, sehingga kalian tidak perlu memulai dari command line.

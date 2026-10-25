@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dr.&nbsp;Indira Puteri Kinasih">
+
+<title>Praktikum 2: GitHub untuk Repository R Code</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="github_module_files/libs/clipboard/clipboard.min.js"></script>
+<script src="github_module_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="github_module_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="github_module_files/libs/quarto-html/popper.min.js"></script>
+<script src="github_module_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="github_module_files/libs/quarto-html/anchor.min.js"></script>
+<link href="github_module_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="github_module_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="github_module_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="github_module_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="github_module_files/libs/bootstrap/bootstrap-c2e55264ed47ce3b2e0326a2269f9400.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Daftar Isi</h2>
+   
+  <ul>
+  <li><a href="#tujuan" id="toc-tujuan" class="nav-link active" data-scroll-target="#tujuan">Tujuan</a></li>
+  <li><a href="#memahami-git-github-dan-github-desktop" id="toc-memahami-git-github-dan-github-desktop" class="nav-link" data-scroll-target="#memahami-git-github-dan-github-desktop">Memahami Git, GitHub, dan GitHub Desktop</a></li>
+  <li><a href="#membuat-akun-github" id="toc-membuat-akun-github" class="nav-link" data-scroll-target="#membuat-akun-github">Membuat Akun GitHub</a>
+  <ul class="collapse">
+  <li><a href="#tips-memilih-username" id="toc-tips-memilih-username" class="nav-link" data-scroll-target="#tips-memilih-username">Tips memilih username</a></li>
+  <li><a href="#tugas-1" id="toc-tugas-1" class="nav-link" data-scroll-target="#tugas-1">Tugas 1</a></li>
+  </ul></li>
+  <li><a href="#menginstal-github-desktop" id="toc-menginstal-github-desktop" class="nav-link" data-scroll-target="#menginstal-github-desktop">Menginstal GitHub Desktop</a>
+  <ul class="collapse">
+  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a></li>
+  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos">macOS</a></li>
+  </ul></li>
+  <li><a href="#menghubungkan-github-desktop-dengan-github" id="toc-menghubungkan-github-desktop-dengan-github" class="nav-link" data-scroll-target="#menghubungkan-github-desktop-dengan-github">Menghubungkan GitHub Desktop dengan GitHub</a></li>
+  <li><a href="#membuat-repository-untuk-metode-numerik" id="toc-membuat-repository-untuk-metode-numerik" class="nav-link" data-scroll-target="#membuat-repository-untuk-metode-numerik">Membuat Repository untuk Metode Numerik</a></li>
+  <li><a href="#membuat-repository-dari-github" id="toc-membuat-repository-dari-github" class="nav-link" data-scroll-target="#membuat-repository-dari-github">Membuat Repository dari GitHub</a></li>
+  <li><a href="#menghubungkan-repository-dengan-komputer" id="toc-menghubungkan-repository-dengan-komputer" class="nav-link" data-scroll-target="#menghubungkan-repository-dengan-komputer">Menghubungkan Repository dengan Komputer</a></li>
+  <li><a href="#membuka-repository-dengan-rstudio" id="toc-membuka-repository-dengan-rstudio" class="nav-link" data-scroll-target="#membuka-repository-dengan-rstudio">Membuka Repository dengan RStudio</a></li>
+  <li><a href="#membuat-r-code" id="toc-membuat-r-code" class="nav-link" data-scroll-target="#membuat-r-code">Membuat R Code</a></li>
+  <li><a href="#melihat-perubahan-di-github-desktop" id="toc-melihat-perubahan-di-github-desktop" class="nav-link" data-scroll-target="#melihat-perubahan-di-github-desktop">Melihat Perubahan di GitHub Desktop</a></li>
+  <li><a href="#commit-mencatat-perubahan" id="toc-commit-mencatat-perubahan" class="nav-link" data-scroll-target="#commit-mencatat-perubahan"><em>Commit</em>: Mencatat Perubahan</a>
+  <ul class="collapse">
+  <li><a href="#apa-itu-commit" id="toc-apa-itu-commit" class="nav-link" data-scroll-target="#apa-itu-commit">Apa itu commit?</a></li>
+  </ul></li>
+  <li><a href="#push-mengirim-perubahan-ke-github" id="toc-push-mengirim-perubahan-ke-github" class="nav-link" data-scroll-target="#push-mengirim-perubahan-ke-github">Push: Mengirim Perubahan ke GitHub</a></li>
+  <li><a href="#pull-mengambil-perubahan-dari-github" id="toc-pull-mengambil-perubahan-dari-github" class="nav-link" data-scroll-target="#pull-mengambil-perubahan-dari-github">Pull: Mengambil Perubahan dari GitHub</a>
+  <ul class="collapse">
+  <li><a href="#ingat" id="toc-ingat" class="nav-link" data-scroll-target="#ingat">Ingat</a></li>
+  </ul></li>
+  <li><a href="#workflow-yang-digunakan-setiap-pertemuan" id="toc-workflow-yang-digunakan-setiap-pertemuan" class="nav-link" data-scroll-target="#workflow-yang-digunakan-setiap-pertemuan">Workflow yang Digunakan Setiap Pertemuan</a>
+  <ul class="collapse">
+  <li><a href="#sebelum-mulai-mengerjakan" id="toc-sebelum-mulai-mengerjakan" class="nav-link" data-scroll-target="#sebelum-mulai-mengerjakan">Sebelum mulai mengerjakan</a></li>
+  <li><a href="#saat-mengerjakan" id="toc-saat-mengerjakan" class="nav-link" data-scroll-target="#saat-mengerjakan">Saat mengerjakan</a></li>
+  <li><a href="#setelah-selesai" id="toc-setelah-selesai" class="nav-link" data-scroll-target="#setelah-selesai">Setelah selesai</a></li>
+  </ul></li>
+  <li><a href="#contoh-lengkap-pertemuan-tentang-metode-akar" id="toc-contoh-lengkap-pertemuan-tentang-metode-akar" class="nav-link" data-scroll-target="#contoh-lengkap-pertemuan-tentang-metode-akar">Contoh Lengkap: Pertemuan tentang Metode Akar</a></li>
+  <li><a href="#contoh-perubahan-pada-kode" id="toc-contoh-perubahan-pada-kode" class="nav-link" data-scroll-target="#contoh-perubahan-pada-kode">Contoh Perubahan pada Kode</a></li>
+  <li><a href="#apa-yang-sebaiknya-disimpan-di-repository" id="toc-apa-yang-sebaiknya-disimpan-di-repository" class="nav-link" data-scroll-target="#apa-yang-sebaiknya-disimpan-di-repository">Apa yang Sebaiknya Disimpan di Repository?</a></li>
+  <li><a href="#apa-yang-jangan-disimpan" id="toc-apa-yang-jangan-disimpan" class="nav-link" data-scroll-target="#apa-yang-jangan-disimpan">Apa yang Jangan Disimpan?</a></li>
+  <li><a href="#readme.md" id="toc-readme.md" class="nav-link" data-scroll-target="#readme.md">README.md</a></li>
+  <li><a href="#ringkasan-push-vs-pull" id="toc-ringkasan-push-vs-pull" class="nav-link" data-scroll-target="#ringkasan-push-vs-pull">Ringkasan: Push vs Pull</a></li>
+  <li><a href="#checklist-mahasiswa" id="toc-checklist-mahasiswa" class="nav-link" data-scroll-target="#checklist-mahasiswa">Checklist Mahasiswa</a>
+  <ul class="collapse">
+  <li><a href="#akun" id="toc-akun" class="nav-link" data-scroll-target="#akun">Akun</a></li>
+  <li><a href="#software" id="toc-software" class="nav-link" data-scroll-target="#software">Software</a></li>
+  <li><a href="#repository" id="toc-repository" class="nav-link" data-scroll-target="#repository">Repository</a></li>
+  <li><a href="#workflow" id="toc-workflow" class="nav-link" data-scroll-target="#workflow">Workflow</a></li>
+  </ul></li>
+  <li><a href="#latihan-praktikum" id="toc-latihan-praktikum" class="nav-link" data-scroll-target="#latihan-praktikum">Latihan Praktikum</a></li>
+  <li><a href="#tantangan-membuktikan-fungsi-pull" id="toc-tantangan-membuktikan-fungsi-pull" class="nav-link" data-scroll-target="#tantangan-membuktikan-fungsi-pull">Tantangan: Membuktikan Fungsi Pull</a></li>
+  <li><a href="#prinsip-yang-perlu-diingat" id="toc-prinsip-yang-perlu-diingat" class="nav-link" data-scroll-target="#prinsip-yang-perlu-diingat">Prinsip yang Perlu Diingat</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Format Lain</h2><ul><li><a href="github_module.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Praktikum 2: GitHub untuk Repository R Code</h1>
+<p class="subtitle lead">Metode Numerik (MTK0315)</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Penulis</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dr.&nbsp;Indira Puteri Kinasih </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="tujuan" class="level2">
+<h2 class="anchored" data-anchor-id="tujuan">Tujuan</h2>
+<p>Setelah mengikuti panduan ini, kalian (mahasiswa) diharapkan dapat:</p>
+<ol type="1">
+<li>Membuat akun GitHub.</li>
+<li>Menginstal dan menghubungkan GitHub Desktop dengan akun GitHub.</li>
+<li>Membuat repository untuk menyimpan R code.</li>
+<li>Menghubungkan repository GitHub dengan folder proyek di komputer.</li>
+<li>Melakukan <strong>commit, push, dan pull</strong> menggunakan GitHub Desktop.</li>
+<li>Menggunakan GitHub sebagai tempat penyimpanan dan dokumentasi R code selama perkuliahan Metode Numerik.</li>
+</ol>
+</section>
+<section id="memahami-git-github-dan-github-desktop" class="level1">
+<h1>Memahami Git, GitHub, dan GitHub Desktop</h1>
+<p>Sebelum mulai, bedakan tiga istilah berikut.</p>
+<p><strong>Git</strong> adalah sistem untuk mencatat perubahan pada file.</p>
+<p><strong>GitHub</strong> adalah layanan online tempat repository Git dapat disimpan dan dibagikan.</p>
+<p><strong>GitHub Desktop</strong> adalah aplikasi dengan antarmuka grafis yang memudahkan penggunaan Git tanpa harus mengetik perintah Git di Terminal.</p>
+<p>Secara sederhana:</p>
+<pre class="text"><code>RStudio
+   │
+   │ mengubah / membuat R code
+   ▼
+Folder di komputer
+   │
+   │ GitHub Desktop
+   │ commit + push
+   ▼
+GitHub
+   │
+   │ pull
+   ▼
+Folder di komputer</code></pre>
+<p>Anggap saja:</p>
+<ul>
+<li><strong>RStudio</strong> = tempat mengerjakan kode.</li>
+<li><strong>GitHub Desktop</strong> = penghubung dan pencatat perubahan.</li>
+<li><strong>GitHub</strong> = tempat menyimpan repository secara online.</li>
+</ul>
+</section>
+<section id="membuat-akun-github" class="level1">
+<h1>Membuat Akun GitHub</h1>
+<p>Buka:</p>
+<p><a href="https://github.com/?utm_source=chatgpt.com">GitHub</a></p>
+<p>Kemudian pilih <strong>Sign up</strong>.</p>
+<p>Ikuti langkah pendaftaran:</p>
+<ol type="1">
+<li>Masukkan email.</li>
+<li>Buat password.</li>
+<li>Tentukan username.</li>
+<li>Lakukan verifikasi email.</li>
+<li>Selesaikan proses pendaftaran.</li>
+</ol>
+<p>GitHub menyarankan penggunaan password yang kuat dan unik serta verifikasi email setelah membuat akun.</p>
+<section id="tips-memilih-username" class="level3">
+<h3 class="anchored" data-anchor-id="tips-memilih-username">Tips memilih username</h3>
+<p>Gunakan username yang cukup profesional karena akun ini dapat menjadi bagian dari portofolio akademik.</p>
+<p>Contoh:</p>
+<pre class="text"><code>indira-puteri
+ahmadfauzan
+sitinur123</code></pre>
+<p>Hindari username seperti:</p>
+<pre class="text"><code>alay_gaming_2005
+akucinta123456</code></pre>
+<p>jika akun tersebut nantinya akan digunakan untuk portofolio akademik atau pekerjaan.</p>
+</section>
+<section id="tugas-1" class="level3">
+<h3 class="anchored" data-anchor-id="tugas-1">Tugas 1</h3>
+<p>Pastikan kalian sudah memiliki:</p>
+<ul>
+<li>akun GitHub</li>
+<li>username GitHub</li>
+<li>email yang sudah diverifikasi</li>
+</ul>
+</section>
+</section>
+<section id="menginstal-github-desktop" class="level1">
+<h1>Menginstal GitHub Desktop</h1>
+<p>Download GitHub Desktop dari:</p>
+<p><a href="https://desktop.github.com/?utm_source=chatgpt.com">GitHub Desktop</a></p>
+<p>GitHub Desktop saat ini tersedia untuk Windows dan macOS.</p>
+<p>Setelah selesai mengunduh:</p>
+<section id="windows" class="level3">
+<h3 class="anchored" data-anchor-id="windows">Windows</h3>
+<ol type="1">
+<li>Buka file installer.</li>
+<li>Ikuti proses instalasi.</li>
+<li>Jalankan GitHub Desktop.</li>
+</ol>
+</section>
+<section id="macos" class="level3">
+<h3 class="anchored" data-anchor-id="macos">macOS</h3>
+<ol type="1">
+<li>Buka file <code>.zip</code>.</li>
+<li>Jalankan aplikasi GitHub Desktop.</li>
+<li>Jika diminta, izinkan aplikasi untuk dibuka.</li>
+</ol>
+</section>
+</section>
+<section id="menghubungkan-github-desktop-dengan-github" class="level1">
+<h1>Menghubungkan GitHub Desktop dengan GitHub</h1>
+<p>Ketika GitHub Desktop pertama kali dibuka:</p>
+<ol type="1">
+<li>Pilih <strong>Sign in to GitHub.com</strong>.</li>
+<li>Browser akan terbuka.</li>
+<li>Login ke akun GitHub.</li>
+<li>Berikan izin yang diperlukan.</li>
+<li>Kembali ke GitHub Desktop.</li>
+</ol>
+<p>GitHub Desktop menggunakan autentikasi GitHub untuk mengakses repository ketika melakukan clone, push, dan pull.</p>
+<p>Setelah berhasil, akun GitHub seharusnya terlihat di pengaturan GitHub Desktop.</p>
+</section>
+<section id="membuat-repository-untuk-metode-numerik" class="level1">
+<h1>Membuat Repository untuk Metode Numerik</h1>
+<p>Misalnya anda membuat satu repository untuk seluruh <em>R code</em> selama satu semester.</p>
+<p>Nama <em>repository</em> yang disarankan:</p>
+<pre class="text"><code>metode-numerik-r</code></pre>
+<p>atau</p>
+<pre class="text"><code>metnum-2026</code></pre>
+<p>Contoh struktur repository:</p>
+<pre class="text"><code>metode-numerik-r/
+│
+├── README.md
+│
+├── pertemuan-01/
+│   └── deret.R
+│
+├── pertemuan-02/
+│   └── akar-persamaan.R
+│
+├── pertemuan-03/
+│   └── interpolasi.R
+│
+├── pertemuan-04/
+│   └── sistem-persamaan.R
+│
+└── pertemuan-05/
+    └── ...</code></pre>
+<p>Struktur seperti ini akan lebih mudah dibaca daripada menyimpan semua file dalam satu folder.</p>
+</section>
+<section id="membuat-repository-dari-github" class="level1">
+<h1>Membuat Repository dari GitHub</h1>
+<p>Login ke GitHub.</p>
+<p>Pilih:</p>
+<p><strong>New repository</strong></p>
+<p>Isi:</p>
+<p><strong>Repository name</strong></p>
+<pre class="text"><code>metode-numerik-r</code></pre>
+<p>Berikan deskripsi, misalnya:</p>
+<pre class="text"><code>R code and exercises for Numerical Methods course.</code></pre>
+<p>Pilih:</p>
+<pre class="text"><code>Public</code></pre>
+<p>jika repository memang diperbolehkan untuk dilihat publik.</p>
+<p>Kemudian pilih:</p>
+<p><strong>Create repository</strong></p>
+<p>Repository sekarang berada di GitHub.</p>
+<p>Repository tersebut disebut <strong>remote repository</strong>, karena berada secara online di GitHub.</p>
+</section>
+<section id="menghubungkan-repository-dengan-komputer" class="level1">
+<h1>Menghubungkan Repository dengan Komputer</h1>
+<p>Ada dua konsep penting:</p>
+<pre class="text"><code>GitHub
+(remote repository)
+        │
+        │ clone
+        ▼
+Komputer
+(local repository)</code></pre>
+<p><strong>Clone</strong> berarti membuat salinan repository GitHub ke komputer. Setelah di-clone, repository lokal dan repository GitHub dapat disinkronkan.</p>
+<p>Di GitHub:</p>
+<ol type="1">
+<li>Buka repository <code>metode-numerik-r</code>.</li>
+<li>Pilih <strong>Code</strong>.</li>
+<li>Pilih <strong>Open with GitHub Desktop</strong>.</li>
+</ol>
+<p>GitHub Desktop akan terbuka.</p>
+<p>Pilih lokasi penyimpanan di komputer, misalnya:</p>
+<pre class="text"><code>Documents/</code></pre>
+<p>Kemudian klik:</p>
+<p><strong>Clone</strong></p>
+<p>Sekarang akan terbentuk folder:</p>
+<pre class="text"><code>Documents/
+└── metode-numerik-r/</code></pre>
+</section>
+<section id="membuka-repository-dengan-rstudio" class="level1">
+<h1>Membuka Repository dengan RStudio</h1>
+<p>Buka RStudio.</p>
+<p>Pilih:</p>
+<p><strong>File → New Project → Existing Directory</strong></p>
+<p>Kemudian pilih folder:</p>
+<pre class="text"><code>metode-numerik-r</code></pre>
+<p>Klik:</p>
+<p><strong>Create Project</strong></p>
+<p>RStudio sekarang bekerja di dalam repository tersebut.</p>
+<p>Hal ini penting.</p>
+<p>Jangan membuat R project di satu folder lalu menyimpan repository GitHub di folder lain.</p>
+<p>Gunakan satu folder yang sama:</p>
+<pre class="text"><code>metode-numerik-r/</code></pre>
+<p>Folder inilah yang dikelola oleh GitHub Desktop.</p>
+<p>RStudio sendiri mendukung penggunaan Git untuk version control, dan penggunaan RStudio Project merupakan bagian penting dari workflow tersebut.</p>
+</section>
+<section id="membuat-r-code" class="level1">
+<h1>Membuat R Code</h1>
+<p>Misalnya pada pertemuan tentang interpolasi, maka anda dapat membuat:</p>
+<pre class="text"><code>interpolasi.R</code></pre>
+<p>Contoh kode:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Metode Numerik</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Interpolasi Lagrange</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">10</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>lagrange <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, xp) {</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  yp <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (i <span class="sc">!=</span> j) {</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>        L <span class="ot">&lt;-</span> L <span class="sc">*</span> (xp <span class="sc">-</span> x[j]) <span class="sc">/</span> (x[i] <span class="sc">-</span> x[j])</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    yp <span class="ot">&lt;-</span> yp <span class="sc">+</span> y[i] <span class="sc">*</span> L</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(yp)</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="fu">lagrange</span>(x, y, <span class="dv">3</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Simpan file tersebut di:</p>
+<pre class="text"><code>metode-numerik-r/
+└── pertemuan-03/
+    └── interpolasi.R</code></pre>
+</section>
+<section id="melihat-perubahan-di-github-desktop" class="level1">
+<h1>Melihat Perubahan di GitHub Desktop</h1>
+<p>Kembali ke GitHub Desktop.</p>
+<p>Repository:</p>
+<pre class="text"><code>metode-numerik-r</code></pre>
+<p>akan menunjukkan bahwa terdapat perubahan.</p>
+<p>Misalnya:</p>
+<pre class="text"><code>Changes
+
+☑ pertemuan-03/interpolasi.R</code></pre>
+<p>GitHub Desktop membandingkan kondisi repository sebelumnya dengan kondisi file saat ini.</p>
+<p>Ini disebut <strong>Changes</strong>.</p>
+</section>
+<section id="commit-mencatat-perubahan" class="level1">
+<h1><em>Commit</em>: Mencatat Perubahan</h1>
+<p>Setelah selesai mengerjakan suatu bagian, jangan langsung berpikir:</p>
+<blockquote class="blockquote">
+<p>“Saya sudah save, berarti sudah masuk GitHub.”</p>
+</blockquote>
+<p>Belum.</p>
+<p>Ada dua tahap:</p>
+<pre class="text"><code>Save file
+   ↓
+Commit
+   ↓
+Push
+   ↓
+GitHub</code></pre>
+<p>Di GitHub Desktop, tuliskan ringkasan perubahan pada bagian:</p>
+<p><strong>Summary</strong></p>
+<p>Misalnya:</p>
+<pre class="text"><code>Add Lagrange interpolation code</code></pre>
+<p>Kemudian pilih:</p>
+<p><strong>Commit to main</strong></p>
+<section id="apa-itu-commit" class="level3">
+<h3 class="anchored" data-anchor-id="apa-itu-commit">Apa itu commit?</h3>
+<p>Commit adalah catatan resmi bahwa suatu perubahan telah dilakukan.</p>
+<p>Contoh riwayat commit:</p>
+<pre class="text"><code>Add Taylor series code
+Add bisection method
+Add Newton-Raphson method
+Add Lagrange interpolation
+Fix interpolation function</code></pre>
+<p>Commit sebaiknya dibuat setelah satu bagian pekerjaan selesai.</p>
+</section>
+</section>
+<section id="push-mengirim-perubahan-ke-github" class="level1">
+<h1>Push: Mengirim Perubahan ke GitHub</h1>
+<p>Setelah melakukan commit, perubahan masih berada di komputer.</p>
+<p>Untuk mengirimkannya ke GitHub, pilih:</p>
+<p><strong>Push origin</strong></p>
+<p>Alurnya:</p>
+<pre class="text"><code>RStudio
+   ↓
+Save
+   ↓
+GitHub Desktop
+   ↓
+Commit
+   ↓
+Push
+   ↓
+GitHub</code></pre>
+<p>Setelah push selesai, buka repository di browser.</p>
+<p>File:</p>
+<pre class="text"><code>pertemuan-03/interpolasi.R</code></pre>
+<p>seharusnya sudah terlihat di GitHub.</p>
+</section>
+<section id="pull-mengambil-perubahan-dari-github" class="level1">
+<h1>Pull: Mengambil Perubahan dari GitHub</h1>
+<p>Kebalikan dari push adalah <strong>pull</strong>.</p>
+<p>Misalnya repository di GitHub telah berubah.</p>
+<p>Atau kalian membuka repository tersebut dari komputer lain.</p>
+<p>Sebelum mulai bekerja, lakukan:</p>
+<p><strong>Pull origin</strong></p>
+<p>Alurnya:</p>
+<pre class="text"><code>GitHub
+   ↓
+Pull
+   ↓
+GitHub Desktop
+   ↓
+Folder komputer
+   ↓
+RStudio</code></pre>
+<section id="ingat" class="level3">
+<h3 class="anchored" data-anchor-id="ingat">Ingat</h3>
+<p><strong>Push</strong></p>
+<pre class="text"><code>Komputer → GitHub</code></pre>
+<p><strong>Pull</strong></p>
+<pre class="text"><code>GitHub → Komputer</code></pre>
+<p>Ini adalah dua konsep yang harus benar-benar dipahami.</p>
+</section>
+</section>
+<section id="workflow-yang-digunakan-setiap-pertemuan" class="level1">
+<h1>Workflow yang Digunakan Setiap Pertemuan</h1>
+<p>Gunakan workflow sederhana berikut.</p>
+<section id="sebelum-mulai-mengerjakan" class="level3">
+<h3 class="anchored" data-anchor-id="sebelum-mulai-mengerjakan">Sebelum mulai mengerjakan</h3>
+<p>Buka GitHub Desktop:</p>
+<pre class="text"><code>Pull origin</code></pre>
+<p>Kemudian buka RStudio.</p>
+</section>
+<section id="saat-mengerjakan" class="level3">
+<h3 class="anchored" data-anchor-id="saat-mengerjakan">Saat mengerjakan</h3>
+<p>Edit atau buat R code.</p>
+<pre class="text"><code>RStudio
+   ↓
+Save</code></pre>
+</section>
+<section id="setelah-selesai" class="level3">
+<h3 class="anchored" data-anchor-id="setelah-selesai">Setelah selesai</h3>
+<p>Kembali ke GitHub Desktop:</p>
+<pre class="text"><code>Changes
+   ↓
+Write commit message
+   ↓
+Commit
+   ↓
+Push origin</code></pre>
+<p>Sehingga workflow lengkapnya:</p>
+<pre class="text"><code>        MULAI
+          │
+          ▼
+     Pull origin
+          │
+          ▼
+       RStudio
+          │
+          ▼
+    Kerjakan kode
+          │
+          ▼
+        Save
+          │
+          ▼
+    GitHub Desktop
+          │
+          ▼
+       Commit
+          │
+          ▼
+        Push
+          │
+          ▼
+        GitHub
+          │
+          ▼
+        SELESAI</code></pre>
+</section>
+</section>
+<section id="contoh-lengkap-pertemuan-tentang-metode-akar" class="level1">
+<h1>Contoh Lengkap: Pertemuan tentang Metode Akar</h1>
+<p>Misalnya pada minggu ke-2 kalian belajar metode Newton-Raphson.</p>
+<p>Folder:</p>
+<pre class="text"><code>metode-numerik-r/
+│
+├── README.md
+│
+├── pertemuan-01/
+│   └── deret-taylor.R
+│
+└── pertemuan-02/
+    └── newton-raphson.R</code></pre>
+<p>Kalian membuka RStudio dan membuat:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  x<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> <span class="sc">*</span> x</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>newton <span class="ot">&lt;-</span> <span class="cf">function</span>(x0, <span class="at">tol =</span> <span class="fl">1e-6</span>, <span class="at">max_iter =</span> <span class="dv">100</span>) {</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x0</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>max_iter) {</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>    x_new <span class="ot">&lt;-</span> x <span class="sc">-</span> <span class="fu">f</span>(x) <span class="sc">/</span> <span class="fu">df</span>(x)</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">abs</span>(x_new <span class="sc">-</span> x) <span class="sc">&lt;</span> tol) {</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(x_new)</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x_new</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="fu">newton</span>(<span class="dv">1</span>)</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Simpan sebagai:</p>
+<pre class="text"><code>pertemuan-02/newton-raphson.R</code></pre>
+<p>Kemudian:</p>
+<pre class="text"><code>RStudio
+   ↓
+Save
+   ↓
+GitHub Desktop
+   ↓
+Changes:
+newton-raphson.R
+   ↓
+Commit:
+Add Newton-Raphson method
+   ↓
+Push origin
+   ↓
+GitHub</code></pre>
+<p>Repository GitHub sekarang menyimpan kode tersebut.</p>
+</section>
+<section id="contoh-perubahan-pada-kode" class="level1">
+<h1>Contoh Perubahan pada Kode</h1>
+<p>Misalnya minggu berikutnya kalian menemukan kesalahan pada kode.</p>
+<p>Awalnya:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>newton <span class="ot">&lt;-</span> <span class="cf">function</span>(x0) {</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>kemudian diperbaiki menjadi:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>newton <span class="ot">&lt;-</span> <span class="cf">function</span>(x0, <span class="at">tol =</span> <span class="fl">1e-6</span>, <span class="at">max_iter =</span> <span class="dv">100</span>) {</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Setelah disimpan, GitHub Desktop akan menunjukkan perubahan.</p>
+<p>Secara konseptual:</p>
+<pre class="text"><code>Versi lama
+     │
+     ├── newton(x0)
+     │
+     ▼
+Commit 1
+     │
+     │
+     ▼
+Versi baru
+     │
+     ├── newton(x0, tol, max_iter)
+     │
+     ▼
+Commit 2</code></pre>
+<p>Dengan demikian, perubahan kode dapat dilacak.</p>
+<p>Inilah salah satu manfaat utama version control: perubahan dapat dibandingkan dan riwayat pekerjaan dapat ditelusuri.</p>
+</section>
+<section id="apa-yang-sebaiknya-disimpan-di-repository" class="level1">
+<h1>Apa yang Sebaiknya Disimpan di Repository?</h1>
+<p>Untuk mata kuliah Metode Numerik, repository dapat berisi:</p>
+<pre class="text"><code>metode-numerik-r/
+│
+├── README.md
+│
+├── pertemuan-01/
+│   └── deret-taylor.R
+│
+├── pertemuan-02/
+│   └── akar-persamaan.R
+│
+├── pertemuan-03/
+│   └── interpolasi.R
+│
+├── pertemuan-04/
+│   └── splines.R
+│
+├── pertemuan-05/
+│   └── spnl.R
+│
+└── tugas/
+    ├── tugas-01.R
+    ├── tugas-02.R
+    └── tugas-03.R</code></pre>
+<p>Jika menggunakan data:</p>
+<pre class="text"><code>data/</code></pre>
+<p>dapat digunakan untuk data latihan yang memang boleh dibagikan.</p>
+</section>
+<section id="apa-yang-jangan-disimpan" class="level1">
+<h1>Apa yang Jangan Disimpan?</h1>
+<p>Jangan memasukkan informasi rahasia atau file yang tidak diperlukan.</p>
+<p>Contohnya:</p>
+<pre class="text"><code>password
+API keys
+token
+data pribadi
+data mahasiswa
+file dengan informasi sensitif</code></pre>
+<p>Jangan mengunggah data penelitian yang tidak memiliki izin untuk dibagikan.</p>
+<p>Untuk tugas kuliah, gunakan data yang memang diberikan untuk latihan atau data publik.</p>
+</section>
+<section id="readme.md" class="level1">
+<h1>README.md</h1>
+<p>Setiap repository sebaiknya memiliki <code>README.md</code>.</p>
+<p>Contoh sederhana:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Metode Numerik</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>Repository R code untuk mata kuliah Metode Numerik.</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## Materi</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pertemuan 01: Deret Taylor</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pertemuan 02: Metode Akar Persamaan</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pertemuan 03: Interpolasi</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pertemuan 04: Sistem Persamaan Nonlinier</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Author</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>Nama Mahasiswa</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>Program Studi Tadris Matematika</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>UIN Mataram</span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>README akan menjadi halaman utama repository ketika orang membuka repository di GitHub.</p>
+</section>
+<section id="ringkasan-push-vs-pull" class="level1">
+<h1>Ringkasan: Push vs Pull</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aktivitas</th>
+<th>Arah</th>
+<th>Kapan digunakan?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Commit</td>
+<td>Komputer → riwayat Git lokal</td>
+<td>Setelah perubahan selesai</td>
+</tr>
+<tr class="even">
+<td>Push</td>
+<td>Komputer → GitHub</td>
+<td>Setelah commit</td>
+</tr>
+<tr class="odd">
+<td>Pull</td>
+<td>GitHub → komputer</td>
+<td>Sebelum mulai bekerja / mengambil perubahan terbaru</td>
+</tr>
+<tr class="even">
+<td>Clone</td>
+<td>GitHub → komputer</td>
+<td>Pertama kali mengambil repository</td>
+</tr>
+</tbody>
+</table>
+<p>Yang paling penting:</p>
+<pre class="text"><code>COMMIT ≠ PUSH</code></pre>
+<p>Commit hanya mencatat perubahan pada repository lokal.</p>
+<p>Agar perubahan muncul di GitHub:</p>
+<pre class="text"><code>COMMIT → PUSH</code></pre>
+</section>
+<section id="checklist-mahasiswa" class="level1">
+<h1>Checklist Mahasiswa</h1>
+<p>Sebelum praktikum selesai, pastikan semua langkah berikut sudah dilakukan.</p>
+<section id="akun" class="level3">
+<h3 class="anchored" data-anchor-id="akun">Akun</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Memiliki akun GitHub</label></li>
+<li><label><input type="checkbox">Email GitHub sudah diverifikasi</label></li>
+<li><label><input type="checkbox">Mengetahui username GitHub</label></li>
+</ul>
+</section>
+<section id="software" class="level3">
+<h3 class="anchored" data-anchor-id="software">Software</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">R sudah terinstal</label></li>
+<li><label><input type="checkbox">RStudio sudah terinstal</label></li>
+<li><label><input type="checkbox">GitHub Desktop sudah terinstal</label></li>
+<li><label><input type="checkbox">GitHub Desktop sudah terhubung dengan akun GitHub</label></li>
+</ul>
+</section>
+<section id="repository" class="level3">
+<h3 class="anchored" data-anchor-id="repository">Repository</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Memiliki repository <code>metode-numerik-r</code></label></li>
+<li><label><input type="checkbox">Repository sudah di-clone ke komputer</label></li>
+<li><label><input type="checkbox">Repository sudah dibuka sebagai RStudio Project</label></li>
+<li><label><input type="checkbox">Memiliki <code>README.md</code></label></li>
+</ul>
+</section>
+<section id="workflow" class="level3">
+<h3 class="anchored" data-anchor-id="workflow">Workflow</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Dapat melakukan Pull</label></li>
+<li><label><input type="checkbox">Dapat membuat/mengubah R code</label></li>
+<li><label><input type="checkbox">Dapat melihat Changes</label></li>
+<li><label><input type="checkbox">Dapat melakukan Commit</label></li>
+<li><label><input type="checkbox">Dapat melakukan Push</label></li>
+<li><label><input type="checkbox">Dapat melihat hasil Push di GitHub</label></li>
+</ul>
+</section>
+</section>
+<section id="latihan-praktikum" class="level1">
+<h1>Latihan Praktikum</h1>
+<p>Buat repository dengan nama:</p>
+<pre class="text"><code>metode-numerik-r</code></pre>
+<p>Kemudian buat struktur:</p>
+<pre class="text"><code>metode-numerik-r/
+├── README.md
+└── pertemuan-01/
+    └── deret-taylor.R</code></pre>
+<p>Isi <code>deret-taylor.R</code> dengan program untuk menghitung pendekatan:</p>
+<p><span class="math display">\[
+\sin(x)
+=
+x-\frac{x^3}{3!}
++\frac{x^5}{5!}
+-\frac{x^7}{7!}.
+\]</span></p>
+<p>Lakukan workflow:</p>
+<pre class="text"><code>1. Buat R code
+2. Save
+3. Buka GitHub Desktop
+4. Periksa Changes
+5. Commit
+6. Push
+7. Buka GitHub melalui browser
+8. Pastikan file muncul</code></pre>
+<p>Kemudian ubah kode tersebut.</p>
+<p>Misalnya tambahkan:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fl">0.5</span></span></code></pre></div><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Lakukan kembali:</p>
+<pre class="text"><code>Save
+  ↓
+Commit
+  ↓
+Push</code></pre>
+<p>Repository GitHub sekarang memiliki riwayat perubahan.</p>
+</section>
+<section id="tantangan-membuktikan-fungsi-pull" class="level1">
+<h1>Tantangan: Membuktikan Fungsi Pull</h1>
+<p>Setelah berhasil melakukan Push:</p>
+<ol type="1">
+<li>Buka repository di GitHub.</li>
+<li>Edit <code>README.md</code> langsung melalui GitHub.</li>
+<li>Tambahkan satu baris, misalnya:</li>
+</ol>
+<pre class="text"><code>Repository ini digunakan untuk latihan Metode Numerik.</code></pre>
+<ol start="4" type="1">
+<li>Simpan perubahan di GitHub.</li>
+<li>Kembali ke GitHub Desktop.</li>
+<li>Pilih <strong>Pull origin</strong>.</li>
+<li>Buka <code>README.md</code> di komputer.</li>
+</ol>
+<p>Perubahan yang dibuat melalui GitHub sekarang seharusnya sudah muncul di komputer.</p>
+<p>Dengan latihan ini, kalian akan melihat secara langsung perbedaan:</p>
+<pre class="text"><code>PUSH
+Komputer → GitHub
+
+PULL
+GitHub → Komputer</code></pre>
+</section>
+<section id="prinsip-yang-perlu-diingat" class="level1">
+<h1>Prinsip yang Perlu Diingat</h1>
+<p>Gunakan empat kata kunci berikut:</p>
+<pre class="text"><code>PULL → WORK → COMMIT → PUSH</code></pre>
+<p>atau:</p>
+<p><strong>Ambil versi terbaru → kerjakan → catat perubahan → kirim ke GitHub.</strong></p>
+<p>Jika bekerja hanya pada satu komputer, workflow sederhana ini sudah cukup untuk mengenalkan version control dalam perkuliahan Metode Numerik.</p>
+<p>GitHub Desktop dapat menangani sebagian besar operasi Git yang diperlukan dalam workflow ini melalui antarmuka grafis, sehingga kalian tidak perlu memulai dari command line.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Disalin!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Disalin!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
