@@ -21,7 +21,7 @@ execute:
   echo: false
 ---
 
-# Capaian Pembelajaran {.unnumbered}
+## Capaian Pembelajaran {.scrollable}
 
 Setelah mempelajari materi ini, mahasiswa diharapkan mampu:
 
@@ -35,7 +35,7 @@ Setelah mempelajari materi ini, mahasiswa diharapkan mampu:
 8. membandingkan akurasi beberapa metode numerik berdasarkan nilai galat;
 9. menerapkan metode numerik pada berbagai fungsi matematika.
 
-# Pendahuluan {.unnumbered}
+## Pendahuluan {.scrollable}
 
 Dalam kalkulus, turunan dan integral biasanya dihitung secara analitik.
 Sebagai contoh,
@@ -58,13 +58,16 @@ $$
 \frac{8}{3}.
 $$
 
-Namun, dalam banyak persoalan nyata, kita tidak selalu memiliki bentuk analitik dari suatu fungsi.
-Kita mungkin hanya memiliki:
+## Pendahuluan {.scrollable}
 
-- data hasil pengamatan;
-- tabel nilai fungsi;
-- fungsi yang sangat kompleks;
-- fungsi yang sulit atau bahkan tidak dapat diintegralkan secara analitik.
+- Namun, dalam banyak persoalan nyata, kita tidak selalu memiliki bentuk analitik dari suatu fungsi.
+
+- Kita mungkin hanya memiliki:
+
+    - data hasil pengamatan;
+    - tabel nilai fungsi;
+    - fungsi yang sangat kompleks;
+    - fungsi yang sulit atau bahkan tidak dapat diintegralkan secara analitik.
 
 Dalam kondisi tersebut, pendekatan numerik diperlukan.
 Secara umum:
@@ -77,9 +80,9 @@ Ide utama kedua metode tersebut adalah mengganti persoalan matematika yang sulit
 
 # Diferensiasi Numerik {.unnumbered}
 
-## Konsep Dasar Turunan {.unnumbered}
+## Konsep Dasar Turunan {.scrollable}
 
-Turunan pertama suatu fungsi didefinisikan sebagai
+- Turunan pertama suatu fungsi didefinisikan sebagai
 
 $$
 f'(x)
@@ -88,7 +91,7 @@ f'(x)
 \frac{f(x+h)-f(x)}{h}.
 $$
 
-Jika $h$ cukup kecil, maka limit tersebut dapat didekati dengan
+- Jika $h$ cukup kecil, maka limit tersebut dapat didekati dengan
 
 $$
 f'(x)
@@ -119,7 +122,7 @@ Secara geometris, nilai tersebut merupakan kemiringan garis yang menghubungkan d
 
 # Forward Difference {.unnumbered}
 
-## Ide Dasar {.unnumbered}
+## Ide Dasar {.scrollable}
 
 Metode *forward difference* menggunakan nilai fungsi di titik $x$ dan titik di sebelah kanannya, yaitu $x+h$.
 Rumusnya:
@@ -134,7 +137,7 @@ $$
 
 Metode ini disebut *forward* karena kita bergerak maju dari $x$ menuju $x+h$.
 
-## Contoh Manual {.unnumbered}
+## Contoh Manual {.scrollable}
 
 Diberikan
 
@@ -154,6 +157,8 @@ sehingga
 $$
 f'(2)=4.
 $$
+
+## Contoh manual {.scrollable}
 
 Sekarang gunakan metode *forward difference*.
 Diperoleh
@@ -205,9 +210,10 @@ E=
 =0.1.
 $$
 
+
 # Backward Difference {.unnumbered}
 
-## Ide Dasar {.unnumbered}
+## Ide Dasar {.scrollable}
 
 Berbeda dengan *forward difference*, metode *backward difference* menggunakan titik di sebelah kiri.
 Rumusnya:
@@ -222,7 +228,7 @@ $$
 
 Metode ini disebut *backward* karena kita bergerak mundur dari $x$ menuju $x-h$.
 
-## Contoh Manual{.unnumbered}
+## Contoh Manual{.scrollable}
 
 Gunakan $f(x)=x^2$ untuk menghitung $f'(2)$ dengan
 
@@ -275,7 +281,7 @@ $$
 
 # Central Difference {.unnumbered}
 
-## Ide Dasar{.unnumbered}
+## Ide Dasar{.scrollable}
 
 Metode *central difference* menggunakan informasi dari kedua sisi titik $x$.
 Kita menggunakan:
@@ -302,7 +308,7 @@ $$
 
 Metode ini biasanya lebih akurat daripada *forward difference* dan *backward difference* untuk nilai $h$ yang sama.
 
-## Contoh Manual {.unnumbered}
+## Contoh Manual {.scrollable}
 
 Gunakan
 
@@ -376,7 +382,7 @@ Karena $h^2$ mengecil lebih cepat daripada $h$, *central difference* biasanya me
 
 ## Forward Difference {.unnumbered}
 
-```{r}
+```{r, echo=TRUE}
 f <- function(x) {
   x^2
 }
@@ -389,25 +395,25 @@ forward <- (f(x + h) - f(x)) / h
 forward
 ```
 
-## Backward Difference {.unnumbered}
+## Backward Difference {.scrollable}
 
-```{r, }
+```{r, echo=TRUE }
 backward <- (f(x) - f(x - h)) / h
 
 backward
 ```
 
-## Central Difference {.unnumbered}
+## Central Difference {.scrollable}
 
-```{r}
+```{r, echo=TRUE}
 central <- (f(x + h) - f(x - h)) / (2*h)
 
 central
 ```
 
-## Nilai Analitik {.unnumbered}
+## Nilai Analitik {.scrollable}
 
-```{r}
+```{r, echo=TRUE, eval=FALSE}
 actual <- 2*x
 
 actual
@@ -419,5 +425,78 @@ error_central <- abs(central - actual)
 error_forward
 error_backward
 error_central
+```
+
+## Menghitung galat {.scrollable}
+
+```{r, echo=TRUE, eval=FALSE}
+error_forward <- abs(forward - actual)
+error_backward <- abs(backward - actual)
+error_central <- abs(central - actual)
+
+error_forward
+error_backward
+error_central
+```
+
+## Membuat fungsi R untuk diferensiasi numerik
+
+```{r, echo=TRUE, eval=FALSE}
+forward_difference <- function(f, x, h) {
+  (f(x + h) - f(x)) / h
+}
+```
+
+- Contoh penggunaan
+
+```{r, echo=TRUE, eval=FALSE}
+f <- function(x) {
+  x^2
+}
+
+forward_difference(f, 2, 0.1)
+```
+
+- **Tugas**: coba buat fungsi serupa untuk backward dan central difference!
+
+
+## Eksperimen nilai $h$ {.scrollable}
+
+Cobalah beberapa nilai:
+$$
+h=0.5,\quad
+0.1,\quad
+0.05,\quad
+0.01,\quad
+0.001.
+$$
+
+```{r, echo=TRUE, eval= FALSE}
+f <- function(x) {
+  x^2
+}
+
+x <- 2
+actual <- 4
+
+h_values <- c(0.5, 0.1, 0.05, 0.01, 0.001)
+
+results <- data.frame(
+  h = h_values,
+  forward = sapply(
+    h_values,
+    function(h) forward_difference(f, x, h)
+  ),
+  backward = sapply(
+    h_values,
+    function(h) backward_difference(f, x, h)
+  ),
+  central = sapply(
+    h_values,
+    function(h) central_difference(f, x, h)
+  )
+)
+
+results
 ```
 
