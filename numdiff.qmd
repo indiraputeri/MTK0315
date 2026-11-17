@@ -1,5 +1,5 @@
 ---
-title: "Diferensiasi dan Integrasi Numerik"
+title: "Diferensiasi Numerik"
 subtitle: "Metode Numerik (MTK0315)"
 author:
   - name: Dr. Indira Puteri Kinasih
@@ -8,7 +8,7 @@ author:
     affiliations: Universitas Islam Negeri Mataram
 format:
   ubd-revealjs:
-    output-file: intdiff1.html
+    output-file: numdiff.html
     self-contained: true
     chalkboard: false
     toc: false
@@ -28,12 +28,7 @@ Setelah mempelajari materi ini, mahasiswa diharapkan mampu:
 1. menjelaskan konsep dasar diferensiasi numerik dan integrasi numerik;
 2. menjelaskan ide dasar metode *forward difference*, *backward difference*, dan *central difference*;
 3. menghitung turunan secara numerik menggunakan ketiga metode tersebut;
-4. menjelaskan konsep galat pada diferensiasi numerik;
-5. menjelaskan ide dasar metode trapesium dan Simpson;
-6. menghitung integral secara numerik menggunakan metode trapesium, Simpson 1/3, dan Simpson 3/8;
-7. mengimplementasikan metode diferensiasi dan integrasi numerik menggunakan R;
-8. membandingkan akurasi beberapa metode numerik berdasarkan nilai galat;
-9. menerapkan metode numerik pada berbagai fungsi matematika.
+4. menjelaskan konsep galat pada diferensiasi numerik
 
 ## Pendahuluan {.scrollable}
 
@@ -78,7 +73,9 @@ Secara umum:
 
 Ide utama kedua metode tersebut adalah mengganti persoalan matematika yang sulit dengan pendekatan yang dapat dihitung menggunakan operasi aritmetika sederhana.
 
-# Diferensiasi Numerik {.unnumbered}
+## Turunan Numerik {.unnumbered}
+
+![](numdiff_visual.png){width=70% fig-align="center"}
 
 ## Konsep Dasar Turunan {.scrollable}
 
@@ -119,6 +116,10 @@ $$
 $$
 
 Secara geometris, nilai tersebut merupakan kemiringan garis yang menghubungkan dua titik pada kurva.
+
+## Metode Turunan Numerik: makna geometris
+
+![](numdiff_method2.png){width=80% fig-align="center"}
 
 # Forward Difference {.unnumbered}
 
